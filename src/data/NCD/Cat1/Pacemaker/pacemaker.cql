@@ -65,47 +65,4 @@ define "Coverage for Pacemaker":
      or ["Diagnosis": "Sinoatrial node dysfunction"] and not "Non Coverage" and "Symptomatic"
      
 
-valueset "Bradycardia": '2.16.840.1.113883.3.526.3.412'
-valueset "Sinoatrial node dysfunction" : '2.16.840.1.113883.6.103'
-valueset "Atrio-ventricular-junctional (nodal) bradycardia (disorder)": '2.16.840.1.113883.6.96'
-valueset "Sinus bradycardia (disorder)": '2.16.840.1.113883.6.96'
-valueset "Severe sinus bradycardia (disorder)": '2.16.840.1.113883.6.96'
-valueset "Tachycardia" : '2.16.840.1.113883.3.666.5.2086'
-valueset "Acute Myocardial Infarction": '2.16.840.1.113883.3.666.5.1958'
-valueset "Atrial Fibrillation/Flutter": '2.16.840.1.113883.3.117.1.7.1.202'
-valueset "Second degree atrioventricular block (disorder)": '2.16.840.1.113883.6.96'
-valueset "Mobitz type I incomplete atrioventricular block (disorder)":'2.16.840.1.113883.6.96'
-valueset "Atrioventricular block, complete": '2.16.840.1.113883.6.90'
-valueset "Atrioventricular block (disorder)": '2.16.840.1.113883.6.96'
-valueset "Atrioventricular block, second degree": '2.16.840.1.113883.6.90'
-valueset "Complete atrioventricular block (disorder)": '2.16.840.1.113883.6.96'
-valueset "Atrioventricular Block": '2.16.840.1.113883.3.526.3.367'
-valueset "Intermittent second degree atrioventricular block (disorder)":'2.16.840.1.113883.6.96'
-valueset "Drug-induced bradycardia (disorder)": '2.16.840.1.113883.6.96'
-valueset "Heart rate": '2.16.840.1.113762.1.4.1104.1'
 
-context Patient
-
-define "Symptomatic":
-    ["Physical Exam, Performed": "Heart rate"]H
-    where H.result < 60 'beats per minute' 
-    
-define "Asymptomatic":
-    ["Physical Exam, Performed": "Heart rate"]H
-    where H.result > 60 'beats per minute'
-    
-define "Non Coverage":
-   ["Diagnosis": "Atrioventricular block (disorder)"] and "Asymptomatic"
-    or ["Diagnosis": "Drug-induced bradycardia (disorder)"] 
-    or ["Diagnosis": "Intermittent second degree atrioventricular block (disorder)"] and "Symptomatic"
-    or ["Diagnosis": "Mobitz type I incomplete atrioventricular block (disorder)"] 
-    or ["Diagnosis": "Atrial Fibrillation/Flutter"]
-    or ["Diagnosis": "Acute Myocardial Infarction"] and "Asymptomatic"
-    or ["Diagnosis": "Tachycardia"]
-    or ["Diagnosis": "Severe sinus bradycardia (disorder)"] and "Asymptomatic"
-    or ["Diagnosis": "Atrio-ventricular-junctional (nodal) bradycardia (disorder)"]
-    
-define "Coverage for Pacemaker":
-   ["Diagnosis": "Second degree atrioventricular block (disorder)"] and not "Non Coverage"
-     or ["Diagnosis": "Atrioventricular block, complete"] and not "Non Coverage"
-     or ["Diagnosis": "Sinoatrial node dysfunction"] and not "Non Coverage"
