@@ -1,0 +1,50 @@
+library ChlamydiaScreening_Common version '2'
+
+using QDM version 5.3
+
+//include otherLibrary version 'x.x' called otherLibrary
+//codesystem codeSystemName : 'OID' version 'x.x'
+//valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
+//code codeName : 'OID' from codeSystemName display 'displayName'
+//concept conceptName : {codeName1, codeName2, etc} display 'displayName'
+//parameter parameterName (dataType or default value)
+
+valueset "Bleeding (finding)":'2.16.840.1.113883.6.96'
+valueset "Red blood cell count low (finding)": '2.16.840.1.113883.6.96'
+valueset "Adverse Clinical Reaction": '2.16.840.1.113883.3.2074.1.1.30'
+valueset "Angina (disorder)":'2.16.840.1.113883.6.96'
+valueset "Syncope (disorder)": '2.16.840.1.113883.6.96'
+valueset "Lymphadenopathy (disorder)":'2.16.840.1.113883.6.96'
+valueset "Tachycardia (finding)": '2.16.840.1.113883.6.96'
+valueset "Dizziness (finding)": '2.16.840.1.113883.6.96'
+valueset "Upper abdominal pain (finding)": '2.16.840.1.113883.6.96'
+valueset "Jaundice":'2.16.840.1.113883.3.3157.1022'
+valueset "Hematologic neoplasm (disorder)":'2.16.840.1.113883.6.96'
+valueset "SNOMED CT CORE Problem List": '2.16.840.1.113762.1.4.1018.240'
+valueset "Splenomegaly [Unspecified Cause] (SNOMED)": '	2.16.840.1.113762.1.4.1146.917'
+valueset "Hepatomegaly [Unspecified Cause] (SNOMED)": '2.16.840.1.113762.1.4.1146.913'
+valueset "Feces: fresh blood present (finding)": '2.16.840.1.113883.6.96'
+valueset "Myelodysplastic syndrome, unspecified" : '2.16.840.1.113883.3.666.5.789'
+valueset "Hematemesis (disorder)":'2.16.840.1.113883.17.4077.2.2066'
+valueset "Headache (finding)" :'2.16.840.1.113883.3.2074.1.1.30'
+valueset "Dyspnea (finding)":'2.16.840.1.113883.3.2074.1.1.30'
+valueset "Fever (finding)" :'2.16.840.1.113883.3.2074.1.1.30'
+valueset "Sweating symptom (finding)" : '2.16.840.1.113883.3.2074.1.1.30'
+valueset "Myocardial infarction (disorder)": '2.16.840.1.113883.3.2074.1.1.30'
+valueset "Arthralgia (SNOMED)": '2.16.840.1.113762.1.4.1146.672'
+valueset "Tachypnea (finding)" : '2.16.840.1.113883.3.2074.1.1.30'
+valueset "Coronary artery thrombosis (disorder)": '2.16.840.1.113883.3.526.3.369'
+valueset "Deep venous thrombosis (disorder)": '2.16.840.1.113883.3.117.1.7.1.279'
+valueset "Wheezing": '2.16.840.1.113762.1.4.1182.55'
+valueset "Leukemia": '2.16.840.1.113762.1.4.1116.242'
+valueset "Neoplasms": '2.16.840.1.113883.3.3157.1408'
+valueset "Arthralgia (SNOMED)": '2.16.840.1.113762.1.4.1146.672'
+valueset "Thromboembolism of vein (disorder)": '2.16.840.1.113883.3.117.1.7.1.279'
+valueset "Cyanosis of skin (finding)":'2.16.840.1.113762.1.4.1181.17'
+valueset "Sleep Apnea": '2.16.840.1.113762.1.4.1130.11'
+valueset "Any infection": '2.16.840.1.113883.3.666.5.696'
+valueset "Hospital Measures-Myelodysplasia": '2.16.840.1.113883.3.666.5.792'
+
+
+
+context Patient
