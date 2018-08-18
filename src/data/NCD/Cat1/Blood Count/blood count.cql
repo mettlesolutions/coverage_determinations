@@ -66,4 +66,77 @@ valueset "Inflammatory and autoimmune disorders": '2.16.840.1.113883.3.3157.1834
 
 context Patient
 
+define "Indications":
+	["Diagnosis": "Bleeding (finding)"]
+	or ["Diagnosis": "Red blood cell count low (finding)"]
+	or ["Diagnosis": "Adverse Clinical Reaction"]
+	or ["Diagnosis":"Angina (disorder)"]
+	or ["Diagnosis": "Lymphadenopathy (disorder)"]
+	or ["Diagnosis": "Tachycardia (finding)"]
+	or ["Diagnosis": "Upper abdominal pain (finding)"]
+	or ["Diagnosis":"Hematologic neoplasm (disorder)"]
+	or ["Diagnosis": "SNOMED CT CORE Problem List"]
+	or ["Diagnosis": "Splenomegaly [Unspecified Cause] (SNOMED)"]
+	or ["Diagnosis": "Hepatomegaly [Unspecified Cause] (SNOMED)"]
+	or ["Diagnosis": "Feces: fresh blood present (finding)"]
+	or ["Diagnosis": "Myelodysplastic syndrome, unspecified"]
+	or ["Diagnosis": "Hematemesis (disorder)"]
+	or ["Diagnosis": "Myocardial infarction (disorder)"]
+	or ["Diagnosis": "Arthralgia (SNOMED)"]
+	or ["Diagnosis": "Tachypnea (finding)"]
+	or ["Diagnosis": "Coronary artery thrombosis (disorder)"]
+	or ["Diagnosis": "Deep venous thrombosis (disorder)"]
+	or ["Diagnosis": "Leukemia"]
+	or ["Diagnosis": "Neoplasms"]
+	or ["Diagnosis": "Thromboembolism of vein (disorder)"]
+	or ["Diagnosis": "Cyanosis of skin (finding)"]
+	or ["Diagnosis": "Any infection"]
+	or ["Diagnosis": "Hospital Measures-Myelodysplasia"]
+	or ["Diagnosis": "Thalassemia-hemoglobin C disease (disorder)"]
+	or ["Diagnosis": "Hemoglobinopathy (disorder)"]
+	or ["Diagnosis": "Poisoning caused by anti-infective compound of lead (disorder)"]
+	or ["Diagnosis": "Poisoning caused by arsenic or its compounds of undetermined intent (disorder)"]
+	or ["Diagnosis": "Spherocytosis (finding)"]
+	or ["Diagnosis": "Leukocytosis (disorder)"]
+	or ["Diagnosis": "Petechiae (finding)"]
+	or ["Diagnosis": "Purpura (finding)"]
+	or ["Diagnosis": "Pre-eclampsia (disorder)"]
+	or ["Diagnosis": "Recurrent gastrointestinal bleeding (disorder)"]
+	or ["Diagnosis": "Thrombosis (disorder)"]
+	or ["Diagnosis": "Ecchymosis (finding)"]
+	or ["Diagnosis": "Hypersplenism (disorder)"]
+	or ["Diagnosis": "Myeloproliferative disorder (disorder)"]
+	or ["Diagnosis": "Myelodysplastic/myeloproliferative disease (disorder)"]
+	or ["Diagnosis": "Lymphoproliferative disorder (disorder)"]
+	or ["Diagnosis": "Toxicological Emergency"]
+	or ["Diagnosis": "Alcohol intake above recommended sensible limits (finding)"]
+	or ["Diagnosis": "Inflammatory and autoimmune disorders"]
+	or ["Diagnosis": "Pregnancy"]
+	
+define "Asymptomatic":
+	["Symptom": "Syncope (disorder)"]
+	or ["Symptom": "Tachycardia (finding)"]
+	or ["Symptom": "Feces: fresh blood present (finding)"]
+	or ["Symptom": "Dizziness (finding)"]
+	or ["Symptom":"Wheezing"]
+	or ["Symptom": "Jaundice"]
+	or ["Symptom": "Headache (finding)"]
+	or ["Symptom": "Dyspnea (finding)"]
+	or ["Symptom": "Fever (finding)"]
+	or ["Symptom": "Sweating symptom (finding)"]
+	or ["Symptom":"Sleep Apnea"]
+	 
+define "Limitations":
+	["Laboratory Test, Ordered": "Hemoglobin lab test"] 
+	or ["Laboratory Test, Ordered": "Hematocrit lab test"]
+	or ["Procedure, Performed": "Complete blood count (procedure)"] union ["Diagnosis": "End Stage Renal Disease"]
+	or ["Procedure, Performed": "Complete blood count (procedure)"]P
+		where P.Reference Range = 'High' or P.Reference Range = 'Low'
+		and P.Timing >1
+	or not "Indications"
+	or "Asymptomatic"
+	
+		
+define "Coverage":
+	"Indications" union "Limitations"
 
