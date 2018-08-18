@@ -64,8 +64,6 @@ valueset "Toxicological Emergency" : '2.16.840.1.113883.17.4077.2.2078'
 valueset "Alcohol intake above recommended sensible limits (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Inflammatory and autoimmune disorders": '2.16.840.1.113883.3.3157.1834'
 
-
-
 context Patient
 
 define "Indications":
