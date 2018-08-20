@@ -1,6 +1,6 @@
 library ChlamydiaScreening_Common version '2'
 
-using QDM version 5.3
+using QDM version '5.3'
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -38,7 +38,6 @@ valueset "Deep venous thrombosis (disorder)": '2.16.840.1.113883.3.117.1.7.1.279
 valueset "Wheezing": '2.16.840.1.113762.1.4.1182.55'
 valueset "Leukemia": '2.16.840.1.113762.1.4.1116.242'
 valueset "Neoplasms": '2.16.840.1.113883.3.3157.1408'
-valueset "Arthralgia (SNOMED)": '2.16.840.1.113762.1.4.1146.672'
 valueset "Thromboembolism of vein (disorder)": '2.16.840.1.113883.3.117.1.7.1.279'
 valueset "Cyanosis of skin (finding)":'2.16.840.1.113762.1.4.1181.17'
 valueset "Sleep Apnea": '2.16.840.1.113762.1.4.1130.11'
@@ -63,6 +62,11 @@ valueset "Lymphoproliferative disorder (disorder)": '2.16.840.1.113883.3.88.12.3
 valueset "Toxicological Emergency" : '2.16.840.1.113883.17.4077.2.2078'
 valueset "Alcohol intake above recommended sensible limits (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Inflammatory and autoimmune disorders": '2.16.840.1.113883.3.3157.1834'
+valueset "Pregnancy": '2.16.840.1.113883.3.526.2.532'
+valueset "Hemoglobin lab test" : '2.16.840.1.113762.1.4.1045.131'
+valueset "Hematocrit lab test": '2.16.840.1.113762.1.4.1045.114'
+valueset "End Stage Renal Disease": '2.16.840.1.113883.3.526.3.353'
+valueset "Complete blood count (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 
 context Patient
 
@@ -113,8 +117,8 @@ define "Indications":
 	or ["Diagnosis": "Inflammatory and autoimmune disorders"]
 	or ["Diagnosis": "Pregnancy"]
 	
-define "Asymptomatic":
-	["Symptom": "Syncope (disorder)"]
+define "Symptomatic":
+	 ["Symptom": "Syncope (disorder)"]
 	or ["Symptom": "Tachycardia (finding)"]
 	or ["Symptom": "Feces: fresh blood present (finding)"]
 	or ["Symptom": "Dizziness (finding)"]
@@ -134,9 +138,9 @@ define "Limitations":
 		where P.Reference Range = 'High' or P.Reference Range = 'Low'
 		and P.Timing >1
 	or not "Indications"
-	or "Asymptomatic"
+	or not "Symptomatic"
 	
 		
 define "Coverage":
-	"Indications" union "Limitations"
-
+	"Indications" union not "Limitations"
+	
