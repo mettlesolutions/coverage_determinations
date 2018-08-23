@@ -9,7 +9,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-
 valueset "Hemodialysis (procedure)": '2.16.840.1.113883.3.526.2.1151'
 valueset "Ultrafiltration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "ESRD Monthly Outpatient Services": '2.16.840.1.113883.3.464.1003.109.12.1014'
+valueset "End Stage Renal Disease": '2.16.840.1.113883.3.526.3.353'
+
+
+context Patient
+
+define "Coverage": 
+	 ["Diagnosis": "End Stage Renal Disease"] union ["Procedure, Performed": "Hemodialysis (procedure)"] union ["Procedure, Performed": "Ultrafiltration (procedure)"]
+	 	and not ["Diagnosis": "End Stage Renal Disease"] union ["Procedure, Performed": "Ultrafiltration (procedure)"]
