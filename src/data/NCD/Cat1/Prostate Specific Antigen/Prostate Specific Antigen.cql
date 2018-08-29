@@ -28,7 +28,6 @@ valueset "Incontinence (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //valueset "Metastatic disseminated retinitis (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 codesystem "ICD10CM": '2.16.840.1.113883.6.90'
 valueset "Hematuria, unspecified": '2.16.840.1.113883.3.3157.1020'
-//slow urine stream
 //hesitancy
 //urgency
 valueset "Nocturia (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
