@@ -1,6 +1,6 @@
-library ChlamydiaScreening_Common version '2'
+library insertName
 
-using QDM version '5.3'
+using QDM
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -9,12 +9,12 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Refractive keratoplasty (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Myopia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Hypermetropia (disorder)": '2.16.840.1.113762.1.4.1018.240'
-valueset "Refractive keratoplasty (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Presbyopia (disorder)": '2.16.840.1.113762.1.4.1018.240'
+valueset "Astigmatism (disorder)": '2.16.840.1.113762.1.4.1018.240'
 valueset "Keratomileusis (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Keratophakia (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //hyperopia 
@@ -33,3 +33,18 @@ valueset "Photorefractive keratectomy (procedure)": '2.16.840.1.113883.3.88.12.8
 //scar tissue
 //ophthalmic disease
 //opthalmalogic surgery
+
+context Patient
+
+define "Not Covered": 
+	["Diagnosis": "Myopia (disorder)"] union ["Procedure, Performed": "Keratoplasty (procedure)"]
+	or ["Diagnosis": "Hypermetropia (disorder)"] union ["Procedure, Performed": "Keratoplasty (procedure)"]
+	or ["Diagnosis": "Presbyopia (disorder)"] union ["Procedure, Performed": "Keratoplasty (procedure)"]
+	or ["Diagnosis": "Astigmatism (disorder)"] union ["Procedure, Performed": "Keratoplasty (procedure)"]
+	
+define "Covered":
+	["Procedure, Performed": "Keratoplasty (procedure)"]
+	and ["Diagnosis":""] union ["Procedure, Performed": ""]
+	
+define "Coverage":
+	"Not Covered" union "Covered"
