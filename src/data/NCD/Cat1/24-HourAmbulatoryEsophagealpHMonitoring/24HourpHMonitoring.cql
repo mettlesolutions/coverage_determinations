@@ -1,3 +1,4 @@
+//24-Hour Ambulatory Esophageal pH Monitoring
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -14,3 +15,7 @@ codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Continuous measurement of pH in esophagus over 24 hour period (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Gastric reflux (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
+define "Covered":
+        ["Diagnosis": "Gastric reflux (finding)"]
+        or ["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]
+                

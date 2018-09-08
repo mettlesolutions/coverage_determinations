@@ -1,3 +1,4 @@
+//Portable Hand-Held X-Ray Instrument 
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -8,8 +9,10 @@ using QDM version '5.3'
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
-
+codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Portable X-ray (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-//Imaging device
 
+define "Coverage":
+        ["Procedure, Performed": "Portable X-ray (procedure)"]
+        
 

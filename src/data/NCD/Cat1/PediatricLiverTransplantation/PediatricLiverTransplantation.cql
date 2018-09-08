@@ -1,3 +1,4 @@
+//Pediatric Liver Transplantation
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -12,7 +13,22 @@ using QDM version '5.3'
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Transplantation of liver (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Congenital biliary atresia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "End Stage Liver Disease": '2.16.840.1.113883.17.4077.2.1002'
+valueset "End stage liver disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Viremia (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Pediatric emergency hospital admission (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Malignant tumor of extrahepatic bile duct (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //extrahepatic biliary atresia
+
+define "Indications":
+        ["Diagnosis": "Malignant tumor of extrahepatic bile duct (disorder)"]
+        or ["Diagnosis": "End stage liver disease (disorder)"]
+        and ["Procedure, Performed": "Transplantation of liver (procedure)"]
+        
+define "Limitations":        
+        ["Diagnosis": "Viremia (finding)"]
+        and not "Indications"
+define "Coverage":
+         "Indications" and not "Limitations"
+        
+
+        
