@@ -29,24 +29,36 @@ valueset "Bilateral orchidectomy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Opioids": '2.16.840.1.113762.1.4.1116.449'
 valueset "Prostate cancer care review (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Palliative care education (procedure)": '2.16.840.1.113883.11.20.9.34'
+valueset "Prostate Cancer": '2.16.840.1.113883.3.526.2.92'
+valueset "Bladder outlet obstruction (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Malignant neoplasm of bone (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Active surveillance of prostate cancer (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Allergic reaction management (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Anaphylaxis care (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Patient has metastatic disease at diagnosis": '2.16.840.1.113762.1.4.1116.396'
+valueset "Physician visit with evaluation AND/OR management service (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+context Patient
+
 define "Covered":
-        ["Diagnosis": "GnRH Agonist"]
-        or ["Diagnosis": "Bilateral orchidectomy (procedure)"]
-        or ["Diagnosis": "Extrinsic ureteral obstruction (disorder)"]
-        or ["Diagnosis":"Carcinoma, metastatic (morphologic abnormality)"]
-        //skeletal metastases
-        or ["Diagnosis": "Opioids"]
-        and ["Procedure, Performed": "abarelix"]
+      ["Diagnosis": "Prostate Cancer"] union not ["Procedure, Performed": "GnRH Agonist"]
+      or ["Diagnosis": "Prostate Cancer"] union not ["Procedure, Performed": "Bilateral orchidectomy (procedure)"]
+      //risk of neurological compromise due to metastases
+      or ["Diagnosis": "Prostate Cancer"] union ["Diagnosis": "Bladder outlet obstruction (disorder)"] union ["Diagnosis": "Patient has metastatic disease at diagnosis"]
+      or ["Diagnosis": "Prostate Cancer"] union ["Diagnosis": "Malignant neoplasm of bone (disorder)"]
+      and ["Procedure, Performed": "abarelix"]
 define "Physicians":
-        ["Diagnosis": "Prostate cancer care review (procedure)"]
-        and ["Diagnosis": "Allergic reaction (disorder)"]
-        and ["Diagnosis": "Anaphylaxis"]
-        and ["Medication, Administered": "abarelix"]abarelix
-        where abarelix.Relevant Period = '30'
-        and ["Diagnosis": "Palliative care (regime/therapy)"]
-        and ["Diagnosis":"Palliative care education (procedure)"]
+        ["Diagnosis": "Physician visit with evaluation AND/OR management service (procedure)"]
+        or ["Diagnosis": "Prostate Cancer"] and ["Procedure, Performed": "Active surveillance of prostate cancer (regime/therapy)"]
+        union ["Diagnosis": "Allergic reaction (disorder)"] and ["Procedure, Performed": "Allergic reaction management (regime/therapy)"]
+        union ["Diagnosis": "Anaphylaxis"] and ["Procedure, Performed": "Anaphylaxis care (regime/therapy)"]
+        union ["Medication, Administered": "abarelix"]abarelix
+        where abarelix.Relevant Period = '30 min'
+        union ["Provider Care Experience": "Palliative care education (procedure)"]
+        union ["Communication: From Provider to Patient"]knowledge
+        where knowledge.relatedTo = 'Palliative care education (procedure)'
+        //Report serious adverse events as soon as possible to the manufacturer and/or the FDA.
 define "Not Covered":
-        "Physicians" and not "Covered"
+        not "Physicians" and not "Covered"
 define "Coverage":
         "Covered" and "Physicians" and not "Not Covered"        
         

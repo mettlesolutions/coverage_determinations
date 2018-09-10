@@ -1,3 +1,4 @@
+
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -19,11 +20,9 @@ valueset "Finding related to risk factor in pregnancy (finding)": '2.16.840.1.11
 
 context Patient
 
-define "Abortion":
-     ["Diagnosis": "Pregnancy"]
-        union ["Diagnosis": "Victim of rape (finding)"]
-   or ["Diagnosis": "Pregnancy"]
-	union ["Diagnosis": "Physical health problems (finding)"]
-   or ["Diagnosis": "Pregnancy"]
-	union ["Diagnosis": "Physical injury due to physical abuse (disorder)"]
+define "Covered":
+     ["Diagnosis": "Pregnancy"] union ["Diagnosis": "Victim of rape (finding)"]
+   or ["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical health problems (finding)"]
+   or ["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical injury due to physical abuse (disorder)"]
    or ["Diagnosis": "Finding related to risk factor in pregnancy (finding)"]
+   union ["Procedure, Performed": "Miscarriage (disorder)"]
