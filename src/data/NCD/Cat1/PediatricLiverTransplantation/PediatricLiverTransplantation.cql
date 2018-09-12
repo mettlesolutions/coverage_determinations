@@ -29,14 +29,16 @@ define "In Demographic":
   	AgeInYearsAt(start of MeasurementPeriod) <= 18
 
 define "Indications":
-        ["Diagnosis": "Biliary atresia"]
+	"In Demographic" and 
+	(["Diagnosis": "Biliary atresia"]
         or ["Diagnosis": "Congenital biliary atresia (disorder)"]
         or ["Diagnosis": "End stage liver disease (disorder)"]
-        or ["Procedure, Performed": "Transplantation of liver (procedure)"]
-             
-define "Limitations":        
-        ["Diagnosis": "Viremia (finding)"]
-        or ["Diagnosis": "Malignant tumor of extrahepatic bile duct (disorder)"]
-        
+        or ["Procedure, Performed": "Transplantation of liver (procedure)"])
+          
+define "Limitations":
+	"In Demographic" and         
+        (["Diagnosis": "Viremia (finding)"]
+        or ["Diagnosis": "Malignant tumor of extrahepatic bile duct (disorder)"])
+                
 define "Coverage":
          "Indications" and not "Limitations"
