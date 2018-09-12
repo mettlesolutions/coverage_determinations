@@ -17,4 +17,3 @@ define "Coverage":
         ["Diagnosis": "Narcotic drug user (finding)"]
         or ["Diagnosis": "Physician service (procedure)"] 
        union ["Procedure, performed": "Monitoring drug withdrawal (regime/therapy)"]
-
