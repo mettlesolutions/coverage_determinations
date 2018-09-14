@@ -1,5 +1,4 @@
-//Abarelix for the Treatment of Prostate Cancer
-library ChlamydiaScreening_Common version '2'
+library HomeOxygenTherapy version '1'
 
 using QDM version '5.3'
 
@@ -12,6 +11,7 @@ using QDM version '5.3'
 
 codesystem "ICD10CM": '2.16.840.1.113883.6.90'
 codesystem "SNOMEDCT": '2.16.840.1.113883.3.88.12.3221.7.4'
+
 valueset "Home oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Chronic Obstructive Pulmonary Disease": '2.16.840.1.113883.3.464.1003.102.11.1021'
 valueset "Interstitial lung disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -30,7 +30,6 @@ valueset "Hospitalization": '2.16.840.1.113762.1.4.1164.40'
 valueset "Inpatient stay (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Discharge from Inpatient Facility": '2.16.840.1.113762.1.4.1138.721'
 valueset "Encounter Hospital Outpatient": '2.16.840.1.113883.3.3157.1002.1'
-//Chronic Stable State
 valueset "Acute disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //Alternative treatment
 valueset "Evaluation of arterial blood gas studies (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -53,3 +52,46 @@ valueset "Long-term oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.2
 valueset "Clinical trial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Cluster headache syndrome (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Unilateral headache (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Inpatient": '2.16.840.1.113883.3.666.5.307'
+valueset "Patient's condition stable (finding)": '2.16.840.1.113762.1.4.1096.114'
+valueset "Practitioner certification status (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
+parameter "Measurement Period" Interval<DateTime>
+
+context Patient
+
+define "Indications": 
+	["Diagnosis": "Chronic Obstructive Pulmonary Disease"]
+	or ["Diagnosis": "Interstitial lung disease (disorder)"]
+	or ["Diagnosis": "Cystic Fibrosis"]
+	or ["Diagnosis": "Bronchiectasis"]
+	or ["Diagnosis": "Malignant tumor of lung (disorder)"]
+	or ["Diagnosis": "Hypoxia (disorder)"]
+	or ["Diagnosis": "Pulmonary hypertension (disorder)"]
+	or ["Diagnosis": "Erythrocytosis (disorder)"]
+	or ["Diagnosis": "Impaired Cognition"]
+	or ["Diagnosis": "Restlessness (finding)"]
+	or ["Diagnosis": "Morning headache (finding)"]
+	
+define "Inpatient Encounters":
+	["Encounter, Performed": "Inpatient"]E
+	where E.relevantPeriod during "Measurement Period"
+	
+define "Outpatient Encounters":
+	["Encounter, Performed": "Encounter Hospital Outpatient"]O
+	where O.relevantPeriod during "Measurement Period"
+	
+define "BloodGasStudy":
+	["Procedure, Performed": "Blood gas analysis (procedure)"]P
+	where P.relevantPeriod during "Measurement Period"
+	
+define "Qualifying BloodgasStudy":
+	["Procedure, Performed" : "Blood gas analysis (procedure)"]P
+	with "Inpatient Encounters"E such that duration(P.startTime, E.stopTime) in days < 2 days
+	
+define "Outpatient Encounter":
+	["Diagnosis": "Patient's condition stable (finding)"]D union ["Diagnostic Study, Performed":"Practitioner certification status (finding)"]C
+	where D.relevantPeriod starts 30 days before start of C.authorDateTime
+	
+define "Qualifying Outpatient":
+	["Procedure, Performed" : "Blood gas analysis (procedure)"] and "Outpatient Encounter"
