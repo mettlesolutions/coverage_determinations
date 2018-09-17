@@ -55,6 +55,13 @@ valueset "Unilateral headache (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Inpatient": '2.16.840.1.113883.3.666.5.307'
 valueset "Patient's condition stable (finding)": '2.16.840.1.113762.1.4.1096.114'
 valueset "Practitioner certification status (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Exercise tolerance test (procedure)": '2.16.840.1.113762.1.4.1018.240'
+valueset "Exercises (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Resting state (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Sleeping out (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Awake (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
 parameter "Measurement Period" Interval<DateTime>
 
@@ -95,3 +102,61 @@ define "Outpatient Encounter":
 	
 define "Qualifying Outpatient":
 	["Procedure, Performed" : "Blood gas analysis (procedure)"] and "Outpatient Encounter"
+	
+define "Alternate Treatment":
+	["Diagnostic Study, Performed": "Treatment stopped - alternative therapy undertaken (situation)"]Alt
+	where Alt.result is "clinically ineffective"
+	
+define "Group1 Condition1":
+	["Diagnostic Study, Performed": "Blood gas analysis (procedure)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ox
+	where Ox.result <= 88 '%'
+	and ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pa
+	   	where Pa.result <= 55 'mm of Hg'
+	   	
+define "Group1 Condition2 Exercise":
+	["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result >= 89 '%'
+	 and ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 56 'mm of Hg'  
+	
+define "Group1 Condition2 rest":
+	["Assessment, Performed": "Resting state (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result <= 88 '%'
+	 and ["Assessment, Performed": "Resting state (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 55 'mm of Hg'
+	  
+define "Group1 Condition2 Awake":	
+	["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result >= 89 '%'
+	 and ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg'
+	   	
+define "Symptoms to hypoxemia":
+	["Diagnosis": "P pulmonale (finding)"]
+	or ["Diagnosis": "Erythrocytosis (disorder)"]
+	or ["Diagnosis": "Impaired Cognition"]
+	or ["Diagnosis": "Insomnia (disorder)"]
+	or ["Diagnosis": "Cor pulmonale (disorder)"]
+	or ["Diagnosis": "Pulmonary hypertension (disorder)"]
+	
+define "Decrease":
+	["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result <= 83 '%' and A.relevantPeriod = 5 minutes
+	 and ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 45 'mm of Hg' and a.relevantPeriod = 5 minutes
+	 and "Symptoms to hypoxemia"
+	 
+define "Group1 Conditon2 Sleeping":
+	 "Group1 Condition2 Awake" 
+	 and ["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result <= 88 '%' and A.relevantPeriod = 5 minutes
+	 and ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 55 'mm of Hg' and a.relevantPeriod = 5 minutes
+	 and "Decrease"
+	
+define "Group1 Criteria":
+	"Group1 Condition1" 
+	and "Group1 Condition2 Exercise"
+	and "Group1 Condition2 rest"
+	and "Group1 Condition2 Awake"
+	and "Group1 Conditon2 Sleeping"
