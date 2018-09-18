@@ -31,7 +31,7 @@ valueset "Inpatient stay (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Discharge from Inpatient Facility": '2.16.840.1.113762.1.4.1138.721'
 valueset "Encounter Hospital Outpatient": '2.16.840.1.113883.3.3157.1002.1'
 valueset "Acute disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-//Alternative treatment
+valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Evaluation of arterial blood gas studies (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oxygen saturation measurement, arterial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -40,12 +40,12 @@ valueset "Hypoxemia": '2.16.840.1.113762.1.4.1045.81'
 valueset "Insomnia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Cor pulmonale (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "P pulmonale (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-//electrocardiogram [EKG]
+valueset "Electrocardiogram (ECG)": '2.16.840.1.113883.3.600.1483'
 valueset "Dependent edema (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Pulmonary artery pressure monitoring (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Pulmonary artery finding (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //gated blood pool scan
-//echocardiogram
+valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Secondary polycythemia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Finding of hematocrit (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Long-term oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -55,13 +55,20 @@ valueset "Unilateral headache (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Inpatient": '2.16.840.1.113883.3.666.5.307'
 valueset "Patient's condition stable (finding)": '2.16.840.1.113762.1.4.1096.114'
 valueset "Practitioner certification status (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Exercise tolerance test (procedure)": '2.16.840.1.113762.1.4.1018.240'
 valueset "Exercises (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Resting state (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Sleeping out (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Awake (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Pulse oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified": '2.16.840.1.114222.4.11.1066'
+//Oxygen services furnished by an airline
+//Stationary oxygen
+//Portable oxygen
+valueset "Oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+//Accessories, maintenance, and repairs of patient-owned oxygen
+valueset "Liquid oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
+valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 
 parameter "Measurement Period" Interval<DateTime>
 
@@ -79,6 +86,11 @@ define "Indications":
 	or ["Diagnosis": "Impaired Cognition"]
 	or ["Diagnosis": "Restlessness (finding)"]
 	or ["Diagnosis": "Morning headache (finding)"]
+
+define "Not Covered":
+        ["Procedure, Performed": "Oximetry (procedure)"]
+         union ["Procedure, Performed": "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified"]
+         union ["Procedure, Performed": "Oxygen therapy (procedure)"]
 	
 define "Inpatient Encounters":
 	["Encounter, Performed": "Inpatient"]E
