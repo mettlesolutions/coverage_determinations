@@ -31,7 +31,7 @@ valueset "Inpatient stay (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Discharge from Inpatient Facility": '2.16.840.1.113762.1.4.1138.721'
 valueset "Encounter Hospital Outpatient": '2.16.840.1.113883.3.3157.1002.1'
 valueset "Acute disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+//Alternative treatment
 valueset "Evaluation of arterial blood gas studies (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oxygen saturation measurement, arterial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -40,12 +40,12 @@ valueset "Hypoxemia": '2.16.840.1.113762.1.4.1045.81'
 valueset "Insomnia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Cor pulmonale (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "P pulmonale (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Electrocardiogram (ECG)": '2.16.840.1.113883.3.600.1483'
+//electrocardiogram [EKG]
 valueset "Dependent edema (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Pulmonary artery pressure monitoring (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Pulmonary artery finding (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //gated blood pool scan
-valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+//echocardiogram
 valueset "Secondary polycythemia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Finding of hematocrit (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Long-term oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -55,6 +55,8 @@ valueset "Unilateral headache (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Inpatient": '2.16.840.1.113883.3.666.5.307'
 valueset "Patient's condition stable (finding)": '2.16.840.1.113762.1.4.1096.114'
 valueset "Practitioner certification status (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Exercise tolerance test (procedure)": '2.16.840.1.113762.1.4.1018.240'
 valueset "Exercises (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Resting state (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -86,7 +88,7 @@ define "Indications":
 	or ["Diagnosis": "Impaired Cognition"]
 	or ["Diagnosis": "Restlessness (finding)"]
 	or ["Diagnosis": "Morning headache (finding)"]
-
+	
 define "Not Covered":
         ["Procedure, Performed": "Oximetry (procedure)"]
          union ["Procedure, Performed": "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified"]
@@ -105,9 +107,9 @@ define "BloodGasStudy":
 	where P.relevantPeriod during "Measurement Period"
 	
 define "Qualifying BloodgasStudy":
-	["Procedure, Performed" : "Blood gas analysis (procedure)"]P
+	["Procedure, Performed" : "Blood gas analysis (procedure)"]P  
 	with "Inpatient Encounters"E such that duration(P.startTime, E.stopTime) in days < 2 days
-	
+		
 define "Outpatient Encounter":
 	["Diagnosis": "Patient's condition stable (finding)"]D union ["Diagnostic Study, Performed":"Practitioner certification status (finding)"]C
 	where D.relevantPeriod starts 30 days before start of C.authorDateTime
@@ -172,3 +174,60 @@ define "Group1 Criteria":
 	and "Group1 Condition2 rest"
 	and "Group1 Condition2 Awake"
 	and "Group1 Conditon2 Sleeping"
+
+define "Group2 Symptoms":
+	["Diagnosis": "Dependent edema (finding)"] union ["Diagnosis": "Right heart failure (disorder)"]
+	or ["Diagnostic Study, Performed": "Pulmonary artery pressure monitoring (regime/therapy)"] union ["Diagnosis": "Pulmonary hypertension (disorder)"] union ["Diagnostic Study, Performed": "Echocardiography (procedure)"] union ["Diagnostic Study, Performed": "P pulmonale (finding)"]
+	or ["Diagnosis": "Erythrocytosis (disorder)"] union ["Diagnostic Study, Performed": "Hematocrit lab test"]H
+		where H.result > 56 '%'
+	
+	
+define "Group2 Condition1 Awake":
+	["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result = 89 '%'
+	 and ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 59 'mm of Hg'
+	 and "Group2 Symptoms"
+	 
+define "Group2 Condition1 Exercise":
+	(["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result = 89 '%'
+	 or ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and  Pe.result <= 59 'mm of Hg')
+	 and "Group2 Symptoms"
+	 
+define "Group2 Condition1 Sleep":
+	(["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result = 89 '%' and A.relevantPeriod = 5 minutes
+	 or ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 59 'mm of Hg' and a.relevantPeriod = 5 minutes)
+	 and "Group2 Symptoms"
+	 
+define "Initial Coverage":
+	["Procedure, Performed": "Home oxygen therapy (procedure)"]Th
+	where Th.relevantPeriod = 3 months 
+	and ["Intervention, Performed": ""]
+	
+define "Group2 Criteria":
+	"Group2 Condition1 Awake"
+	or "Group2 Condition1 Exercise"
+	or "Group2 Condition1 Sleep"
+	or "Initial Coverage"
+	
+define "Long-term oxygen therapy":
+	["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result >= 89 '%'
+	 or ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 65 'mm of Hg'
+	   	
+define "Cluster Headaches":
+	["Diagnosis": "Unilateral headache (situation)"]Un
+	where Un.Timing > 15 minutes and Un.Timing < 180 minute
+		
+define "Group3 Criteria":
+	("Long-term oxygen therapy"
+	or "Cluster Headaches")
+	and (["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Dx
+		where Dx.result >= 90 '%'
+	or ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Da
+	   	where Da.result >= 60 'mm of Hg')
