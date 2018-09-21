@@ -71,7 +71,12 @@ valueset "Oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Accessories, maintenance, and repairs of patient-owned oxygen
 valueset "Liquid oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
-
+valueset "Oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
+valueset "Device (physical object)": '2.16.840.1.113762.1.4.1181.3'
+valueset "Does move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Does not move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Gaseous substance (substance)": '2.16.840.1.113762.1.4.1010.2'
+valueset "Arterial oxygen concentration measurement (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 parameter "Measurement Period" Interval<DateTime>
 
 context Patient
@@ -231,3 +236,60 @@ define "Group3 Criteria":
 		where Dx.result >= 90 '%'
 	or ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Da
 	   	where Da.result >= 60 'mm of Hg')
+	
+define "Portable Oxygen Device":
+         ["Diagnosis": "Device (physical object)"]
+          and ["Diagnosis": "Does move (finding)"]
+          and ["Substance,Administered": "Oxygen (substance)"]
+
+define "Stationary Oxygen Device":
+         ["Diagnosis": "Device (physical object)"]
+         and ["Diagnosis": "Does not move (finding)"]
+          and ["Substance,Administered": "Oxygen (substance)"]
+
+define "Stationary gaseous":
+          ["Substance, Administered": "Gaseous substance (substance)"]
+           and ["Diagnosis": "Does not move (finding)"]
+
+define "Portable Contents":
+           ["Diagnostic Study": "Arterial oxygen concentration measurement (procedure)"]
+           and ["Diagnosis": "Does move (finding)"]
+           
+define "Stationary Contents":
+         ["Diagnostic Study": "Arterial oxygen concentration measurement (procedure)"]
+           and ["Diagnosis": "Does not move (finding)"]
+           
+define "Portable gaseous device":
+           ["Substance, Administered": "Gaseous substance (substance)"]
+           and ["Diagnosis": "Does move (finding)"] 
+           and ["Diagnosis": "Device (physical object)"]   
+
+define "Stationary gaseous device":
+           ["Substance, Administered": "Gaseous substance (substance)"]
+           and ["Diagnosis": "Does not move (finding)"] 
+           and ["Diagnosis": "Device (physical object)"]   
+                        
+define "Not Covered(Initial 36)":
+         ["Diagnostic Study, Performed": "Arterial oxygen concentration measurement (procedure)"] OC
+         union ["Diagnostic Study, Performed": "Stationary Oxygen Device"] SD
+        // where duration in months of OC same as duration in months of SD
+         where OC same month as SD
+            
+define "Covered(Initial 36)":
+           "Stationary gaseous" or ["Substance, Administered": "Liquid oxygen (substance)"] LO
+           during duration in months of LO same as 36
+          // during "stationary gaseous" same month as LO
+           union "Stationary Content".startTime same as "Stationary Oxygen Device".stopTime
+           
+define "Condition 3(Initial 36)":
+         ["Diagnosis": "Stationary gaseous device"]
+         or ["Diagnosis": "Portable gaseous device"]
+         during duration in months of "Stationary gaseous device" same as 36
+         union "Portable Content".startTime = "Stationary gaseous device".stopTime
+         
+define "Condition 4(Initial 36)":
+         ["Device, Applied": "Stationary gaseous device"] and ["Device, Applied": "Portable gaseous device"]  
+         during duration in months of "Stationary gaseous device" same as 36
+         union "Portable Contents".startTime = "Stationary gaseous device".stopTime
+         and "Stationary Contents".startTime = "Stationary gaseous device".stopTime     
+           
