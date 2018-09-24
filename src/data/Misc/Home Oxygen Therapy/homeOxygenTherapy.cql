@@ -77,6 +77,39 @@ valueset "Does move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Does not move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Gaseous substance (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Arterial oxygen concentration measurement (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Laboratory reporting, electronic (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Verifying presence of prosthetics (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Seen by orthotics service (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Patient condition assessed (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+//Quantity ordered and frequency used
+valueset "Home oxygen therapy management (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+//Date Of Service
+//Duration of condition
+valueset "Illness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Clinical examination education (procedure)": '2.16.840.1.113883.11.20.9.34'
+valueset "Patient's condition worsened (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Patient's condition improved (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Conditional prognosis (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+//Results of the blood gas study,(Need to find)--> either printed data from the test or written in the notes
+valueset "Home Care": '2.16.840.1.113883.1.11.20275'
+//Nature and extent of functional limitations
+valueset "Therapeutic regimen (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Gathering of past medical history (procedure)": '2.16.840.1.113762.1.4.1096.118'
+//Other pertinent information
+//Photocopy
+//standard Medicare Detailed Written Order
+// knowledge and documentation of the face-to-face examination
+valueset "Provision of talking monitored dosage system (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Route of Administration": '2.16.840.1.113762.1.4.1018.98'
+//Frequency of use
+valueset "Infusion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+//valueset "Quantity finding (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'(Quantity to be dispensed)
+//Number of refills
+//physician review, sign, and date it
+//National Provider Identifier
+//Signature Date
+//Is permitted to perform services in accordance with State law
+valueset "Documentation of personal medication record (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 parameter "Measurement Period" Interval<DateTime>
 
 context Patient
