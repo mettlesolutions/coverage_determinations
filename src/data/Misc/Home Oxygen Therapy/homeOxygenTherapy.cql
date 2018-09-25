@@ -1,6 +1,6 @@
 library HomeOxygenTherapy version '1'
 
-using QDM version '5.3'
+using QDM
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -71,17 +71,19 @@ valueset "Oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Accessories, maintenance, and repairs of patient-owned oxygen
 valueset "Liquid oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
+//doctor of osteopathy
+//podiatric surgeon
 valueset "Oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Device (physical object)": '2.16.840.1.113762.1.4.1181.3'
 valueset "Does move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Does not move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Gaseous substance (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Arterial oxygen concentration measurement (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+
 valueset "Laboratory reporting, electronic (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Verifying presence of prosthetics (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Seen by orthotics service (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Patient condition assessed (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-//Quantity ordered and frequency used
 valueset "Home oxygen therapy management (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Date Of Service
 //Duration of condition
@@ -110,6 +112,44 @@ valueset "Infusion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Signature Date
 //Is permitted to perform services in accordance with State law
 valueset "Documentation of personal medication record (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Administration of prescribed medications based on arterial blood gas results (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Advance Care Plan": '2.16.840.1.113762.1.4.1116.468'
+valueset "Assessment for home oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Physician (occupation)": '2.16.840.1.113762.1.4.1096.129'
+valueset "Medical doctor (occupation)": '2.16.840.1.113762.1.4.1166.24'
+valueset "Nurse practitioner (occupation)": '2.16.840.1.113762.1.4.1096.129'
+valueset "Physician assistant (occupation)": '2.16.840.1.113762.1.4.1096.129'
+valueset "Face to Face Encounter": '2.16.840.1.113762.1.4.1047.428'
+valueset "In-person encounter (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Renewal of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Referral to clinical nurse specialist (procedure)": '2.16.840.1.113883.3.464.1003.101.12.1046'
+valueset "Nursing evaluation of patient and report (procedure)": '2.16.840.1.113883.3.464.1003.101.12.1061'
+valueset "Seen by clinical nurse specialist (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Prescription by nurse practitioner (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Seen by nurse practitioner (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Seen by physician (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Referred by physician assistant (finding)": '2.16.840.1.113762.1.4.1096.216'
+valueset "Encounter Face to Face": '2.16.840.1.113762.1.4.1111.78'
+valueset "Prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Change of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Evaluation AND/OR management - new patient (procedure)": '2.16.840.1.113883.3.2286'
+valueset "Medicare (Non-managed Care)": '2.16.840.1.114222.4.11.3591'
+valueset "National provider ID": '2.16.840.1.113762.1.4.1099.13'
+valueset "Patient identifier": '2.16.840.1.113762.1.4.1099.13'
+valueset "Provision of medical equipment (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Medical equipment assessment (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Ensuring home equipment available prior to hospital discharge (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Durable medical equipment education, guidance, and counseling (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Durable medical equipment case management (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Checking patient identity (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Patient registration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "replaces": '2.16.840.1.113883.11.20.9.62'
+valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
+valueset "Change recommended (qualifier value)": '2.16.840.1.113762.1.4.1096.204'
+
+
+
 parameter "Measurement Period" Interval<DateTime>
 
 context Patient
@@ -145,9 +185,11 @@ define "BloodGasStudy":
 	where P.relevantPeriod during "Measurement Period"
 	
 define "Qualifying BloodgasStudy":
-	["Procedure, Performed" : "Blood gas analysis (procedure)"]P  
-	with "Inpatient Encounters"E such that duration(P.startTime, E.stopTime) in days < 2 days
-		
+	"BloodGasStudy" Po  
+		with "Inpatient Encounters" E 
+	   		such that duration(Po.startTime, E.stopTime) < 2 days
+	   		
+	   	
 define "Outpatient Encounter":
 	["Diagnosis": "Patient's condition stable (finding)"]D union ["Diagnostic Study, Performed":"Practitioner certification status (finding)"]C
 	where D.relevantPeriod starts 30 days before start of C.authorDateTime
@@ -269,60 +311,106 @@ define "Group3 Criteria":
 		where Dx.result >= 90 '%'
 	or ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Da
 	   	where Da.result >= 60 'mm of Hg')
+	   	
+define  "Group Criteria":
+	"Group1 Criteria"
+	or "Group2 Criteria"
+	or "Group3 Criteria"
 	
-define "Portable Oxygen Device":
-         ["Diagnosis": "Device (physical object)"]
-          and ["Diagnosis": "Does move (finding)"]
-          and ["Substance,Administered": "Oxygen (substance)"]
-
-define "Stationary Oxygen Device":
-         ["Diagnosis": "Device (physical object)"]
-         and ["Diagnosis": "Does not move (finding)"]
-          and ["Substance,Administered": "Oxygen (substance)"]
-
-define "Stationary gaseous":
-          ["Substance, Administered": "Gaseous substance (substance)"]
-           and ["Diagnosis": "Does not move (finding)"]
-
-define "Portable Contents":
-           ["Diagnostic Study": "Arterial oxygen concentration measurement (procedure)"]
-           and ["Diagnosis": "Does move (finding)"]
-           
-define "Stationary Contents":
-         ["Diagnostic Study": "Arterial oxygen concentration measurement (procedure)"]
-           and ["Diagnosis": "Does not move (finding)"]
-           
-define "Portable gaseous device":
-           ["Substance, Administered": "Gaseous substance (substance)"]
-           and ["Diagnosis": "Does move (finding)"] 
-           and ["Diagnosis": "Device (physical object)"]   
-
-define "Stationary gaseous device":
-           ["Substance, Administered": "Gaseous substance (substance)"]
-           and ["Diagnosis": "Does not move (finding)"] 
-           and ["Diagnosis": "Device (physical object)"]   
-                        
-define "Not Covered(Initial 36)":
-         ["Diagnostic Study, Performed": "Arterial oxygen concentration measurement (procedure)"] OC
-         union ["Diagnostic Study, Performed": "Stationary Oxygen Device"] SD
-        // where duration in months of OC same as duration in months of SD
-         where OC same month as SD
-            
-define "Covered(Initial 36)":
-           "Stationary gaseous" or ["Substance, Administered": "Liquid oxygen (substance)"] LO
-           during duration in months of LO same as 36
-          // during "stationary gaseous" same month as LO
-           union "Stationary Content".startTime same as "Stationary Oxygen Device".stopTime
-           
-define "Condition 3(Initial 36)":
-         ["Diagnosis": "Stationary gaseous device"]
-         or ["Diagnosis": "Portable gaseous device"]
-         during duration in months of "Stationary gaseous device" same as 36
-         union "Portable Content".startTime = "Stationary gaseous device".stopTime
-         
-define "Condition 4(Initial 36)":
-         ["Device, Applied": "Stationary gaseous device"] and ["Device, Applied": "Portable gaseous device"]  
-         during duration in months of "Stationary gaseous device" same as 36
-         union "Portable Contents".startTime = "Stationary gaseous device".stopTime
-         and "Stationary Contents".startTime = "Stationary gaseous device".stopTime     
-           
+define "Coverage Criteria":
+	"Indications"
+	and "Qualifying BloodgasStudy"
+	and "Qualifying Outpatient"
+	and "Alternate Treatment"
+	
+define "Encounter Requirement1":
+	(["Procedure, Performed": "Prescription (procedure)"]Pr
+	where Pr.authorDateTime overlaps "Measurement Period")
+	
+define "Evaluation":
+	["Procedure, Performed": "Evaluation AND/OR management - new patient (procedure)"]
+	   	
+define "Encounters":
+	(["Encounter, Performed": "Encounter Face to Face"] and ["Encounter, Performed": "Seen by physician (finding)"])
+	or (["Encounter, Performed": "Encounter Face to Face"] and ["Encounter, Performed": "Seen by clinical nurse specialist (finding)"])
+	or (["Encounter, Performed": "Encounter Face to Face"] and ["Encounter, Performed": "Seen by nurse practitioner (finding)"])
+	or (["Encounter, Performed": "Encounter Face to Face"] and ["Encounter, Performed": "Referred by physician assistant (finding)"])
+		
+	
+define "HomeOxygentherapy":
+	["Procedure, Performed": "Home oxygen therapy (procedure)"]Ho
+	where Ho.relevantPeriod in "Measurement Period"
+	
+define "New Prescription":
+	["Procedure, Performed": "Renewal of prescription (procedure)"] and ["Encounter, Performed": "Encounter Face to Face"]
+	and "Home Oxygen Therapy"
+	
+define "Encounter Requirements":
+	"Evaluation" and
+	"New Prescription" and
+	["Encounter, Performed": "In-person encounter (procedure)"] In 
+		with "Encounter Requirement1" Er such that 
+	  		 duration(Er."start datetime", In."stop datetime") < 6 months
+	  		 		 
+define "New Prescription Requirement":
+	["Procedure, Performed": "Medicare (Non-managed Care)"]
+	or ["Procedure, Performed": "Change of prescription (procedure)"]
+	or ["Procedure, Performed": "Renewal of prescription (procedure)"]
+	or (["Procedure, Performed": "replaces"] union ["Procedure, Performed": "Durable medical equipment case management (procedure)"])
+	or ["Assessment, Performed": "Change recommended (qualifier value)"] union ["Device, Order": "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies"]
+	
+define "Face-Face Requirements":
+	"New Prescription Requirement"
+	and "Encounter Requirements"
+	and "New Prescription"
+	and "Encounter Requirement1"
+	and "Evaluation"
+	
+define "Medical Record":
+         ["Assessment, Performed": "Advance Care Plan"] union ["Procedure, Performed": "Home oxygen therapy management (procedure)"] and exists("Assessment for home oxygen therapy (procedure)") 
+         union ["Procedure, Performed": "Home oxygen therapy management (procedure)"] and ["Device, Applied": "Oxygen Device"] 
+         union exists("Illness (finding)" and "Patient's condition worsened (finding)" and "Patient's condition improved (finding)" and "Conditional prognosis (finding)" and "Administration of prescribed medications based on arterial blood gas results (procedure)" and "Therapeutic regimen (regime/therapy)" and "Gathering of past medical history (procedure)")
+ 
+define "Physician":
+	["Patient Characteristic": "Physician (occupation)"]Py
+	where Py.id = "National provider ID"
+		and Py.code = "Physician Name"
+		
+define "Ordering Practitioner":
+	["Encounter, Performed": "Face to Face Encounter"]
+	and (["Assessment, Performed": "Seen by physician (finding)"]
+	or ["Assessment, Performed": "Seen by practitioner (finding)"])
+	and ["Assessment, Performed": "Prescription (procedure)"] Ap
+	where Ap.relevantPeriod in "Measurement Period"
+	
+define "Demographics":
+	["Patient Characteristic": "Patient identifier"]
+	and ["Procedure, Performed": "Patient registration (procedure)"]
+	and "Physician"
+	and "Ho.relevantPeriod"
+	and ["Procedure, Performed": "Durable medical equipment education, guidance, and counseling (procedure)"]
+	and ["Procedure, Performed": "Documentation of medication therapy management plan (procedure)"]
+	and "Ordering Practitioner"
+	and "Ap.dateTime"
+	     
+define "WOPD":
+	"Demographics"
+	and ["Encounter, Performed": "Face to Face Encounter"] F
+        where F.Author dateTime= "Physician (occupation)" or 
+        F.Author dateTime= "Nurse practitioner (occupation)" or
+        F.Author dateTime= "Referral to clinical nurse specialist (procedure)" or
+        F.Author dateTime= "Physician assistant (occupation)"
+        union ["Laboratory Test, Performed": "Laboratory reporting, electronic (procedure)"] 
+        union ["Assessment, Performed": "Advance Care Plan"] union ["Encounter, Performed": "Face to Face Encounter"] and ["Assessment, Recommended": "Prescription (procedure)"]
+              included in("Durable medical equipment surveillance (regime/therapy)" and "Suppliers; Prosthetic/Orthotic Supplier")
+        union exists("")
+        union exists("Provision of talking monitored dosage system (procedure)" or "Route of Administration" union "Assessment for home oxygen therapy (procedure)" or "Infusion (procedure)" union ["Medication, Dispensed": "Quantity finding (finding)"] or ["Medication, Dispensed": "Prescription (procedure)"]P
+               union count(P.Refills))
+        and ["Intervention, Recommended": "Home oxygen therapy (procedure)"] Rin
+	where Rin.author = "Physician"
+	
+define "Coverage":
+	"WOPD"
+	and "Medical Record"
+	and "Face-Face Requirements"
+	and "Coverage Criteria"
