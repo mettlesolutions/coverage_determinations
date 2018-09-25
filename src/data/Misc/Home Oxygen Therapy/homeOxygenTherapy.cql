@@ -147,7 +147,10 @@ valueset "Patient registration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "replaces": '2.16.840.1.113883.11.20.9.62'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 valueset "Change recommended (qualifier value)": '2.16.840.1.113762.1.4.1096.204'
-
+valueset "Domestic responsibility rehabilitation (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Preparation of medical certificate (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Medical service (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Documentation procedure (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 
 
 parameter "Measurement Period" Interval<DateTime>
@@ -171,7 +174,11 @@ define "Not Covered":
         ["Procedure, Performed": "Oximetry (procedure)"]
          union ["Procedure, Performed": "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified"]
          union ["Procedure, Performed": "Oxygen therapy (procedure)"]
-	
+         
+define "Oxygen Device":
+         ["Diagnosis": "Device (physical object)"]
+          and ["Substance,Administered": "Oxygen (substance)"]
+           
 define "Inpatient Encounters":
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
@@ -408,9 +415,28 @@ define "WOPD":
                union count(P.Refills))
         and ["Intervention, Recommended": "Home oxygen therapy (procedure)"] Rin
 	where Rin.author = "Physician"
+
+define "Supplier Responsibilities(WOPD)":
+          
+          ["Assessment, Performed": "Documentation procedure (procedure)"] union ["Encounter, Performed": "Face to Face Encounter"]
+          union ["Assessment, Recommended": "Prescription (procedure)"] starts before ["Device, Applied": "Oxygen Device"]
+          
+define "Not Covered(Supplier WOPD)":
+
+          ["Device, Applied": "Oxygen Device"] starts before ["Assessment, Recommended": "Prescription (procedure)"]
+          
+define "CMN":
+        ["Assessment, Performed": "Preparation of medical certificate (procedure)"] union ["Assessment, Performed": "Medical service (procedure)"]
+        
+define "Physician Responsibility":
+            ["Assessment, Performed": "Domestic responsibility rehabilitation (regime/therapy)"] DO
+            where DO.Author dateTime = "Physician (occupation)"
 	
 define "Coverage":
 	"WOPD"
 	and "Medical Record"
 	and "Face-Face Requirements"
 	and "Coverage Criteria"
+        and "Supplier Responsibilities(WOPD)"
+        and "CMN"
+        and "Physician Responsibility"
