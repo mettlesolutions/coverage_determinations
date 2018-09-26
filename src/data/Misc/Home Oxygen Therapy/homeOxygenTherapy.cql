@@ -151,8 +151,11 @@ valueset "Domestic responsibility rehabilitation (regime/therapy)": '2.16.840.1.
 valueset "Preparation of medical certificate (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Medical service (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Documentation procedure (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-
-
+valueset "Previous treatment repeat (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Treatment completed (situation)": '2.16.840.1.113762.1.4.1047.220'
+valueset "Replacement of device (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Revision of internal fixation device, broken or displaced (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Respiratory flow rate measured (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 parameter "Measurement Period" Interval<DateTime>
 
 context Patient
@@ -170,7 +173,7 @@ define "Indications":
 	or ["Diagnosis": "Restlessness (finding)"]
 	or ["Diagnosis": "Morning headache (finding)"]
 	
-define "Not Covered":
+define "Not Covered(Oxygen Item)":
         ["Procedure, Performed": "Oximetry (procedure)"]
          union ["Procedure, Performed": "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified"]
          union ["Procedure, Performed": "Oxygen therapy (procedure)"]
@@ -192,11 +195,9 @@ define "BloodGasStudy":
 	where P.relevantPeriod during "Measurement Period"
 	
 define "Qualifying BloodgasStudy":
-	"BloodGasStudy" Po  
-		with "Inpatient Encounters" E 
-	   		such that duration(Po.startTime, E.stopTime) < 2 days
-	   		
-	   	
+	["Diagnostic Study, Performed": "BloodGasStudy"] Po  union ["Encounter, Peformed":"Inpatient Encounters"] E
+	   	    where duration in days of (Po."start datetime", E."stop datetime") < 2
+	   		   	
 define "Outpatient Encounter":
 	["Diagnosis": "Patient's condition stable (finding)"]D union ["Diagnostic Study, Performed":"Practitioner certification status (finding)"]C
 	where D.relevantPeriod starts 30 days before start of C.authorDateTime
@@ -356,7 +357,7 @@ define "Encounter Requirements":
 	"Evaluation" and
 	"New Prescription" and
 	["Encounter, Performed": "In-person encounter (procedure)"] In 
-		with "Encounter Requirement1" Er such that 
+		union "Encounter Requirement1" Er where
 	  		 duration(Er."start datetime", In."stop datetime") < 6 months
 	  		 		 
 define "New Prescription Requirement":
@@ -425,18 +426,91 @@ define "Not Covered(Supplier WOPD)":
 
           ["Device, Applied": "Oxygen Device"] starts before ["Assessment, Recommended": "Prescription (procedure)"]
           
-define "CMN":
+define "CMN and Its Requirements":
         ["Assessment, Performed": "Preparation of medical certificate (procedure)"] union ["Assessment, Performed": "Medical service (procedure)"]
+        and "Blood Gas Study Requirements" union "Submit Form"
         
 define "Physician Responsibility":
             ["Assessment, Performed": "Domestic responsibility rehabilitation (regime/therapy)"] DO
             where DO.Author dateTime = "Physician (occupation)"
-	
-define "Coverage":
+            
+define "Condition 1(BGT)":
+          ["Diagnostic Study, Performed": "BloodGasStudy"] BGS starts 30 days before BGS."start datetime"
+
+define "Condition 2(BGT)":
+          ["Diagnostic Study, Performed": "BloodGasStudy"] BGST
+         where BGST not starts 30 days before BGST."start datetime"
+          
+//define "Condition 3(BGT)":
+    //    "Group1 Criteria" and "Qualifying BloodgasStudy" QB starts before duration in months of(QB."start datetime") = 13
+      
+define "Condition 4(BGT)":
+              "Qualifying BloodgasStudy" union not ["Diagnosis": "Treatment completed (situation)"] union days between 61 and 90
+              union "Qualifying BloodgasStudy" Q where Q.Result meets "Group1 Criteria" or "Group2 Criteria"
+              union ["Substance,Administered": "Oxygen (substance)"] 
+                       
+define "Condition 6(BGT)":
+         ["Diagnostic Study, Performed": "BloodGasStudy"] BG starts 30 days before BG."start datetime"
+        // where duration in days of (BG."start datetime") <= 30
+        
+define "Condition 7(BGT)":
+         ["Diagnostic Study, Performed": "BloodGasStudy"] during ["Diagnosis": "Sleeping out (finding)"]
+         union not ["Assessment, Performed": "Previous treatment repeat (situation)"] union ["Diagnostic Study, Performed": "BloodGasStudy"]
+      or ["Diagnosis": "Awake (finding)"] or ["Diagnosis": "Exercises (regime/therapy)"]
+         union ["Assessment, Performed": "Previous treatment repeat (situation)"] union ["Diagnostic Study, Performed": "BloodGasStudy"]
+     //within 30 days prior to the Revised Date
+     
+define "Blood Gas Study Requirements":
+           "Condition 1(BGT)" union "Condition 2(BGT)" union "Condition 3(BGT)" union "Condition 4(BGT)" union "Condition 6(BGT)" union "Condition 7(BGT)"
+             
+define "Condition 1(PVR)":
+         ["Encounter, Performed": "Seen by physician (finding)"] starts 30 days before ["Diagnostic Study, Performed": "Practitioner certification status (finding)"]
+
+define "Condition 2(PVR)":
+        ["Encounter, Performed": "Seen by physician (finding)"] PHY starts 90 days after PHY."start datetime"
+        union ["Substance, Administered": "Oxygen (substance)"]
+        
+define "Physician Visit Requirements":
+        "Condition 1(PVR)" union "Condition 2(PVR)"
+        
+define "Portable Oxygen Device":
+         ["Diagnosis": "Device (physical object)"]
+          and ["Diagnosis": "Does move (finding)"]
+          and ["Substance,Administered": "Oxygen (substance)"]
+          
+define "Stationary Oxygen Device":
+         ["Diagnosis": "Device (physical object)"]
+         and ["Diagnosis": "Does not move (finding)"]
+          and ["Substance,Administered": "Oxygen (substance)"]
+          
+define "Condition 4(Submit Form)":
+         ["Procedure, Performed": "Revision of internal fixation device, broken or displaced (procedure)"]
+
+define "Condition 8(Submit Form)":
+           ["Laboratory Test, Performed": "Respiratory flow rate measured (situation)"] RF
+           where RF. Result < 1 'Liter Per Minute' or
+                 RF.Result >= 1 and RF.Result<= 4 'Liter Per Minute' or
+                 RF.Result > 4 'Liter Per Minute' 
+        
+define "Condition 9(Submit Form)":
+          "Portable Oxygen Device" union 
+          ["Diagnostic Study, Performed": "Practitioner certification status (finding)"] union "Stationary Oxygen Device"
+          
+define "Condition 10(Submit Form)":
+          "Stationary Oxygen Device" union
+          ["Diagnostic Study, Performed": "Practitioner certification status (finding)"] union "Portable Oxygen Device"
+        
+define "Submit Form":
+        "Condition 4(Submit Form)" union "Condition 8(Submit Form)" union "Condition 9(Submit Form)" union "Condition 10(Submit Form)" 
+                
+define "Covered":
 	"WOPD"
 	and "Medical Record"
 	and "Face-Face Requirements"
 	and "Coverage Criteria"
         and "Supplier Responsibilities(WOPD)"
-        and "CMN"
+        and "CMN and Its Requirements"
         and "Physician Responsibility"
+        
+define "Not Covered":
+        "Not Covered(Oxygen Item)" union "Not Covered(Supplier WOPD)"
