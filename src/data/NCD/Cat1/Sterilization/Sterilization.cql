@@ -50,7 +50,7 @@ define "Condition 2(Coverage)":
            or ["Diagnosis": "Carcinoma of prostate (disorder)"]
            union ["Procedure, Performed": "Bilateral orchidectomy (procedure)"]
            
-define "Coverage":
+define "Covered":
         "Condition 1(Coverage)" union "Condition 2(Coverage)"
         
 define "Condition 1(Not Covered)":
@@ -68,4 +68,7 @@ define "Condition 2(Not Covered)":
            union ["Procedure, Performed": "Sterilization procedure (procedure)"]
                          
 define "Not Covered":
-         "Condition 1(Not Covered)" union "Condition 2(Not Covered)"          
+         "Condition 1(Not Covered)" union "Condition 2(Not Covered)" 
+
+define "Coverage":
+         "Covered" union not "Not Covered"         
