@@ -38,6 +38,8 @@ valueset "Seen by physician (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Referred by physician assistant (finding)": '2.16.840.1.113762.1.4.1096.216'
 parameter "Measurement Period" Interval<DateTime>
 
+context Patient
+
 define "Prostate Cancer Screening Test":
            ["Procedure, Performed": "Digital examination of rectum (procedure)"] union ["Laboratory Test, Performed": "Prostate Specific Antigen Test"]
            
