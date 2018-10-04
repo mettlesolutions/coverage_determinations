@@ -14,8 +14,11 @@ using QDM version '5.3'
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Continuous measurement of pH in esophagus over 24 hour period (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Gastric reflux (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Abnormal illness behavior (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
+context Patient
 
 define "Covered":
-        ["Diagnosis": "Gastric reflux (finding)"]
-        or ["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]
-                
+        ["Diagnosis": "Abnormal illness behavior (finding)"] union ["Diagnosis": "Gastric reflux (finding)"]
+        union ["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]
+
