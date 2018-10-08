@@ -411,7 +411,6 @@ define "WOPD":
         union ["Laboratory Test, Performed": "Laboratory reporting, electronic (procedure)"] 
         union ["Assessment, Performed": "Advance Care Plan"] union ["Encounter, Performed": "Face to Face Encounter"] and ["Assessment, Recommended": "Prescription (procedure)"]
               included in("Durable medical equipment surveillance (regime/therapy)" and "Suppliers; Prosthetic/Orthotic Supplier")
-        union exists("")
         union exists("Provision of talking monitored dosage system (procedure)" or "Route of Administration" union "Assessment for home oxygen therapy (procedure)" or "Infusion (procedure)" union ["Medication, Dispensed": "Quantity finding (finding)"] or ["Medication, Dispensed": "Prescription (procedure)"]P
                union count(P.Refills))
         and ["Intervention, Recommended": "Home oxygen therapy (procedure)"] Rin
