@@ -196,7 +196,8 @@ define "BloodGasStudy":
 	
 define "Qualifying BloodgasStudy":
 	["Diagnostic Study, Performed": "BloodGasStudy"] Po  union ["Encounter, Peformed":"Inpatient Encounters"] E
-	   	    where duration in days of (Po."start datetime", E."stop datetime") < 2
+            where difference in days between BG and E < 2
+	   	    //where duration in days of (Po."start datetime", E."stop datetime") < 2
 	   		   	
 define "Outpatient Encounter":
 	["Diagnosis": "Patient's condition stable (finding)"]D union ["Diagnostic Study, Performed":"Practitioner certification status (finding)"]C
@@ -357,8 +358,9 @@ define "Encounter Requirements":
 	"Evaluation" and
 	"New Prescription" and
 	["Encounter, Performed": "In-person encounter (procedure)"] In 
-		union "Encounter Requirement1" Er where
-	  		 duration(Er."start datetime", In."stop datetime") < 6 months
+		union "Encounter Requirement1" Er 
+       where difference in months between In and Er < 6
+//where duration(Er."start datetime", In."stop datetime") < 6 months
 	  		 		 
 define "New Prescription Requirement":
 	["Procedure, Performed": "Medicare (Non-managed Care)"]
