@@ -161,17 +161,18 @@ parameter "Measurement Period" Interval<DateTime>
 context Patient
 
 define "Indications": 
-	["Diagnosis": "Chronic Obstructive Pulmonary Disease"]
-	or ["Diagnosis": "Interstitial lung disease (disorder)"]
-	or ["Diagnosis": "Cystic Fibrosis"]
-	or ["Diagnosis": "Bronchiectasis"]
-	or ["Diagnosis": "Malignant tumor of lung (disorder)"]
-	or ["Diagnosis": "Hypoxia (disorder)"]
-	or ["Diagnosis": "Pulmonary hypertension (disorder)"]
-	or ["Diagnosis": "Erythrocytosis (disorder)"]
-	or ["Diagnosis": "Impaired Cognition"]
-	or ["Diagnosis": "Restlessness (finding)"]
-	or ["Diagnosis": "Morning headache (finding)"]
+	( exists (["Diagnosis": "Chronic Obstructive Pulmonary Disease"] )
+	or (exists (["Diagnosis": "Interstitial lung disease (disorder)"] ) )
+	or (exists (["Diagnosis": "Cystic Fibrosis"] ) )
+	or (exists (["Diagnosis": "Bronchiectasis"] ) )
+	or (exists (["Diagnosis": "Malignant tumor of lung (disorder)"] ) )
+	or (exists (["Diagnosis": "Hypoxia (disorder)"] ) )
+	or (exists (["Diagnosis": "Pulmonary hypertension (disorder)"] ) )
+	or (exists (["Diagnosis": "Erythrocytosis (disorder)"] ) )
+	or (exists (["Diagnosis": "Impaired Cognition"] ) )
+	or (exists (["Diagnosis": "Restlessness (finding)"] ) )
+	or (exists (["Diagnosis": "Morning headache (finding)"] ) )
+	)
 	
 define "Not Covered(Oxygen Item)":
         ["Procedure, Performed": "Oximetry (procedure)"]
@@ -179,9 +180,10 @@ define "Not Covered(Oxygen Item)":
          union ["Procedure, Performed": "Oxygen therapy (procedure)"]
          
 define "Oxygen Device":
-         ["Diagnosis": "Device (physical object)"]
-          and ["Substance,Administered": "Oxygen (substance)"]
-           
+         (exists ( ["Diagnosis": "Device (physical object)"] )
+          and (exists ( ["Substance,Administered": "Oxygen (substance)"] ) )
+         )
+         
 define "Inpatient Encounters":
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
@@ -204,127 +206,151 @@ define "Outpatient Encounter":
 	where D.relevantPeriod starts 30 days before start of C.authorDateTime
 	
 define "Qualifying Outpatient":
-	["Procedure, Performed" : "Blood gas analysis (procedure)"] and "Outpatient Encounter"
-	
+	(exists ( ["Procedure, Performed" : "Blood gas analysis (procedure)"] )
+	 and ( exists ( "Outpatient Encounter" ) )
+	)
+		
 define "Alternate Treatment":
 	["Diagnostic Study, Performed": "Treatment stopped - alternative therapy undertaken (situation)"]Alt
 	where Alt.result is "clinically ineffective"
 	
 define "Group1 Condition1":
-	["Diagnostic Study, Performed": "Blood gas analysis (procedure)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ox
-	where Ox.result <= 88 '%'
-	and ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pa
-	   	where Pa.result <= 55 'mm of Hg'
+	( exists ( ["Diagnostic Study, Performed": "Blood gas analysis (procedure)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ox
+		where Ox.result <= 88 '%')
+			and ( exists ( ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pa
+	   			where Pa.result <= 55 'mm of Hg') )
+	)
 	   	
 define "Group1 Condition2 Exercise":
-	["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result >= 89 '%'
-	 and ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result <= 56 'mm of Hg'  
+	(exists ( ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result >= 89 '%')
+	 and (exists ( ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 56 'mm of Hg' ) )
+	)	
 	
 define "Group1 Condition2 rest":
-	["Assessment, Performed": "Resting state (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result <= 88 '%'
-	 and ["Assessment, Performed": "Resting state (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result <= 55 'mm of Hg'
+	(exists ( ["Assessment, Performed": "Resting state (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result <= 88 '%')
+	 and (exists ( ["Assessment, Performed": "Resting state (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 55 'mm of Hg') )
+	)
+	
 	  
 define "Group1 Condition2 Awake":	
-	["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result >= 89 '%'
-	 and ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result >= 56 'mm of Hg'
+	(exists ( ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result >= 89 '%' )
+	 and (exists ( ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg') )
+	 )
 	   	
 define "Symptoms to hypoxemia":
-	["Diagnosis": "P pulmonale (finding)"]
-	or ["Diagnosis": "Erythrocytosis (disorder)"]
-	or ["Diagnosis": "Impaired Cognition"]
-	or ["Diagnosis": "Insomnia (disorder)"]
-	or ["Diagnosis": "Cor pulmonale (disorder)"]
-	or ["Diagnosis": "Pulmonary hypertension (disorder)"]
+	(exists ( ["Diagnosis": "P pulmonale (finding)"] )
+	or (exists ( ["Diagnosis": "Erythrocytosis (disorder)"] ) )
+	or (exists ( ["Diagnosis": "Impaired Cognition"] ) )
+	or (exists ( ["Diagnosis": "Insomnia (disorder)"] ) )
+	or (exists ( ["Diagnosis": "Cor pulmonale (disorder)"] ) )
+	or (exists ( ["Diagnosis": "Pulmonary hypertension (disorder)"] ) )
+	)
+	
 	
 define "Decrease":
-	["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result <= 83 '%' and A.relevantPeriod = 5 minutes
-	 and ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result <= 45 'mm of Hg' and a.relevantPeriod = 5 minutes
-	 and "Symptoms to hypoxemia"
+	(exists ( ["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result <= 83 '%' and A.relevantPeriod = 5 minutes )
+	 and (exists ( ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result <= 45 'mm of Hg' and a.relevantPeriod = 5 minutes ) )
+	 and (exists ( "Symptoms to hypoxemia") )
+	)
+	
 	 
 define "Group1 Conditon2 Sleeping":
-	 "Group1 Condition2 Awake" 
-	 and ["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result <= 88 '%' and A.relevantPeriod = 5 minutes
-	 and ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result <= 55 'mm of Hg' and a.relevantPeriod = 5 minutes
-	 and "Decrease"
-	
+	 (exists ( "Group1 Condition2 Awake" )
+	 	and (exists ( ["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+			where Ex.result <= 88 '%' and A.relevantPeriod = 5 minutes ) )
+	        and (exists ( ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   		where Pe.result <= 55 'mm of Hg' and a.relevantPeriod = 5 minutes ) )
+	 	and (exists ( "Decrease" ) )
+	 )
+	 
 define "Group1 Criteria":
-	"Group1 Condition1" 
-	and "Group1 Condition2 Exercise"
-	and "Group1 Condition2 rest"
-	and "Group1 Condition2 Awake"
-	and "Group1 Conditon2 Sleeping"
-
-define "Group2 Symptoms":
-	["Diagnosis": "Dependent edema (finding)"] union ["Diagnosis": "Right heart failure (disorder)"]
-	or ["Diagnostic Study, Performed": "Pulmonary artery pressure monitoring (regime/therapy)"] union ["Diagnosis": "Pulmonary hypertension (disorder)"] union ["Diagnostic Study, Performed": "Echocardiography (procedure)"] union ["Diagnostic Study, Performed": "P pulmonale (finding)"]
-	or ["Diagnosis": "Erythrocytosis (disorder)"] union ["Diagnostic Study, Performed": "Hematocrit lab test"]H
-		where H.result > 56 '%'
+	( exists ( "Group1 Condition1" )
+		and (exists ( "Group1 Condition2 Exercise" ) )
+		and (exists ( "Group1 Condition2 rest" ) )
+		and (exists ( "Group1 Condition2 Awake" ) )
+		and (exists ( "Group1 Conditon2 Sleeping" ) )
+	)
 	
+define "Group2 Symptoms":
+	(exists ( ["Diagnosis": "Dependent edema (finding)"] union ["Diagnosis": "Right heart failure (disorder)"] )
+		or (exists ( ["Diagnostic Study, Performed": "Pulmonary artery pressure monitoring (regime/therapy)"] union ["Diagnosis": "Pulmonary hypertension (disorder)"] union ["Diagnostic Study, Performed": "Echocardiography (procedure)"] union ["Diagnostic Study, Performed": "P pulmonale (finding)"] ) )
+		or (exists ( ["Diagnosis": "Erythrocytosis (disorder)"] union ["Diagnostic Study, Performed": "Hematocrit lab test"]H
+			where H.result > 56 '%' ) )
+	)
 	
 define "Group2 Condition1 Awake":
-	["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result = 89 '%'
-	 and ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 59 'mm of Hg'
-	 and "Group2 Symptoms"
+	(exists ( ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result = 89 '%' ) 
+	 and (exists ( ["Assessment, Performed": "Awake (finding)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 59 'mm of Hg' ) ) 
+	 and (exists ( "Group2 Symptoms" ) )
+	)
 	 
 define "Group2 Condition1 Exercise":
-	(["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result = 89 '%'
-	 or ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result >= 56 'mm of Hg' and  Pe.result <= 59 'mm of Hg')
-	 and "Group2 Symptoms"
+	(exists ( ( ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result = 89 '%') 
+	 or (exists ( ["Assessment, Performed": "Exercises (regime/therapy)"] union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and  Pe.result <= 59 'mm of Hg') ) )
+	 and (exists ( "Group2 Symptoms" ) )
+	)
 	 
 define "Group2 Condition1 Sleep":
-	(["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result = 89 '%' and A.relevantPeriod = 5 minutes
-	 or ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 59 'mm of Hg' and a.relevantPeriod = 5 minutes)
-	 and "Group2 Symptoms"
+	(exists ( ( ["Assessment, Performed": "Sleeping out (finding)"]A union ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result = 89 '%' and A.relevantPeriod = 5 minutes )
+	 or (exists ( ["Assessment, Performed": "Sleeping out (finding)"]a union ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 59 'mm of Hg' and a.relevantPeriod = 5 minutes) ) )
+	 and (exists ( "Group2 Symptoms" ) )
+	)
 	 
 define "Initial Coverage":
-	["Procedure, Performed": "Home oxygen therapy (procedure)"]Th
-	where Th.relevantPeriod = 3 months 
-	and ["Intervention, Performed": ""]
+	( exists ( ["Procedure, Performed": "Home oxygen therapy (procedure)"]Th
+			where Th.relevantPeriod = 3 months )
+	)
 	
 define "Group2 Criteria":
-	"Group2 Condition1 Awake"
-	or "Group2 Condition1 Exercise"
-	or "Group2 Condition1 Sleep"
-	or "Initial Coverage"
+	( exists ("Group2 Condition1 Awake" )
+	or ( exists ("Group2 Condition1 Exercise" ) )
+	or ( exists ("Group2 Condition1 Sleep" ) )
+	or ( exists ("Initial Coverage" ) )
+	)
 	
 define "Long-term oxygen therapy":
-	["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
-		where Ex.result >= 89 '%'
-	 or ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
-	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 65 'mm of Hg'
+	( exists ( ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Ex
+		where Ex.result >= 89 '%')
+	 or ( exists ( ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Pe
+	   	where Pe.result >= 56 'mm of Hg' and Pe.result <= 65 'mm of Hg') )
+	)
+	
 	   	
 define "Cluster Headaches":
-	["Diagnosis": "Unilateral headache (situation)"]Un
-	where Un.Timing > 15 minutes and Un.Timing < 180 minute
+	( exists ( ["Diagnosis": "Unilateral headache (situation)"]Un
+		where Un.Timing > 15 minutes and Un.Timing < 180 minute )
+	)
 		
 define "Group3 Criteria":
-	("Long-term oxygen therapy"
-	or "Cluster Headaches")
-	and (["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Dx
-		where Dx.result >= 90 '%'
-	or ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Da
-	   	where Da.result >= 60 'mm of Hg')
+	( exists ( ("Long-term oxygen therapy"
+			or ( exists ("Cluster Headaches") )
+		) )
+	and ( exists ( ( ["Diagnostic Study, Performed": "Oxygen saturation measurement, arterial (procedure)"]Dx
+			where Dx.result >= 90 '%') 
+		or ( exists ( ["Diagnostic Study, Performed": "Oxygen measurement, partial pressure, arterial (procedure)"]Da
+	   		where Da.result >= 60 'mm of Hg') ) )
+	    )
+	)
 	   	
 define  "Group Criteria":
-	"Group1 Criteria"
-	or "Group2 Criteria"
-	or "Group3 Criteria"
+	( exists ("Group1 Criteria")
+		or ( exists ( "Group2 Criteria" ) )
+		or ( exists ( "Group3 Criteria" ) )
+	)
 	
 define "Coverage Criteria":
 	"Indications"
@@ -515,3 +541,4 @@ define "Covered":
         
 define "Not Covered":
         "Not Covered(Oxygen Item)" union "Not Covered(Supplier WOPD)"
+        
