@@ -1,4 +1,4 @@
-
+//Abortion
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -20,9 +20,16 @@ valueset "Finding related to risk factor in pregnancy (finding)": '2.16.840.1.11
 
 context Patient
 
+define "Conditions Covered":
+    ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Victim of rape (finding)"])
+   or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical health problems (finding)"]) )
+   or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical injury due to physical abuse (disorder)"]) )
+   or ( exists(["Diagnosis": "Finding related to risk factor in pregnancy (finding)"]) )
+    )
+   
 define "Covered":
-     ["Diagnosis": "Pregnancy"] union ["Diagnosis": "Victim of rape (finding)"]
-   or ["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical health problems (finding)"]
-   or ["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical injury due to physical abuse (disorder)"]
-   or ["Diagnosis": "Finding related to risk factor in pregnancy (finding)"]
-   union ["Procedure, Performed": "Miscarriage (disorder)"]
+
+ "Conditions Covered" and ( exists (["Procedure, Performed": "Miscarriage (disorder)"]) )
+ 
+define "Coverage":
+      "Conditions Covered" and "Covered"  
