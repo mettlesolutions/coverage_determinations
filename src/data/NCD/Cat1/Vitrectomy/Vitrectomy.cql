@@ -1,3 +1,4 @@
+//Vitrectomy
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -9,6 +10,8 @@ using QDM version '5.3'
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": '2.16.840.1.113883.3.88.12.80.28'
 
 valueset "Vitreous loss (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Cataract Surgery": '2.16.840.1.113883.3.526.2.1527'
@@ -23,8 +26,10 @@ valueset "Vitreous detachment (disorder)": '2.16.840.1.113762.1.4.1018.240'
 context Patient
 
 define "Coverage": 
-	["Symptom" : "Vitreous loss (disorder)"] union ["Procedure, Performed": "Cataract Surgery"] 
-		or ["Symptom" : "Vitreous opacities (disorder)"] union ["Condition": "Vitreous hemorrhage (disorder)"]
-		or ["Condition" : "Retinal Detachment with Retinal Defect"] union ["Diagnosis": "Vitreous strands (disorder)"]
-		or ["Condition" : "Proliferative retinopathy (disorder)"]
-		or ["Condition" : "Vitreous detachment (disorder)"]
+	      ( exists (["Symptom" : "Vitreous loss (disorder)"]) and ( exists (["Procedure, Performed": "Cataract Surgery"] ) )
+		or ( exists (["Symptom" : "Vitreous opacities (disorder)"]) ) and ( exists (["Diagnosis": "Vitreous hemorrhage (disorder)"]) )
+		or ( exists (["Diagnosis" : "Retinal Detachment with Retinal Defect"]) ) and ( exists (["Diagnosis": "Vitreous strands (disorder)"]) )
+		or ( exists (["Diagnosis" : "Proliferative retinopathy (disorder)"]) )
+		or ( exists (["Diagnosis" : "Vitreous detachment (disorder)"]) )
+	      )	
+
