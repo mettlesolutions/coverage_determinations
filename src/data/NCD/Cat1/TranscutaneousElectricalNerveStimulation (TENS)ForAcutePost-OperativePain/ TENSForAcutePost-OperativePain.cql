@@ -1,4 +1,4 @@
-
+//TENS For Acute Post Operative Pain
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -19,13 +19,24 @@ valueset "Suppliers; Durable Medical Equipment & Medical Supplies": '2.16.840.1.
 
 context Patient
 
+define "Condition 1(Covered)":
+        ( exists (["Symptom": "Acute postoperative pain (finding)"]) and ( exists(["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"] ) )
+        )
+        
+define "Condition for Indications":
+          ( exists (["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"]D
+            where D.relevantPeriod < 30 'days' ) ) 
+
 define "Indications":
-	["Symptom": "Acute postoperative pain (finding)"] union ["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"]D
-	where D.relevantPeriod < 30 days
+	( exists (["Symptom": "Acute postoperative pain (finding)"]) and "Condition for Indications"
+	)
+	
+define "Condition for Limitations":	
+        ( exists (["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"]De
+	where De.relevantPeriod > 30 'days' ) )
 
 define "Limitation":
-	["Symptom": "Chronic pain (finding)"] union ["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"]De
-	where De.relevantPeriod > 30 days
+	( exists (["Symptom": "Chronic pain (finding)"]) ) and "Condition for Limitations"
 	
 define "Coverage":
-	"Indications" union "Limitation"
+	"Indications" or "Limitation" or "Condition 1(Covered)"
