@@ -24,19 +24,19 @@ valueset "Corticosteroids": '2.16.840.1.113883.3.464.1003.196.12.1482'
 context Patient
 
 define "Conventional Treatment":
-          ["Medication, Administered": "Corticosteroids"]
-          or ["Procedure, Performed": "Ultraviolet light therapy (procedure)"]
-          or ["Procedure, Performed": "Modified Goeckerman regimen (procedure)"]
-
+         (exists(["Medication, Administered": "Corticosteroids"])
+          or (exists(["Procedure, Performed": "Ultraviolet light therapy (procedure)"]) )
+          or (exists(["Procedure, Performed": "Modified Goeckerman regimen (procedure)"]) )
+          )
 define "Covered":
-          ["Diagnosis": "Psoriasis (disorder)"] union "Conventional Treatment"
-          or ["Diagnosis": "Psoriasis (disorder)"] union not "Conventional Treatment"
-          union ["Procedure, Performed": "Photochemotherapy (procedure)"]
-          
+          (exists(["Diagnosis": "Psoriasis (disorder)"] union ("Conventional Treatment") )
+          or (exists(["Diagnosis": "Psoriasis (disorder)"]) union not (exists("Conventional Treatment") ) )
+          union (exists(["Procedure, Performed": "Photochemotherapy (procedure)"]) )
+          )
 define "Not Covered":
          ["Procedure, Performed": "Photochemotherapy (procedure)"]P
             where P.relevantPeriod > 30 'Days'          
  
 define "Coverage":
-         "Covered" union not "Not Covered"         
+         (exists("Covered") union not (exists("Not Covered") ) )       
           

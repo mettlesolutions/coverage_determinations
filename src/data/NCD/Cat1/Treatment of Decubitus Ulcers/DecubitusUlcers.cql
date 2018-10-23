@@ -23,13 +23,15 @@ valueset "Hyperbaric oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.
 context Patient
 
 define "Covered":
-        ["Diagnosis": "Hydrotherapy (regime/therapy)"]
+         ( exists (["Diagnosis": "Pressure ulcer (disorder)"]
+         union ["Procedure, Performed": "Hydrotherapy (regime/therapy)"] ) )
 
 define "Not Covered":
-        ["Procedure, Performed": "Ultraviolet light therapy (procedure)"]
-        or ["Procedure, Performed": "Direct current therapy (regime/therapy)"]
-        or ["Procedure, Performed": "Hyperbaric oxygen therapy (procedure)"]
-        or ["Medication, Administered": "Castor Oil / Peruvian balsam"]
-
+      ( exists(["Diagnosis": "Pressure ulcer (disorder)"] union ["Procedure, Performed": "Ultraviolet light therapy (procedure)"])
+        or ( exists(["Diagnosis": "Pressure ulcer (disorder)"] union ["Procedure, Performed": "Direct current therapy (regime/therapy)"]) )
+        or ( exists(["Diagnosis": "Pressure ulcer (disorder)"] union ["Procedure, Performed": "Hyperbaric oxygen therapy (procedure)"]) )
+        or ( exists(["Diagnosis": "Pressure ulcer (disorder)"] union ["Medication, Administered": "Castor Oil / Peruvian balsam"]) )
+      )  
+       
 define "Coverage":
-       "Covered" union not "Not Covered"
+        "Covered" and not "Not Covered"

@@ -30,17 +30,18 @@ context Patient
 
 
 define "Extracorporeal Shock Wave Lithotripsy":
-             ["Diagnosis": "Urolithiasis (disorder)"] union ["Procedure, Performed": "Extracorporeal shockwave lithotripsy (procedure)"]
-
+            ( exists(["Diagnosis": "Urolithiasis (disorder)"] union ["Procedure, Performed": "Extracorporeal shockwave lithotripsy (procedure)"] )
+             )
 define "Percutaneous Lithotripsy":
-            ["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Ultrasound scan of kidney and ureters (procedure)"]
-            or ["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Electrohydraulic lithotripsy (procedure)"]
-
+           ( exists(["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Ultrasound scan of kidney and ureters (procedure)"])
+            or (exists (["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Electrohydraulic lithotripsy (procedure)"]) )
+           )
 define "Transurethral Ureteroscopic Lithotripsy":
-          ["Diagnosis": "Urolithiasis (disorder)"] or ["Diagnosis": "Ureteric stone (disorder)"] 
-          union ["Procedure, Performed": "Transurethral ureterorenoscopy (procedure)"]    
+      ( exists(["Diagnosis": "Urolithiasis (disorder)"]) or ( exists(["Diagnosis": "Ureteric stone (disorder)"]) )
+          union ( exists(["Procedure, Performed": "Transurethral ureterorenoscopy (procedure)"]) )
+       )   
             
 define "Coverage":
-          "Extracorporeal Shock Wave Lithotripsy" union "Percutaneous Lithotripsy" union "Transurethral Ureteroscopic Lithotripsy"           
-             
-    
+          ( exists("Extracorporeal Shock Wave Lithotripsy") union ( exists("Percutaneous Lithotripsy") ) union ( exists("Transurethral Ureteroscopic Lithotripsy") )           
+          )   
+   
