@@ -30,18 +30,21 @@ context Patient
 
 
 define "Extracorporeal Shock Wave Lithotripsy":
-            ( exists(["Diagnosis": "Urolithiasis (disorder)"] union ["Procedure, Performed": "Extracorporeal shockwave lithotripsy (procedure)"] )
-             )
+           
+          ( exists ( ["Diagnosis": "Urolithiasis (disorder)"] union ["Procedure, Performed": "Extracorporeal shockwave lithotripsy (procedure)"] ) )
+
 define "Percutaneous Lithotripsy":
-           ( exists(["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Ultrasound scan of kidney and ureters (procedure)"])
-            or (exists (["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Electrohydraulic lithotripsy (procedure)"]) )
-           )
+           ( exists(["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Ultrasound scan of kidney and ureters (procedure)"] )
+            or ( exists(["Procedure, Performed": "Percutaneous nephrolithotomy using fluoroscopic guidance (procedure)"] union ["Procedure, Performed": "Electrohydraulic lithotripsy (procedure)"] ) )
+            )
+           
 define "Transurethral Ureteroscopic Lithotripsy":
-      ( exists(["Diagnosis": "Urolithiasis (disorder)"]) or ( exists(["Diagnosis": "Ureteric stone (disorder)"]) )
-          union ( exists(["Procedure, Performed": "Transurethral ureterorenoscopy (procedure)"]) )
-       )   
+      ( exists(["Diagnosis": "Urolithiasis (disorder)"] union ["Procedure, Performed": "Transurethral ureterorenoscopy (procedure)"])
+       or ( exists(["Diagnosis": "Ureteric stone (disorder)"] union ["Procedure, Performed": "Transurethral ureterorenoscopy (procedure)"]) )
+       )
+       
             
 define "Coverage":
-          ( exists("Extracorporeal Shock Wave Lithotripsy") union ( exists("Percutaneous Lithotripsy") ) union ( exists("Transurethral Ureteroscopic Lithotripsy") )           
-          )   
+         "Extracorporeal Shock Wave Lithotripsy" or "Percutaneous Lithotripsy" or "Transurethral Ureteroscopic Lithotripsy"     
+          
    
