@@ -1,3 +1,4 @@
+//Uroflowmetric Evaluations
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -18,8 +19,10 @@ valueset "Bladder outlet obstruction (disorder)": '2.16.840.1.113883.3.88.12.322
 
 context Patient
 
+define "Condition (Coverage)":
+        ( exists(["Diagnosis": "Dysfunctional voiding (disorder)"]) and ( exists(["Diagnosis": "Bladder outlet obstruction (disorder)"]) )
+        )
+        
 define "Coverage":
-        ["Diagnosis": "Dysfunctional voiding (disorder)"]
-        and ["Diagnosis": "Bladder outlet obstruction (disorder)"]
-        union ["Procedure, Performed": "Urodynamic studies (procedure)"]
+     "Condition (Coverage)" and ( exists (["Procedure, Performed": "Urodynamic studies (procedure)"]) )
         
