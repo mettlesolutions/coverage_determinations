@@ -20,47 +20,56 @@ valueset "Traditional therapy (regime/therapy)": '2.16.840.1.113883.3.88.12.80.2
 valueset "Pharmacological assessment (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Urinary incontinence (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Urinary tract obstruction (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Neurological disorder confirmed (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Peripheral nerve disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "General anesthesia (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Urinary frequency volume chart (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Stimulation test (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Functional urinary incontinence (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Secondary peripheral neuropathy (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
 
 context Patient
 
 define "Condition 1(Indications)":
-           ["Diagnosis": "Urge incontinence of urine (finding)"]
-           or ["Diagnosis": "Finding of frequency of urination (finding)"]
-           or ["Diagnosis": "Urinary retention"]
-           union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"]
-           
+          ( exists(["Diagnosis": "Urge incontinence of urine (finding)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"])
+           or ( exists(["Diagnosis": "Finding of frequency of urination (finding)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"] ) )
+           or ( exists(["Diagnosis": "Urinary retention"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"] ) )
+           )
 define "Condition 2(Indications)":
-          ["Procedure, Performed": "Stimulation test (procedure)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"]
-          
-                   
+         ( exists (["Procedure, Performed": "Stimulation test (procedure)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"]) )
+           
 define "Indications": 
-          "Condition 1(Indications)" union "Condition 2(Indications)"
-          
+       "Condition 1(Indications)" and "Condition 2(Indications)"
+       
 define "Condition 1(Limitations)":
-           ["Procedure, Performed": "Traditional therapy (regime/therapy)"]
-           union ["Procedure, Performed": "General anesthesia (procedure)"]
+           ( exists (["Procedure, Performed": "Traditional therapy (regime/therapy)"]
+           union ["Procedure, Performed": "General anesthesia (procedure)"])
+           )
+           
            
 define "Condition 2(Limitations)":
-           ["Diagnosis": "Urinary incontinence (finding)"]
-           or ["Diagnosis": "Urinary tract obstruction (disorder)"]
-           or ["Diagnosis": "Neurological disorder confirmed (situation)"]
-           union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"]
-           
-           
+        ( exists(["Diagnosis": "Urinary incontinence (finding)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"])
+           or ( exists(["Diagnosis": "Urinary tract obstruction (disorder)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"]) )
+           or ( exists(["Diagnosis": "Peripheral nerve disease (disorder)"] union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"]) )
+         )  
+ 
+define "Condition for Condition 3(Limitations)":
+                 ( exists  (["Procedure, Performed": "Stimulation test (procedure)"]ST
+                  where ST.result > 50 '%' ) )  
+                   
 define "Condition 3(Limitations)":
-            ["Procedure, Performed": "Stimulation test (procedure)"]ST union ["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"] ST1
-            where ST. Result > 50 '%'
-    
+          "Condition for Condition 3(Limitations)" 
+          and ( exists  (["Procedure, Performed": "Implantation of sacral nerve stimulator (procedure)"] ) )
+                 
 define "Condition 4(Limitations)":
-            ["Assessment, Performed": "Urinary frequency volume chart (procedure)"]
+            ( exists  (["Assessment, Performed": "Urinary frequency volume chart (procedure)"] ) )
             
 define "Limitations":
-       "Condition 1(Limitations)" union "Condition 2(Limitations)" union "Condition 3(Limitations)" union "Condition 4(Limitations)"
-            
-define "Coverage":
-         "Indications" union "Limitations"             
+       "Condition 1(Limitations)" and "Condition 2(Limitations)" and "Condition 3(Limitations)" and "Condition 4(Limitations)"
+       
            
+define "Not Covered":
+        ( exists(["Diagnosis": "Functional urinary incontinence (finding)"])  or ( exists(["Diagnosis": "Secondary peripheral neuropathy (disorder)"] ) )
+           )
+define "Coverage":
+         "Indications" and "Limitations" and not "Not Covered"
