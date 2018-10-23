@@ -18,30 +18,33 @@ valueset "Drug abuse (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Discharge from Inpatient Facility": '2.16.840.1.113762.1.4.1138.721'
 valueset "Psychiatric commitment procedure (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Hospital Inpatient Admission": '2.16.840.1.113762.1.4.1111.70'
+valueset "Acute alcoholic intoxication in alcoholism (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Physician (occupation)": '2.16.840.1.113762.1.4.1096.129'
 
 context Patient
 
 define "Treatments Performed":
-         ["Procedure, Performed": "Alcoholism counseling (procedure)"]
-         or ["Procedure, Performed": "Drug abuse prevention management (procedure)"]
-         or ["Procedure, Performed": "Drug therapy (procedure)"]
-         or ["Procedure, Performed": "Psychotherapy (regime/therapy)"]
-         or ["Communication: From Provider to Patient": "Patient education (procedure)"]
+        ( exists(["Procedure, Performed": "Alcoholism counseling (procedure)"] )
+         or ( exists(["Procedure, Performed": "Drug abuse prevention management (procedure)"]) )
+         or ( exists(["Procedure, Performed": "Drug therapy (procedure)"]) )
+         or ( exists(["Procedure, Performed": "Psychotherapy (regime/therapy)"]) )
+        // or ( exists(["Communication: From Provider to Patient": "Patient education (procedure)"]) )
+        ) 
          
 define "Condition 2(Indications and Limitations)":
-             ["Encounter, Performed": "Discharge from Inpatient Facility"] union ["Procedure, Performed": "Alcoholism counseling (procedure)"]
-             or ["Encounter, Performed": "Discharge from Inpatient Facility"] union ["Procedure, Performed": "Drug abuse prevention management (procedure)"]
+           ( exists(["Encounter, Performed": "Discharge from Inpatient Facility"]) and "Treatments Performed"
+            or not ( exists(["Diagnosis": "Acute alcoholic intoxication in alcoholism (disorder)"]) and "Treatments Performed" )
+           )
+             
              
 define "Condition 3(Indications and Limitations)":
-           ["Procedure, Performed": "Psychiatric commitment procedure (procedure)"] union not ["Encounter, Performed": "Hospital Inpatient Admission"]
-           union ["Procedure, Performed": "Alcoholism counseling (procedure)"]
-           or ["Procedure, Performed": "Psychiatric commitment procedure (procedure)"] union not ["Encounter, Performed": "Hospital Inpatient Admission"]
-           union ["Procedure, Performed": "Drug abuse prevention management (procedure)"]
+        "Treatments Performed"  and not ( exists(["Encounter, Performed": "Hospital Inpatient Admission"] ) )
+        
             
 define "Coverage": 
-       "Treatments Performed" CO
-          where CO. author = "Physician service (procedure)" 
-        union "Condition 2(Indications and Limitations)" union "Condition 3(Indications and Limitations)"
-         
+      ( exists (["Procedure, Performed": "Treatments Performed"]CO
+          where CO. authorDatetime = "Physician (occupation)") 
+        and "Condition 2(Indications and Limitations)" and "Condition 3(Indications and Limitations)"
+         )
          
 
