@@ -30,15 +30,17 @@ define "In Demographic":
 
 define "Indications":
 	"In Demographic" and 
-	(["Diagnosis": "Biliary atresia"]
-        or ["Diagnosis": "Congenital biliary atresia (disorder)"]
-        or ["Diagnosis": "End stage liver disease (disorder)"]
-        or ["Procedure, Performed": "Transplantation of liver (procedure)"])
+	( exists (["Diagnosis": "Biliary atresia"])
+        or ( exists (["Diagnosis": "Congenital biliary atresia (disorder)"]) )
+        or ( exists (["Diagnosis": "End stage liver disease (disorder)"]) )
+        or ( exists (["Procedure, Performed": "Transplantation of liver (procedure)"]) )
+        )
           
 define "Limitations":
 	"In Demographic" and         
-        (["Diagnosis": "Viremia (finding)"]
-        or ["Diagnosis": "Malignant tumor of extrahepatic bile duct (disorder)"])
+       ( exists (["Diagnosis": "Viremia (finding)"])
+        or ( exists (["Diagnosis": "Malignant tumor of extrahepatic bile duct (disorder)"]) )
+        )
                 
 define "Coverage":
          "Indications" and not "Limitations"
