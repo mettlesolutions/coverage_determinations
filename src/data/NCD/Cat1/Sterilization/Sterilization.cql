@@ -1,3 +1,4 @@
+//Sterilization
 library ChlamydiaScreening_Common version '2'
 
 using QDM
@@ -38,37 +39,39 @@ valueset "Female": '2.16.840.1.113883.3.560.100.2'
 context Patient
 
 define "Condition 1(Coverage)":
-          ["Diagnosis": "Illness (finding)"] union ["Procedure, Performed": "General treatment (procedure)"]
-          and ["Procedure, Performed": "Sterilization procedure (procedure)"]
-          or ["Diagnosis": "Falling injury (disorder)"] union ["Procedure, Performed": "General treatment (procedure)"] 
-          and ["Procedure, Performed": "Sterilization procedure (procedure)"]
-         
+          ( exists (["Diagnosis": "Illness (finding)"]) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
+          or ( exists(["Diagnosis": "Falling injury (disorder)"]) ) and ( exists(["Procedure, Performed": "Sterilization procedure (procedure)"] ) )
+         )
           
+define "Condition for Condition 2(Coverage)":
+          ( exists (["Diagnosis": "Carcinoma of prostate (disorder)"] union ["Procedure, Performed": "Bilateral oophorectomy (procedure)"])
+           or ( exists (["Diagnosis": "Carcinoma of prostate (disorder)"] union ["Procedure, Performed": "Bilateral orchidectomy (procedure)"]) )
+           )
+           
 define "Condition 2(Coverage)":
-           ["Diagnosis": "Carcinoma of prostate (disorder)"]
-           union ["Procedure, Performed": "Bilateral oophorectomy (procedure)"]
-           or ["Diagnosis": "Carcinoma of prostate (disorder)"]
-           union ["Procedure, Performed": "Bilateral orchidectomy (procedure)"]
+            "Condition for Condition 2(Coverage)" and ( exists(["Procedure, Performed": "Sterilization procedure (procedure)"]) )
            
 define "Covered":
-        "Condition 1(Coverage)" union "Condition 2(Coverage)"
+        "Condition 1(Coverage)" or "Condition 2(Coverage)"
         
 define "Condition 1(Not Covered)":
-         ["Procedure, Performed": "Hysterectomy (procedure)"] 
-         union ["Procedure, Performed": "Sterilization procedure (procedure)"]
-         or ["Procedure, Performed": "Tubal ligation done (situation)"]
-         union ["Procedure, Performed": "Sterilization procedure (procedure)"]
-         or ["Procedure, Performed": "Vasectomy (procedure)"]
-         union ["Procedure, Perfomed": "Sterilization procedure (procedure)"] 
+        ( exists (["Procedure, Performed": "Hysterectomy (procedure)"]) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
+         or ( exists (["Procedure, Performed": "Tubal ligation done (situation)"]) ) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
+         or ( exists (["Procedure, Performed": "Vasectomy (procedure)"]) ) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"] ) )
+        ) 
+         
+define "Condition for Condition 2(Not Covered)":
+         ( exists (["Diagnosis": "Multigravida (finding)"]) and ( exists (["Diagnosis": "General health deterioration (finding)"]) ) and ( exists (["Patient Characteristic Sex": "Female"] ) )
+           and not (( exists (["Diagnosis": "Illness (finding)"]) ) or ( exists (["Diagnosis": "Falling injury (disorder)"] ) ) )
+          )
          
 define "Condition 2(Not Covered)":
-           ["Diagnosis": "Multigravida (finding)"] union ["Diagnosis": "General health deterioration (finding)"] and ["Patient Characteristic Sex": "Female"]
-           union not ["Diagnosis": "Illness (finding)"] union ["Procedure, Performed": "General treatment (procedure)"] 
-           or not ["Diagnosis": "Falling injury (disorder)"] union ["Procedure, Performed": "General treatment (procedure)"]
-           union ["Procedure, Performed": "Sterilization procedure (procedure)"]
+           
+        "Condition for Condition 2(Not Covered)" and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
                          
 define "Not Covered":
-         "Condition 1(Not Covered)" union "Condition 2(Not Covered)" 
+         "Condition 1(Not Covered)" and "Condition 2(Not Covered)" 
 
 define "Coverage":
-         "Covered" union not "Not Covered"         
+         "Covered" and not "Not Covered"  
+
