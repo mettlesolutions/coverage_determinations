@@ -1,4 +1,4 @@
-library insertName
+library HomeOxygenTherapy version '1'
 
 using QDM
 
@@ -179,7 +179,7 @@ define "HomeOxygentherapy":
 
 define "Coverage": 
 	"Face-to-Face Encounter"
-	and "Medical Record"
+	union "Medical Record"
 
 
 define "BloodGasStudy":
@@ -188,17 +188,17 @@ define "BloodGasStudy":
 
 
 define "Medical Record":
-	"Patient Encounter"
+	"Patient Encounter-Diagnosis"
 	union "Illness (finding)"
 	union "Patient's condition worsened (finding)"
 	union "Patient's condition improved (finding)"
 	union "Conditional prognosis (finding)"
-	union ["Diagnostic Study, Performed": "BloodGasStudy"] BGS where BGS.result is not null
 	union ["Diagnosis": "Does move (finding)"]
 	union "Gathering of past medical history (procedure)"
 	union "Therapeutic regimen (regime/therapy)"
 	union "Administration of prescribed medications based on arterial blood gas results (procedure)"
-	
+	union ["Diagnostic Study, Performed": "BloodGasStudy"] BGS where BGS.result is not null
+
 	
 define "Face-to-Face Encounter":
 	exists("Encounter Conduct")
@@ -215,11 +215,33 @@ define "Encounter Conduct":
 define "WOPD Details Required":
 	"Patient ID"
 	union "Physician"
-	//union E.authorDatetime or O.authorDatetime
+	union "Patient Encounter-Order"
 	union "Date of onset - Reported"
 	union "National provider ID"
-	//union "Device, Applied":""D
 	union ["Provider Characteristic":"Physician"]Phy where Phy.authorDatetime is not null
+
+
+define "Inpatient Encounter-Diagnosis":
+	["Encounter, Performed": "Inpatient"]E
+	where E.relevantPeriod during "Measurement Period"
+	return E.diagnoses
+	
+
+define "Outpatient Encounter-Diagnosis":
+	["Encounter, Performed": "Encounter Hospital Outpatient"]O
+	where O.relevantPeriod during "Measurement Period"
+	return O.diagnoses
+	
+define "Inpatient Encounter-Order":
+	["Encounter, Performed": "Inpatient"]E
+	where E.relevantPeriod during "Measurement Period"
+	return E.authorDatetime
+	
+
+define "Outpatient Encounter-Order":
+	["Encounter, Performed": "Encounter Hospital Outpatient"]O
+	where O.relevantPeriod during "Measurement Period"
+	return O.authorDatetime
 
 
 define "Person Name":
@@ -228,7 +250,7 @@ define "Person Name":
 
 define "Patient ID":
 	["Procedure, Performed":"Checking patient identity (procedure)"]P 
-	union ["Procedure, Performed":"Confirming patient identity prior to procedure (procedure)"]CP where CP.result = P.result
+	union ["Procedure, Performed":"Confirming patient identity prior to procedure (procedure)"]CP
 	return CP.result
 
 
@@ -238,9 +260,13 @@ define "Physician":
 	return Py.code
 
 
-define "Patient Encounter":
-	["Encounter, Performed": "Inpatient"]E where E.diagnoses is not null
-	union ["Encounter, Performed": "Encounter Hospital Outpatient"]O where O.diagnoses is not null
+define "Patient Encounter-Order":
+	"Inpatient Encounter-Order" union "Outpatient Encounter-Order"
+
+define "Patient Encounter-Diagnosis":
+	"Inpatient Encounter-Diagnosis" union "Outpatient Encounter-Diagnosis"
+	//["Encounter, Performed": "Inpatient"]E where E.diagnoses is not null
+	//union ["Encounter, Performed": "Encounter Hospital Outpatient"]O where O.diagnoses is not null
 	//case 
 	//when exists(E.result) then return E.diagnoses
 	//when exists(O.result) then return O.diagnoses
