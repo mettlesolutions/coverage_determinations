@@ -134,9 +134,6 @@ valueset "Change of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Evaluation AND/OR management - new patient (procedure)": '2.16.840.1.113883.3.2286'
 valueset "Medicare (Non-managed Care)": '2.16.840.1.114222.4.11.3591'
 valueset "National provider ID": '2.16.840.1.113762.1.4.1099.13'
-valueset "Provision of medical equipment (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Medical equipment assessment (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Ensuring home equipment available prior to hospital discharge (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Patient registration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "replaces": '2.16.840.1.113883.11.20.9.62'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
@@ -163,45 +160,21 @@ valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 valueset "Durable medical equipment education, guidance, and counseling (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Durable medical equipment case management (procedure)": '2.16.840.1.113762.1.4.1099.13'
-	
-parameter "Measurement Period" Interval<DateTime>
+valueset "Medical equipment or device education (procedure)":'2.16.840.1.113883.6.96'
+valueset "Provision of medical equipment (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Medical equipment assessment (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Ensuring home equipment available prior to hospital discharge (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Prescribed medication education (procedure)":'2.16.840.1.113883.6.96'
+valueset "Medication commenced (situation)":'2.16.840.1.113883.6.96'
 
+parameter "Measurement Period" Interval<DateTime>
 
 
 context Patient
 
-define "HomeOxygentherapy":
-	["Procedure, Performed": "Home oxygen therapy (procedure)"]HT
-	where HT.relevantPeriod in "Measurement Period"
-	return HT.relevantPeriod
-
-
-define "Documentations Required": 
-	"Face-to-Face Encounter"
-	union "Medical Record"
-
-
 define "BloodGasStudy":
 	["Procedure, Performed": "Blood gas analysis (procedure)"]P
 	where P.relevantPeriod during "Measurement Period"
-
-
-define "Medical Record":
-	"Patient Encounter-Diagnosis"
-	union "Illness (finding)"
-	union "Patient's condition worsened (finding)"
-	union "Patient's condition improved (finding)"
-	union "Conditional prognosis (finding)"
-	union ["Diagnosis": "Does move (finding)"]
-	union "Gathering of past medical history (procedure)"
-	union "Therapeutic regimen (regime/therapy)"
-	union "Administration of prescribed medications based on arterial blood gas results (procedure)"
-	union ["Diagnostic Study, Performed": "BloodGasStudy"] BGS where BGS.result is not null
-
-	
-define "Face-to-Face Encounter":
-	exists("Encounter Conduct")
-        union "WOPD Details Required"
         
 
 define "Encounter Conduct":
@@ -211,25 +184,15 @@ define "Encounter Conduct":
 	or exists(["Encounter, Performed": "Encounter Face to Face"]) and exists(["Encounter, Performed": "Referred by physician assistant (finding)"])
         
 
-define "WOPD Details Required":
-	"Patient ID"
-	union "Physician"
-	union "Patient Encounter-Order"
-	union "HomeOxygentherapy"
-	union "Date of onset - Reported"
-	union "National provider ID"
-	//union "Device, Applied":""D
-	union ["Provider Characteristic":"Physician"]Phy where Phy.authorDatetime is not null
+//define "Equipments Description":
 
 
-
-
-define "Home Oxy Therapy":
+define "HomeOxygentherapy":
 	["Procedure, Performed": "Home oxygen therapy (procedure)"]HT where HT.relevantPeriod in "Measurement Period"
 
 
 define "Inpatient Encounter-Diagnosis":
-	if exists("Home Oxy Therapy".result) then
+	if exists("HomeOxygentherapy".result) then
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
 	return E.diagnoses
@@ -237,21 +200,23 @@ define "Inpatient Encounter-Diagnosis":
 	
 
 define "Outpatient Encounter-Diagnosis":
-	if exists("Home Oxy Therapy".result) then
+	if exists("HomeOxygentherapy".result) then
 	["Encounter, Performed": "Encounter Hospital Outpatient"]O
 	where O.relevantPeriod during "Measurement Period"
 	return O.diagnoses
 	else null
 	
+
 define "Inpatient Encounter-Order":
-	if exists("Home Oxy Therapy".result) then		
+	if exists("HomeOxygentherapy".result) then		
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
 	return E.authorDatetime
 	else null
 
+
 define "Outpatient Encounter-Order":
-	if exists("Home Oxy Therapy".result) then
+	if exists("HomeOxygentherapy".result) then
 	["Encounter, Performed": "Encounter Hospital Outpatient"]O
 	where O.relevantPeriod during "Measurement Period"
 	return O.authorDatetime
@@ -276,6 +241,7 @@ define "Physician":
 define "Patient Encounter-Order":
 	"Inpatient Encounter-Order" union "Outpatient Encounter-Order"
 
+
 define "Patient Encounter-Diagnosis":
 	"Inpatient Encounter-Diagnosis" union "Outpatient Encounter-Diagnosis"
 	//["Encounter, Performed": "Inpatient"]E where E.diagnoses is not null
@@ -286,3 +252,42 @@ define "Patient Encounter-Diagnosis":
 	//else "Encounter Diagnosis"= null
 	//end
 	//return "Encounter Diagnosis"
+
+
+define "Start Date":
+	["Procedure, Performed": "Home oxygen therapy (procedure)"]HT
+	where HT.relevantPeriod in "Measurement Period"
+	return HT.authorDatetime
+
+
+define "WOPD Details Required":
+	"Patient ID"
+	union "Physician"
+	union "Patient Encounter-Order"
+	union "Start Date"
+	union "National provider ID"
+	union ["Provider Characteristic":"Physician"]Phy where Phy.authorDatetime is not null
+
+
+define "Medical Record":
+	"Patient Encounter-Diagnosis"
+	union "Illness (finding)"
+	union "Patient's condition worsened (finding)"
+	union "Patient's condition improved (finding)"
+	union "Conditional prognosis (finding)"
+	union ["Diagnosis": "Does move (finding)"]
+	union "Gathering of past medical history (procedure)"
+	union "Therapeutic regimen (regime/therapy)"
+	union "Administration of prescribed medications based on arterial blood gas results (procedure)"
+	union ["Diagnostic Study, Performed": "BloodGasStudy"] BGS where BGS.result is not null
+
+
+define "Face-to-Face Encounter":
+	exists("Encounter Conduct")
+        union "WOPD Details Required"
+
+
+define "Documentations Required": 
+	"Face-to-Face Encounter"
+	union "Medical Record"
+
