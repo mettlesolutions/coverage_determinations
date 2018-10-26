@@ -70,7 +70,6 @@ valueset "Respiratory, Developmental, Rehabilitative and Restorative Service Pro
 valueset "Oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Accessories, maintenance, and repairs of patient-owned oxygen
 valueset "Liquid oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
-valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 //doctor of osteopathy
 //podiatric surgeon
 valueset "Oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
@@ -121,7 +120,6 @@ valueset "Nurse practitioner (occupation)": '2.16.840.1.113762.1.4.1096.129'
 valueset "Physician assistant (occupation)": '2.16.840.1.113762.1.4.1096.129'
 valueset "Face to Face Encounter": '2.16.840.1.113762.1.4.1047.428'
 valueset "In-person encounter (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Renewal of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Referral to clinical nurse specialist (procedure)": '2.16.840.1.113883.3.464.1003.101.12.1046'
 valueset "Nursing evaluation of patient and report (procedure)": '2.16.840.1.113883.3.464.1003.101.12.1061'
@@ -136,13 +134,9 @@ valueset "Change of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Evaluation AND/OR management - new patient (procedure)": '2.16.840.1.113883.3.2286'
 valueset "Medicare (Non-managed Care)": '2.16.840.1.114222.4.11.3591'
 valueset "National provider ID": '2.16.840.1.113762.1.4.1099.13'
-valueset "Patient identifier": '2.16.840.1.113762.1.4.1099.13'
 valueset "Provision of medical equipment (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Medical equipment assessment (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Ensuring home equipment available prior to hospital discharge (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Durable medical equipment education, guidance, and counseling (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Durable medical equipment case management (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Checking patient identity (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Patient registration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "replaces": '2.16.840.1.113883.11.20.9.62'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
@@ -165,9 +159,13 @@ valueset "Checking patient identity (procedure)":'2.16.840.1.113883.6.96'
 valueset "Confirming patient identity prior to procedure (procedure)":'2.16.840.1.113883.6.96'
 valueset "Date of onset - Reported":'2.16.840.1.113883.6.1'
 valueset "Patient identifier":'2.16.840.1.113883.6.1'
+valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
+valueset "Durable medical equipment education, guidance, and counseling (procedure)": '2.16.840.1.113762.1.4.1099.13'
+valueset "Durable medical equipment case management (procedure)": '2.16.840.1.113762.1.4.1099.13'
 	
 parameter "Measurement Period" Interval<DateTime>
-parameter "Encounter Diagnosis" List<String>
+
 
 
 context Patient
@@ -175,9 +173,10 @@ context Patient
 define "HomeOxygentherapy":
 	["Procedure, Performed": "Home oxygen therapy (procedure)"]HT
 	where HT.relevantPeriod in "Measurement Period"
+	return HT.relevantPeriod
 
 
-define "Coverage": 
+define "Documentations Required": 
 	"Face-to-Face Encounter"
 	union "Medical Record"
 
@@ -216,33 +215,47 @@ define "WOPD Details Required":
 	"Patient ID"
 	union "Physician"
 	union "Patient Encounter-Order"
+	union "HomeOxygentherapy"
 	union "Date of onset - Reported"
 	union "National provider ID"
+	//union "Device, Applied":""D
 	union ["Provider Characteristic":"Physician"]Phy where Phy.authorDatetime is not null
 
 
+
+
+define "Home Oxy Therapy":
+	["Procedure, Performed": "Home oxygen therapy (procedure)"]HT where HT.relevantPeriod in "Measurement Period"
+
+
 define "Inpatient Encounter-Diagnosis":
+	if exists("Home Oxy Therapy".result) then
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
 	return E.diagnoses
+	else null
 	
 
 define "Outpatient Encounter-Diagnosis":
+	if exists("Home Oxy Therapy".result) then
 	["Encounter, Performed": "Encounter Hospital Outpatient"]O
 	where O.relevantPeriod during "Measurement Period"
 	return O.diagnoses
+	else null
 	
 define "Inpatient Encounter-Order":
+	if exists("Home Oxy Therapy".result) then		
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
 	return E.authorDatetime
-	
+	else null
 
 define "Outpatient Encounter-Order":
+	if exists("Home Oxy Therapy".result) then
 	["Encounter, Performed": "Encounter Hospital Outpatient"]O
 	where O.relevantPeriod during "Measurement Period"
 	return O.authorDatetime
-
+	else null
 
 define "Person Name":
 	"initial" union "title"
