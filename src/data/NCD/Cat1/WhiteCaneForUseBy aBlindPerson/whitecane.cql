@@ -1,3 +1,4 @@
+//White Cane For use by a blind person
 library ChlamydiaScreening_Common version '2'
 
 using QDM
@@ -9,7 +10,12 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
+codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 
 valueset "Provision of long cane (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Illness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-//Injury
+valueset "Blindness": '2.16.840.1.113883.3.464.1003.115.11.1251'
+
+context Patient
+
+define "Coverage":
+        ( exists (["Diagnosis": "Blindness"]) and ( exists (["Device, Applied": "Provision of long cane (procedure)"]) ) )
