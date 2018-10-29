@@ -15,10 +15,32 @@ codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Continuous measurement of pH in esophagus over 24 hour period (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Gastric reflux (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Abnormal illness behavior (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Heartburn (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Regurgitation of food (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Bloating symptom (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Burping (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Dysphagia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Nausea (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Weight loss (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Wheezing (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
 context Patient
 
-define "Covered":
-        ["Diagnosis": "Abnormal illness behavior (finding)"] union ["Diagnosis": "Gastric reflux (finding)"]
-        union ["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]
+define "Symptoms Of Reflux":
+         ( exists (["Symptom": "Heartburn (finding)"])
+          or ( exists (["Symptom": "Regurgitation of food (finding)"]) )
+          or ( exists (["Symptom": "Bloating symptom (finding)"]) )
+          or ( exists (["Symptom": "Burping (finding)"]) )
+          or ( exists (["Symptom": "Dysphagia (disorder)"]) )
+          or ( exists (["Symptom": "Nausea (finding)"]) )
+          or ( exists (["Symptom": "Weight loss (finding)"]) )
+          or ( exists (["Symptom": "Wheezing (finding)"]) )
+         ) 
+
+define "Condition for Covered":
+          "Symptoms Of Reflux" and ( exists(["Diagnosis": "Gastric reflux (finding)"]) )
+          
+define "Coverage":
+          "Condition for Covered" and ( exists (["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]) )
+
 
