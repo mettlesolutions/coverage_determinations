@@ -1,3 +1,4 @@
+//Partial Thromboplastin Time
 library Partial_Thromboplastin_time
 
 using QDM version '5.3'
@@ -62,45 +63,75 @@ valueset "Thrombolytic therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Hemorrhage AND/OR hematoma complicating procedure (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Thrombosis (disorder)": '2.16.840.1.113883.3.2074.1.1.30'
 valueset "Hematoma (disorder)": '2.16.840.1.113883.3.2074.1.1.30'
+valueset "Swelling (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Pain (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Cramp in calf (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "White discoloration of skin (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Cyanosis of skin (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Bleeds easily (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Easy bruising (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Hematuria": '2.16.840.1.113883.3.3157.1020'
+valueset "Bleeding from nose (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Joint swelling (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "": ''
 
 parameter "Measurement Period" Interval<DateTime>
 
 context Patient
 
-define "Indications": 
-	["Diagnosis": "Thrombosis (disorder)"]
-	or ["Diagnosis": "Hemorrhage AND/OR hematoma complicating procedure (disorder)"]
-	or ["Diagnosis": "Coagulation/bleeding tests abnormal (finding)"]
-	or ["Diagnosis": "Hematoma (disorder)"]
-	or ["Diagnosis": "Thrombocytopenia"]
-	or ["Diagnosis": "Disseminated intravascular coagulation (disorder)"]
-	or ["Diagnosis": "Dysfibrinogenemia (disorder)"]
-	or ["Diagnosis": "Afibrinogenemia (disorder)"]
-	or ["Diagnosis": "Chronic liver disease (disorder)"]
-	or ["Diagnosis": "Liver Disease"]
-	or ["Diagnosis": "Wilson's disease (disorder)"]
-	or ["Diagnosis": "Hemophilia (disorder)"]
-	or ["Diagnosis": "Bleeding (finding)"]
-	or ["Diagnosis": "Sepsis"]
-	or ["Diagnosis": "Von Willebrand's disease"]
-	or ["Diagnosis": "Venous thrombosis (disorder)"]
-	or ["Diagnosis": "Arterial thrombosis (disorder)"]
-	or ["Diagnosis": "Hypercoagulability state (finding)"]
-	or ["Diagnosis": "Kidney Failure"]
-	or ["Diagnosis": "Congenital von Willebrand's disease (disorder)"]
-	or ["Diagnosis": "Thrombosis (disorder)"] union ["Family History": "Bleeding (finding)"]
-	or ["Diagnosis": "Thrombosis (disorder)"] union ["Family History": "Heparin therapy (procedure)"]
-	or ["Procedure, Performed": "Heparin therapy (procedure)"]P
-	with "Warfarin"W such that P.relevantPeriod ends before start of W.relevantPeriod
-	
+define "Symptoms Of Thrombosis and Hemorrhage":
+        ( exists (["Symptom": "Swelling (finding)"])
+        or ( exists (["Symptom": "Pain (finding)"]) )
+        or ( exists (["Symptom": "Cramp in calf (finding)"]) )
+        or ( exists (["Symptom": "White discoloration of skin (finding)"]) )
+        or ( exists (["Symptom": "Cyanosis of skin (finding)"]) )
+        or ( exists (["Symptom": "Easy bruising (finding)"]) )  
+        or ( exists (["Symptom": "Hematuria"]) )
+        or ( exists (["Symptom": "Bleeding from nose (finding)"]) )    
+        or ( exists (["Symptom": "Joint swelling (finding)"]) ) 
+        or ( exists (["Symptom": "Bleeds easily (finding)"]) )
+        )
+         
 define "Warfarin":
 	["Procedure, Performed": "Warfarin therapy (procedure)"]Wa
 	where Wa.relevantPeriod starts during "Measurement Period"
+         
+define "Indications and Limitations": 
+         
+	"Symptoms Of Thrombosis and Hemorrhage"
+	or ( exists (["Diagnosis": "Thrombosis (disorder)"])
+	or ( exists (["Diagnosis": "Hemorrhage AND/OR hematoma complicating procedure (disorder)"]) )
+	or ( exists (["Diagnosis": "Coagulation/bleeding tests abnormal (finding)"]) )
+	or ( exists (["Diagnosis": "Hematoma (disorder)"]) )
+	or ( exists (["Diagnosis": "Thrombocytopenia"]) )
+	or ( exists (["Diagnosis": "Disseminated intravascular coagulation (disorder)"]) )
+	or ( exists (["Diagnosis": "Dysfibrinogenemia (disorder)"]) )
+	or ( exists (["Diagnosis": "Afibrinogenemia (disorder)"]) )
+	or ( exists (["Diagnosis": "Chronic liver disease (disorder)"]) )
+	or ( exists (["Diagnosis": "Liver Disease"]) )
+	or ( exists (["Diagnosis": "Wilson's disease (disorder)"]) )
+	or ( exists (["Diagnosis": "Hemophilia (disorder)"]) )
+	or ( exists (["Diagnosis": "Bleeding (finding)"]) )
+	or ( exists (["Diagnosis": "Sepsis"]) )
+	or ( exists (["Diagnosis": "Von Willebrand's disease"]) )
+	or ( exists (["Diagnosis": "Venous thrombosis (disorder)"]) )
+	or ( exists (["Diagnosis": "Arterial thrombosis (disorder)"]) )
+	or ( exists (["Diagnosis": "Hypercoagulability state (finding)"]) )
+	or ( exists (["Diagnosis": "Kidney Failure"]) )
+	or ( exists (["Diagnosis": "Congenital von Willebrand's disease (disorder)"]) )
+	or ( exists (["Diagnosis": "Thrombosis (disorder)"]) ) and ( exists (["Family History": "Bleeding (finding)"]) )
+	or ( exists (["Diagnosis": "Thrombosis (disorder)"]) ) and ( exists (["Family History": "Heparin therapy (procedure)"]) )
+	or ( exists (["Procedure, Performed": "Heparin therapy (procedure)"]P
+	with "Warfarin"W such that P.relevantPeriod ends before start of W.relevantPeriod) )
+	)
+
 	
 define "Symptomatic":
-	["Symptom": "Bleeding (finding)"]
-	or ["Symptom": "Thrombosis (disorder)"]
-	or ["Diagnosis": "Coagulopathies"]
+	( exists (["Symptom": "Bleeding (finding)"])
+	or ( exists (["Symptom": "Thrombosis (disorder)"]) )
+	or ( exists (["Diagnosis": "Coagulopathies"]) )
+	)
 	
 define "Coverage":
-	"Indications" and "Symptomatic"
+	"Indications and Limitations" and "Symptomatic"
+
