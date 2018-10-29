@@ -11,8 +11,8 @@ using QDM version '5.3'
 //parameter parameterName (dataType or default value)
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Portable X-ray (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "Physician (occupation)": '2.16.840.1.113762.1.4.1096.129'
 
 define "Coverage":
-        ["Procedure, Performed": "Portable X-ray (procedure)"]
-        
-
+       ( exists (["Procedure, Performed": "Portable X-ray (procedure)"] PX
+          where PX.authorDatetime= "Physician (occupation)") )
