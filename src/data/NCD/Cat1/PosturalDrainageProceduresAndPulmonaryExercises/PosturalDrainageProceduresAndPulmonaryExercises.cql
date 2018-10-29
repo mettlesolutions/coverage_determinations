@@ -1,3 +1,4 @@
+//PosturalDrainageProceduresAndPulmonaryExercises
 library PosturalDrainageProceduresAndPulmonaryExercises
 
 using QDM 
@@ -32,17 +33,33 @@ valueset "Referral by respiratory physician (procedure)": '2.16.840.1.113883.3.8
 context Patient
 
 define "Postural drainage":
-	["Procedure, Recommended": "Postural drainage therapy (regime/therapy)"] union ["Procedure, Performed": "Under care of clinical nurse specialist (finding)"]
-
+	( exists (["Procedure, Recommended": "Postural drainage therapy (regime/therapy)"]) and ( exists (["Procedure, Performed": "Under care of clinical nurse specialist (finding)"]) )
+        )
+         
 define "Severe pulmonary conditions":
-	["Diagnosis": "Severe chronic obstructive pulmonary disease (disorder)"] union ["Procedure, Performed": "Postural drainage therapy (regime/therapy)"] union ["Procedure, Performed": "Respiratory therapist (occupation)"]
-	or ["Diagnosis": "Severe chronic obstructive pulmonary disease (disorder)"] union ["Procedure, Performed": "Postural drainage therapy (regime/therapy)"] union ["Procedure, Performed": "Physical Therapist"]
-	
-define "Services covered":
-	["Procedure, Performed": "Referral by respiratory physician (procedure)"] union ["Encounter, Performed": "Inpatient care (regime/therapy)"]
-	or ["Procedure, Performed": "Referral by respiratory physician (procedure)"] union ["Encounter, Performed": "Nursing Home or Extended Care Facility"]
-	or ["Procedure, Performed": "Referral by respiratory physician (procedure)"] union ["Encounter, Performed": "Home Healthcare Services"]
-	or ["Procedure, Performed": "Referral by respiratory physician (procedure)"] union ["Encounter, Performed": "Outpatient care management (procedure)"] union ["Encounter, Performed": "Physical Therapy"]
+	( exists (["Diagnosis": "Severe chronic obstructive pulmonary disease (disorder)"]) and ( exists (["Procedure, Performed": "Postural drainage therapy (regime/therapy)"]PDT
+	 where PDT.authorDatetime = "Respiratory therapist (occupation)"
+	        or PDT.authorDatetime = "Physical Therapist" ) )
+	 )
+	 
+define "Condition for Services covered for physical therapy":
+         ( exists (["Encounter, Performed": "Inpatient care (regime/therapy)"])
+	    or ( exists (["Encounter, Performed": "Nursing Home or Extended Care Facility"]) )
+	    or ( exists (["Encounter, Performed": "Home Healthcare Services"]) )
+	    or ( exists (["Encounter, Performed": "Outpatient care management (procedure)"]) )
+	 )   	 
+	 
+define "Services covered for physical therapy":
+          ( exists (["Procedure, Performed": "Physical Therapy"]PT
+          where PT.authorDatetime = "Physical Therapist") ) and "Condition for Services covered for physical therapy"
+         
+	 
+
+
+define "Not Covered":
+        ( exists (["Procedure, Performed": "Respiratory therapy (procedure)"]RT
+          where RT.authorDatetime = "Respiratory therapist (occupation)") and ( exists (["Encounter, Performed": "Home Healthcare Services"]) )
+        )  
 
 define "Coverage":
-	"Postural drainage" union "Severe pulmonary conditions" union "Services covered"
+	"Postural drainage" or "Severe pulmonary conditions" or "Services covered for physical therapy"
