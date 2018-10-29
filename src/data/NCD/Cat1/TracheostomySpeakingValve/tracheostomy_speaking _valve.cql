@@ -1,3 +1,4 @@
+//TracheostomySpeakingValve
 library ChlamydiaScreening_Common version '2'
 
 using QDM
@@ -9,7 +10,12 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Tracheal tube fixation (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Prosthetic device education (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-//tracheostomy speaking valve
-valueset "Prosthesis care (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+
+
+valueset "Insertion of tracheostomy tube (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+
+context Patient
+
+define "Coverage":
+         ["Procedure, Performed": "Insertion of tracheostomy tube (procedure)"]
