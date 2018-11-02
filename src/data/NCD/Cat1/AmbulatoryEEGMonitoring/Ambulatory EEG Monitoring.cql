@@ -20,7 +20,8 @@ valueset "Syncope (disorder)":'2.16.840.1.113883.6.96'
 
 define "Condition 1":
 	exists(["Diagnosis": "Seizure disorder (disorder)"]) 
-	exists(["Assessment, Performed": "Family history of seizure disorder (situation)"]) 
+	and exists(["FamilyHistory":"Seizure disorder (disorder)"]) 
+	and exists(["Assessment, Performed": "Family history of seizure disorder (situation)"]) 
 	and exists("Suspected (qualifier value)")
 	
 define "Condition 2":

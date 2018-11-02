@@ -10,10 +10,13 @@ using QDM
 //parameter parameterName (dataType or default value)
 
 valueset "Anesthesia for transvenous pacemaker insertion (procedure)":'2.16.840.1.113883.6.96'
-valueset "Implantation of cardiac temporary transvenous pacemaker system during and immediately following cardiac surgery (procedure)":'2.16.840.1.113883.6.96'
+valueset "Cardiac pacemaker procedure (procedure)":'2.16.840.1.113883.6.96'
+valueset "Transthoracic cardiac pacing procedure (procedure)":'2.16.840.1.113883.6.96'
+	
 
 define "Covered":
-	exists(["Procedure, Performed":"Implantation of cardiac temporary transvenous pacemaker system during and immediately following cardiac surgery (procedure)"])
+	exists(["Procedure, Performed":"Cardiac pacemaker procedure (procedure)"])
+	or exists(["Procedure, Performed":"Transthoracic cardiac pacing procedure (procedure)"])
 	
 
 define "Coverage":

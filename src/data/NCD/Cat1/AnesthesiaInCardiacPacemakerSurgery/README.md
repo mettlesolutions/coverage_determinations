@@ -1,0 +1,2 @@
+Anesthesia is covered during transvenous cardiac pacemaker surgery only if adequate documentation of medical necessity is provided on a case-by-case basis.
+Another type of pacemaker surgery that is sometimes performed involves the use of the thoracic method of implantation, which requires open surgery. Where the thoracic method is employed, general anesthesia is always used and should not require special medical documentation.
