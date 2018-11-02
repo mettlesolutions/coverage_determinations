@@ -23,9 +23,8 @@ valueset "bevacizumab":'2.16.840.1.113883.6.88'
 
 define "Covered":
 	exists(["Medication, Administered":"oxaliplatin 5 MG/ML [Eloxatin]"])
-	or exists(["Medication, Administered":"Colorectal Cancer Chemotherapy"])
-	or exists(["Medication, Administered":"Fluorouracil Injectable Solution [Adrucil]"])
-	or exists(["Medication, Administered":"capecitabine Oral Tablet [Xeloda]"])
+//	or exists(["Medication, Administered":"Fluorouracil Injectable Solution [Adrucil]"])
+//	or exists(["Medication, Administered":"capecitabine Oral Tablet [Xeloda]"])
 	or exists(["Medication, Administered":"Irinotecan hydrochloride 20 MG/ML [Camptosar]"])
 	or exists(["Medication, Administered":"cetuximab"])
 	or exists(["Medication, Administered":"bevacizumab"])

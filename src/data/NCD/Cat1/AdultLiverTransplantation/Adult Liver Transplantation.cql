@@ -14,31 +14,43 @@ codesystem "HCPCS": '2.16.840.1.113883.6.285'
 codesystem "NDFRT": '2.16.840.1.113883.3.26.1.5'
 
 valueset "End Stage Liver Disease":'2.16.840.1.113883.17.4077.3.1000'
-valueset "Combined hepatocellular carcinoma and cholangiocarcinoma (disorder)":'2.16.840.1.113762.1.4.1056.94'
+valueset "Metastasis from malignant tumor of liver (disorder)":'2.16.840.1.113883.6.96'
+valueset "Cholangiocarcinoma of biliary tract (disorder)":'2.16.840.1.113762.1.4.1056.94'
 valueset "Secondary neuroendocrine tumor of liver":'2.16.840.1.113883.6.103'
+valueset "Carcinoma in situ of extrahepatic bile ducts (disorder)":'2.16.840.1.113883.6.96'
+valueset "Tumor surgically unresectable (finding)":'2.16.840.1.113883.6.96'
 valueset "Hemangioendothelioma of liver (disorder)":'2.16.840.1.113762.1.4.1029.63'
+
 valueset "Instructions for Follow Up After Discharge":'2.16.840.1.113883.3.117.1.7.1.378'
 valueset "Immunosuppressive therapy for transplant (procedure)":'2.16.840.1.113883.6.96'
 valueset "Postoperative follow-up visit (procedure)":'2.16.840.1.113883.6.96'
 valueset "Aftercare for liver transplant done (situation)":'2.16.840.1.113883.6.96'
 valueset "Immunosuppressive Drugs for Urology Care":'2.16.840.1.113762.1.4.1151.32'
 
+define "neuroendocrine tumor":
+	exists(["Diagnosis":"Secondary neuroendocrine tumor of liver"]) 
+	and exists(["Diagnosis":"Metastasis from malignant tumor of liver (disorder)"])
+
+define "Cholangiocarcinoma":
+	exists(["Diagnosis":"Carcinoma in situ of extrahepatic bile ducts (disorder)"]) 
+	and exists(["Diagnosis":"Cholangiocarcinoma of biliary tract (disorder)"])
+	and exists(["Diagnosis":"Tumor surgically unresectable (finding)"])
+
 define "Malignancies":
-	exists(["Diagnosis":"Combined hepatocellular carcinoma and cholangiocarcinoma (disorder)"])
-	or exists(["Diagnosis":"Secondary neuroendocrine tumor of liver"])
+	"Cholangiocarcinoma"
+	or "neuroendocrine tumor"
 	or exists(["Diagnosis":"Hemangioendothelioma of liver (disorder)"])
 
 define "Covered":
-	"Malignancies" or exists("Follow-up") or exists("Immunosuppressive Drugs")
+	"Malignancies" or "Follow-up" or "Immunosuppressive Drugs"
 	
 define "Follow-up":
-	["Assessment, Performed": "Aftercare for liver transplant done (situation)"]
+	exists(["Assessment, Performed": "Aftercare for liver transplant done (situation)"])
 	
 define "Immunosuppressive Drugs":
-	["Medication, Administered": "Immunosuppressive Drugs for Urology Care"]
+	exists(["Medication, Administered": "Immunosuppressive Drugs for Urology Care"])
 	
-define "Limitations":
-	not "Covered"
 	
 define "Coverage":
 	"Covered"
+

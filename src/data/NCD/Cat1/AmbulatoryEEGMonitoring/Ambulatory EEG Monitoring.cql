@@ -11,10 +11,25 @@ using QDM
 //parameter parameterName (dataType or default value)
 
 
-valueset "Ambulatory electroencephalogram (procedure)":'2.16.840.1.113883.6.96'
+valueset "Family history of seizure disorder (situation)":'2.16.840.1.113883.6.96'
+valueset "Electroencephalogram abnormality with seizure (finding)":'2.16.840.1.113883.6.96'
+valueset "Seizure disorder (disorder)":'2.16.840.1.113883.6.96'
+valueset "Suspected (qualifier value)":'2.16.840.1.113883.6.96'
+valueset "Transient ischemic attack (disorder)":'2.16.840.1.113883.6.96'
+valueset "Syncope (disorder)":'2.16.840.1.113883.6.96'
+
+define "Condition 1":
+	exists(["Diagnosis": "Seizure disorder (disorder)"]) 
+	exists(["Assessment, Performed": "Family history of seizure disorder (situation)"]) 
+	and exists("Suspected (qualifier value)")
+	
+define "Condition 2":
+	exists(["Diagnosis": "Syncope (disorder)"])
+	or exists(["Diagnosis": "Transient ischemic attack (disorder)"])
+	
 
 define "Covered":
-	["Procedure, Performed": "Ambulatory electroencephalogram (procedure)"]
+	"Condition 1" or "Condition 2"
 	
 define "Coverage":
-	exists("Covered")
+	"Covered"

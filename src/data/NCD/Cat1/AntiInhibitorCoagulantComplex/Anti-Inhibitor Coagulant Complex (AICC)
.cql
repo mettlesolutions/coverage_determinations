@@ -18,7 +18,7 @@ define "Covered":
 	exists(["Diagnosis": "Hemophilia (disorder)"])
 	and exists(["Diagnosis": "Factor VIII inhibitor disorder (disorder)"])
 	and exists(["Diagnosis": "General Major Bleeding Events"])
-	and exists(["Diagnosis": "Poor response to treatment (situation)"])
+	and exists(["Assessment, Performed": "Poor response to treatment (situation)"])
 	
 define "Coverage":
 	"Covered"

@@ -17,27 +17,26 @@ valueset "alpha Fetoprotein (substance)":'2.16.840.1.113883.6.96'
 valueset "Hepatocellular carcinoma (morphologic abnormality)":'2.16.840.1.113883.6.96'
 valueset "Metastatic hepatocellular carcinoma (morphologic abnormality)":'2.16.840.1.113883.6.96'
 valueset "Alcoholic cirrhosis (disorder)":'2.16.840.1.113883.6.96'
-valueset "Cirrhosis":'2.16.840.1.113762.1.4.1032.14'
+valueset "Infectious cirrhosis (disorder)":'2.16.840.1.113883.6.96'
 valueset "Hemochromatosis (disorder)":'2.16.840.1.113883.6.96'
 valueset "Alpha-1-antitrypsin deficiency (disorder)":'2.16.840.1.113883.6.96'
+valueset "Benign carcinoid tumor (morphologic abnormality)":'2.16.840.1.113883.6.96'
 
 
 define "High risk":
 	exists(["Diagnosis":"Alcoholic cirrhosis (disorder)"])
-	or exists(["Diagnosis":"Cirrhosis"])
+	or exists(["Diagnosis":"Infectious cirrhosis (disorder)"])
 	or exists(["Diagnosis":"Hemochromatosis (disorder)"])
 	or exists(["Diagnosis":"Alpha-1-antitrypsin deficiency (disorder)"])
 
 define "Hepatocellular carcinoma":
 	exists(["Diagnosis":"Hepatocellular carcinoma (morphologic abnormality)"])
-	or exists(["Diagnosis":"Metastatic hepatocellular carcinoma (morphologic abnormality)"])
+	or (exists(["Diagnosis":"Benign carcinoid tumor (morphologic abnormality)"]) 
+		and exists(["Diagnosis":"Metastatic hepatocellular carcinoma (morphologic abnormality)"]))
 
 define "Covered":
 	"Hepatocellular carcinoma"
 	and "High risk"
-	
-define "Limitations":
-	not "Covered"
 	
 define "Coverage":
 	"Covered"

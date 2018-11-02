@@ -15,8 +15,6 @@ valueset "Implantation of cardiac temporary transvenous pacemaker system during 
 define "Covered":
 	exists(["Procedure, Performed":"Implantation of cardiac temporary transvenous pacemaker system during and immediately following cardiac surgery (procedure)"])
 	
-define "Limitations":
-	not "Covered"
-	
+
 define "Coverage":
 	"Covered"
