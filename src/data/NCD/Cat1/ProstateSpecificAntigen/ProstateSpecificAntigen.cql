@@ -1,3 +1,4 @@
+//ProstateSpecificAntigen
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -45,25 +46,25 @@ parameter "MeasurementPeriod" Interval<DateTime>
 context Patient
 
 define "Symptoms":
-	["Symptom": "Nocturia (finding)"]
-	or ["Symptom": "Incontinence (finding)"]
-	or ["Symptom": "Hematuria, unspecified"]
-	or ["Symptom": "Slowing of urinary stream (finding)"]
-	or ["Symptom": "Urinary urgency"]
-	or ["Symptom": "Urinary hesitancy"]
+	(exists (["Symptom": "Nocturia (finding)"])
+	or exists (["Symptom": "Incontinence (finding)"])
+	or exists (["Symptom": "Hematuria, unspecified"])
+	or exists (["Symptom": "Slowing of urinary stream (finding)"])
+	or exists (["Symptom" : "Urinary urgency (finding)"])
+	or exists (["Symptom": "Urinary hesitancy (finding)"]))
 	
 define "Indications":
-	["Physical Exam, Performed": "Benign prostatic hyperplasia (disorder)"] 
-	or ["Diagnosis": "Carcinoma of prostate (disorder)"]
-	or ["Diagnosis": "Adenocarcinoma of prostate (disorder)"]
-	or ["Diagnosis": ""]
+	(exists (["Physical Exam, Performed": "Benign prostatic hyperplasia (disorder)"]) 
+	or exists (["Diagnosis": "Carcinoma of prostate (disorder)"])
+	or exists (["Diagnosis": "Adenocarcinoma of prostate (disorder)"])
+	)
 	
 define "Limitation1":
-	["Diagnosis": "Carcinoma in situ (disorder)"] union ["Diagnostic Study, Performed": "Prostate Specific Antigen Test"]P
-		where P.result = 'abnormal'
+	(exists (["Diagnosis": "Carcinoma in situ (disorder)"]) and  (exists (["Diagnostic Study, Performed": "Prostate Specific Antigen Test"]P
+		where P.result = 'abnormal' )))
 define "Limit":
 	["Diagnostic Study, Performed": "Prostate Specific Antigen Test"]D 
-	where D.relevantPeriod in "MeaurementPeriod"
+	where D.relevantPeriod in "MeasurementPeriod"
 	and "Symptoms"
 	
 define "Limitation2":
