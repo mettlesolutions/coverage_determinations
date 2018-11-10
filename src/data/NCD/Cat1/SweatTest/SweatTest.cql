@@ -19,15 +19,12 @@ valueset "Sympathectomy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Indications and Limitations":
-          ["Diagnosis": "Cystic fibrosis (disorder)"] union ["Laboratory Test, Performed": "Sweat test (procedure)"]
+          (exists (["Diagnosis": "Cystic fibrosis (disorder)"]) and  (exists (["Laboratory Test, Performed": "Sweat test (procedure)"])))
           
 define "Not Covered":
-       ["Diagnosis": "Peripheral vascular disease (disorder)"] union ["Procedure, Performed": "Sympathectomy (procedure)"]
-       union ["Laboratory Test, Performed": "Sweat test (procedure)"]
+       (exists (["Diagnosis": "Peripheral vascular disease (disorder)"]) and  (exists (["Procedure, Performed": "Sympathectomy (procedure)"]))
+       and (exists (["Laboratory Test, Performed": "Sweat test (procedure)"]))
+       )
        
 define "Coverage":
-        "Indications and Limitations" union not "Not Covered"
-       
-             
-
-
+        "Indications and Limitations" and not "Not Covered"

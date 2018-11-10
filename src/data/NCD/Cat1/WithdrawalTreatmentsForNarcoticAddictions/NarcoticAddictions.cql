@@ -1,3 +1,5 @@
+//Withdrawal Treatments for Narcotic Addictions
+//Withdrawal Treatments for Narcotic Addictions
 library ChlamydiaScreening_Common version '2'
 
 using QDM
@@ -14,6 +16,7 @@ valueset "Physician service (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Narcotic drug user (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Coverage":
-        ["Diagnosis": "Narcotic drug user (finding)"]
-        or ["Diagnosis": "Physician service (procedure)"] 
-       union ["Procedure, performed": "Monitoring drug withdrawal (regime/therapy)"]
+       (exists  (["Diagnosis": "Narcotic drug user (finding)"])
+        or (exists  (["Diagnosis": "Physician service (procedure)"]) 
+       and  (exists (["Procedure, Performed": "Monitoring drug withdrawal (regime/therapy)"])))
+       )
