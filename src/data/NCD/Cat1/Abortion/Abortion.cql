@@ -1,7 +1,16 @@
+
 //Abortion
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
+
+//include otherLibrary version 'x.x' called otherLibrary
+//codesystem codeSystemName : 'OID' version 'x.x'
+//valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
+//code codeName : 'OID' from codeSystemName display 'displayName'
+//concept conceptName : {codeName1, codeName2, etc} display 'displayName'
+//parameter parameterName (dataType or default value)
+
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Pregnancy": '2.16.840.1.113883.3.526.3.378'
 valueset "Victim of rape (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -11,17 +20,14 @@ valueset "Miscarriage (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Physical health problems (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Physical injury due to physical abuse (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Finding related to risk factor in pregnancy (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-//include otherLibrary version 'x.x' called otherLibrary
-//codesystem codeSystemName : 'OID' version 'x.x'
-//valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
-//code codeName : 'OID' from codeSystemName display 'displayName'
-//concept conceptName : {codeName1, codeName2, etc} display 'displayName'
-//parameter parameterName (dataType or default value)
+valueset "Incestuous concubinage with girls (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
 
 context Patient
 
 define "Conditions Covered":
     ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Victim of rape (finding)"])
+    or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Incestuous concubinage with girls (finding)"]) )
    or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical health problems (finding)"]) )
    or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical injury due to physical abuse (disorder)"]) )
    or ( exists(["Diagnosis": "Finding related to risk factor in pregnancy (finding)"]) )
@@ -32,4 +38,4 @@ define "Covered":
  "Conditions Covered" and ( exists (["Procedure, Performed": "Miscarriage (disorder)"]) )
  
 define "Coverage":
-      "Conditions Covered" and "Covered"  
+      "Conditions Covered" and "Covered" 
