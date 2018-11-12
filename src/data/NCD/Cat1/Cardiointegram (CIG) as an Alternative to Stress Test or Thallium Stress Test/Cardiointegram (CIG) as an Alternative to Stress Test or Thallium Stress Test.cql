@@ -1,4 +1,4 @@
-library BloodTransfusions version '1'
+library CardiointegramasanAlternativetoStressTestorThalliumStressTest version '1'
 
 using QDM
 
@@ -9,11 +9,9 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "":''
-valueset "":''
-valueset "":''
-valueset "":''
-valueset "":''
 
+define "Not Covered":
+	true
 
-define "Number1": 1
+define "Coverage":
+	not "Not Covered"
