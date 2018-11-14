@@ -1,4 +1,4 @@
-library BloodBrainBarrierOsmoticDisruptionforTreatmentofBrainTumors version '1'
+library CellularTherapy
 
 using QDM
 
@@ -9,13 +9,7 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Destruction of brain tumor (procedure)":'2.16.840.1.113883.6.96'
-	
+context Patient
 
-define "Not Covered":
-	//exists(["Procedure, Performed": "Destruction of brain tumor (procedure)"])
-	true
-	
-	
-define "Coverage":
+define "Coverage": 
 	false
