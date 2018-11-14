@@ -1,0 +1,1 @@
+Acupuncture is not covered.
