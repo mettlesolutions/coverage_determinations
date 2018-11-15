@@ -12,35 +12,30 @@ using QDM version '5.3'
 
 
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+
 valueset "Continuous measurement of pH in esophagus over 24 hour period (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Gastric reflux (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Abnormal illness behavior (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Heartburn (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Regurgitation of food (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Bloating symptom (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Burping (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Dysphagia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Nausea (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Weight loss (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Wheezing (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Digestive symptom (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Traditional therapy (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+valueset "": ''
 
 context Patient
 
-define "Symptoms Of Reflux":
-         ( exists (["Symptom": "Heartburn (finding)"])
-          or ( exists (["Symptom": "Regurgitation of food (finding)"]) )
-          or ( exists (["Symptom": "Bloating symptom (finding)"]) )
-          or ( exists (["Symptom": "Burping (finding)"]) )
-          or ( exists (["Symptom": "Dysphagia (disorder)"]) )
-          or ( exists (["Symptom": "Nausea (finding)"]) )
-          or ( exists (["Symptom": "Weight loss (finding)"]) )
-          or ( exists (["Symptom": "Wheezing (finding)"]) )
-         ) 
+define "Result for conventional therapy":
+         not ( exists (["Diagnosis": "Gastric reflux (finding)"]) )
 
-define "Condition for Covered":
-          "Symptoms Of Reflux" and ( exists(["Diagnosis": "Gastric reflux (finding)"]) )
+
+define "Covered":
+          if  ( exists (["Procedure, Performed": "Traditional therapy (regime/therapy)"]T
+              where T.result = "Result for conventional therapy") and ( exists (["Diagnosis": "Digestive symptom (finding)"]) ) )         
+          then ["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]  
+          else null
           
 define "Coverage":
-          "Condition for Covered" and ( exists (["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]) )
+         "Covered"
+          
+
+          
 
 
