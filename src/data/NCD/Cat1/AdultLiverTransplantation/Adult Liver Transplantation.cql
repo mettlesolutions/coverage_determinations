@@ -25,7 +25,19 @@ valueset "Instructions for Follow Up After Discharge":'2.16.840.1.113883.3.117.1
 valueset "Immunosuppressive therapy for transplant (procedure)":'2.16.840.1.113883.6.96'
 valueset "Postoperative follow-up visit (procedure)":'2.16.840.1.113883.6.96'
 valueset "Aftercare for liver transplant done (situation)":'2.16.840.1.113883.6.96'
+
 valueset "Immunosuppressive Drugs for Urology Care":'2.16.840.1.113762.1.4.1151.32'
+valueset "Sandimmune":'2.16.840.1.113883.6.88'
+valueset "Imuran":'2.16.840.1.113883.6.88'
+valueset "ATGAM":'2.16.840.1.113883.6.88'
+valueset "Muromonab-CD3":'2.16.840.1.113883.6.88'
+valueset "Prograf":'2.16.840.1.113883.6.88'
+valueset "mycophenolate mofetil":'2.16.840.1.113883.6.88'
+valueset "Daclizumab":'2.16.840.1.113883.6.88'
+valueset "Cyclophosphamide":'2.16.840.1.113883.6.88'
+valueset "Prednisone":'2.16.840.1.113883.6.88'
+
+
 
 define "neuroendocrine tumor":
 	exists(["Diagnosis":"Secondary neuroendocrine tumor of liver"]) 
@@ -48,7 +60,15 @@ define "Follow-up":
 	exists(["Assessment, Performed": "Aftercare for liver transplant done (situation)"])
 	
 define "Immunosuppressive Drugs":
-	exists(["Medication, Administered": "Immunosuppressive Drugs for Urology Care"])
+	exists(["Medication, Administered":"Sandimmune"])
+	or exists(["Medication, Administered":"Imuran"])
+	or exists(["Medication, Administered":"ATGAM"])
+	or exists(["Medication, Administered":"Muromonab-CD3"])
+	or exists(["Medication, Administered":"Prograf"])
+	or exists(["Medication, Administered":"mycophenolate mofetil"])
+	or exists(["Medication, Administered":"Daclizumab"])
+	or exists(["Medication, Administered":"Cyclophosphamide"])
+	or exists(["Medication, Administered":"Prednisone"])
 	
 	
 define "Coverage":
