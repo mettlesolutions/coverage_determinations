@@ -27,8 +27,7 @@ context Patient
 define "Process 1":
 		(exists (["Diagnosis":"Bundle branch block (disorder)"])
 		and (exists (["Diagnosis":"Congenital heart disease (disorder)"]))
-		and  (["Procedure, Performed":"Open heart surgery (procedure)"])
-		included in (["Procedure, Performed":"Bundle of His recording (procedure)"])
+		and  (exists ["Procedure, Performed":"Bundle of His recording (procedure)" included in ["Procedure, Performed":"Open heart surgery (procedure)"]])
 		)
 		
 define "Coverage" :
