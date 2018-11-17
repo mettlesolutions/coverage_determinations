@@ -18,6 +18,7 @@ valueset "Gastric reflux (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Abnormal illness behavior (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Digestive symptom (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Traditional therapy (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
+//Reflux symptom
 valueset "": ''
 
 context Patient
