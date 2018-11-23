@@ -1,3 +1,4 @@
+//ultrasound diagnostic procedures
 library ChlamydiaScreening_Common version '2'
 
 using QDM
@@ -9,11 +10,14 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
+codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 valueset "Echoencephalography, A-mode (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Echoencephalography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Echocardiography for determining pericardial effusion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Echography, A-mode (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Ocular and Orbital Sonography (B-Mode) 
+valueset "Ocular ultrasound finding (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Cataract surgery (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Echocardiography, real-time with image documentation with M-mode recording, complete (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Diagnostic pericardiocentesis (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Ultrasonic guidance procedure (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -61,36 +65,37 @@ valueset "Echography, B-scan (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Covered": 
-	["Diagnostic Study, Performed": "Echoencephalography, A-mode (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echoencephalography (procedure)"]
-                or  ["Diagnostic Study, Performed": "Echocardiography for determining pericardial effusion (procedure)"]
-                or  ["Diagnostic Study, Performed": "Echography, A-mode (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echocardiography, real-time with image documentation with M-mode recording, complete (procedure)"]
-		or  ["Diagnostic Study, Performed": "Diagnostic pericardiocentesis (procedure)"]
-		or  ["Diagnostic Study, Performed": "Ultrasonic guidance procedure (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echocardiography (procedure)"]
-		or  ["Diagnostic Study, Performed": "Pleural effusion (disorder)"]
-		or  ["Diagnostic Study, Performed": "Thoracentesis (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography of abdomen, B-scan, limited (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography of abdomen, B-scan, complete (procedure)"]
-		or  ["Diagnostic Study, Performed": "Aspiration of cyst using ultrasonic guidance (procedure)"]
-		or  ["Diagnostic Study, Performed": "Retroperitoneal echography, B-scan, complete (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography, scan B-mode for fetal age determination (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography, scan B-mode for fetal growth rate (procedure)"]
-		or  ["Diagnostic Study, Performed": "CT Guidance for localization of placenta of Uterus"]
-		or  ["Diagnostic Study, Performed": "Molar pregnancy (disorder)"]
-		or  ["Diagnostic Study, Performed": "Ectopic pregnancy (disorder)"]
-		or  ["Diagnostic Study, Performed": "Intrauterine contraceptive device procedure (procedure)"]
-		or  ["Diagnostic Study, Performed": "Pelvic echography, B-scan, complete (procedure)"]
-		or  ["Diagnostic Study, Performed": "Ultrasonic guidance for amniocentesis (procedure)"]
-		or  ["Diagnostic Study, Performed": "Doppler ultrasonography of arterial inflow and venous outflow of abdominal, pelvic and retroperitoneal organs (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography of thyroid, A-mode (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography of breast, A-mode (procedure)"]
-		or  ["Diagnostic Study, Performed": "Echography of breast, B-scan (procedure)"]
-		or  ["Diagnostic Study, Performed": "Monitoring of cardiac output using continuous esophageal doppler (regime/therapy)"]
+	(exists (["Diagnostic Study, Performed": "Echoencephalography, A-mode (procedure)"])
+		or  (exists (["Diagnostic Study, Performed": "Echoencephalography (procedure)"]))
+                or  (exists (["Diagnostic Study, Performed": "Echocardiography for determining pericardial effusion (procedure)"]))
+                or (exists (["Diagnostic Study, Performed": "Echography, A-mode (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echocardiography, real-time with image documentation with M-mode recording, complete (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Diagnostic pericardiocentesis (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Ultrasonic guidance procedure (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echocardiography (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Pleural effusion (disorder)"]))
+		or  (exists (["Diagnostic Study, Performed": "Thoracentesis (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography of abdomen, B-scan, limited (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography of abdomen, B-scan, complete (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Aspiration of cyst using ultrasonic guidance (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Retroperitoneal echography, B-scan, complete (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography, scan B-mode for fetal age determination (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography, scan B-mode for fetal growth rate (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "CT Guidance for localization of placenta of Uterus"]))
+		or  (exists (["Diagnostic Study, Performed": "Molar pregnancy (disorder)"]))
+		or  (exists (["Diagnostic Study, Performed": "Ectopic pregnancy (disorder)"]))
+		or  (exists (["Diagnostic Study, Performed": "Intrauterine contraceptive device procedure (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Pelvic echography, B-scan, complete (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Ultrasonic guidance for amniocentesis (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Doppler ultrasonography of arterial inflow and venous outflow of abdominal, pelvic and retroperitoneal organs (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography of thyroid, A-mode (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography of breast, A-mode (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Echography of breast, B-scan (procedure)"]))
+		or  (exists (["Diagnostic Study, Performed": "Monitoring of cardiac output using continuous esophageal doppler (regime/therapy)"]))
+		)
 		
 define "Not Covered":
-	["Diagnosis" :'Atherosclerosis and Peripheral Arterial Disease'] union ["Procedure, Performed": "Echography, B-scan (procedure)"]
+	(exists (["Diagnosis" :'Atherosclerosis and Peripheral Arterial Disease']) and (exists (["Procedure, Performed": "Echography, B-scan (procedure)"])))
 	
 define "Coverage":
-	"Covered" union "Not Covered"
+	"Covered" and  not "Not Covered"

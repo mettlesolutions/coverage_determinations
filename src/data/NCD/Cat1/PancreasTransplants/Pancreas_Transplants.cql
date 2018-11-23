@@ -1,3 +1,4 @@
+//Pancreas Transplants
 library ChlamydiaScreening_Common version '2'
 
 using QDM version '5.3'
@@ -37,38 +38,57 @@ valueset "Last hypoglycemia attack (finding)": '2.16.840.1.113883.3.88.12.3221.7
 valueset "Compliance issues discussed with patient (finding)": '2.16.840.1.113762.1.4.1147.2'
 valueset "Risk evaluation and mitigation strategy consultation (procedure)": '2.16.840.1.113762.1.4.1147.2'
 valueset "Partial Pancreas Transplant": '2.16.840.1.113762.1.4.1029.23'
+valueset "Low (qualifier value)" : '2.16.840.1.113762.1.4.1181.15'
+valueset "Discharged from inpatient care (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Islet cell transplant (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 
-
+parameter MeasurementPeriod Interval<Date>
 context Patient
 
 define "Transplant":
-	["Procedure, Performed": "Transplantation of pancreas (procedure)"]
+	(exists (["Procedure, Performed": "Transplantation of pancreas (procedure)"]))
 	
+define "Discharge":
+		(exists (["Encounter, Performed" : "Discharged from inpatient care (finding)"]P
+		where P.relevantPeriod during MeasurementPeriod)
+		and "Transplant" )
+
 define "afterKidneyTransplant":
-	["Procedure, Performed": "Kidney Transplant"]P
-	with "Transplant"T such that T.relevantPeriod starts after P.relevantPeriod
+	if(exists (["Procedure, Performed": "Kidney Transplant"]))
+		then "Transplant" and (exists (["Procedure, Performed": "Immunosuppressive therapy (procedure)"])
+			and "Discharge")
+	else
+		null
+	
+define "C-peptide":
+		(exists ( ["Laboratory Test, Performed": "C-peptide stimulation test (procedure)"]D
+		where D.result <= 110 '%' and D.status = "Low (qualifier value)"))
 	
 define "Type1Diabetes":
-	["Diagnosis": "Diabetes mellitus caused by insulin receptor antibodies (disorder)"] or
-	["Diagnosis": "Diabetes mellitus type 1 (disorder)"] union ["Laboratory Test, Performed": "C-peptide stimulation test (procedure)"]D union ["Laboratory Test, Performed":"Fasting blood glucose measurement (procedure)"]L
-	where D.result <= 1.1 * D.referenceRangelow and L.result <= 225 'mg/dL'
+	(exists (["Diagnosis": "Diabetes mellitus caused by insulin receptor antibodies (disorder)"]) or
+	(exists (["Diagnosis": "Diabetes mellitus type 1 (disorder)"])) and "C-peptide" and (exists (["Laboratory Test, Performed":"Fasting blood glucose measurement (procedure)"]L
+	where L.result <= 225 'mg/dL'))
+	)
 	
 define "Indications": 
-	["Procedure, Performed": "Transplantation of pancreas (procedure)"] union ["Procedure, Performed": "Kidney Transplant"]
+	(exists (["Procedure, Performed": "Transplantation of pancreas (procedure)"]) and (exists (["Procedure, Performed": "Kidney Transplant"]))
 	or "afterKidneyTransplant"
 	or "Type1Diabetes"
-	or ["Diagnosis": "Diabetes mellitus type 1 (disorder)"]
-	or ["Diagnosis": "Brittle diabetes mellitus (finding)"] union ["Diagnosis": "Metabolic complication of procedures (disorder)"] union ["Diagnosis": "Hospitalization"]
-	or ["Diagnosis": "Brittle diabetes mellitus (finding)"] union ["Diagnosis": "Hypoglycemia unawareness in type 2 diabetes mellitus (disorder)"] 
-	or ["Diagnosis": "Brittle diabetes mellitus (finding)"] union ["Diagnosis": "Ketoacidosis (disorder)"] 
-	or ["Diagnosis": "Brittle diabetes mellitus (finding)"] union ["Diagnosis": "Last hypoglycemia attack (finding)"]
-	or ["Encounter, Performed": "Endocrinologist (occupation)"]E
-		where E.relevantPeriod > 12 months
-	and ["Procedure, Performed": "Risk evaluation and mitigation strategy consultation (procedure)"] union ["Procedure, Performed": "Compliance issues discussed with patient (finding)"]
-		union ["Procedure, Performed": "Immunosuppressive therapy (procedure)"]
-		
+	or (exists (["Diagnosis": "Diabetes mellitus type 1 (disorder)"]))
+	or (exists (["Diagnosis": "Brittle diabetes mellitus (finding)"]) and (exists (["Diagnosis": "Metabolic complication of procedures (disorder)"])) and (exists (["Diagnosis": "Hospitalization"])))
+	or (exists (["Diagnosis": "Brittle diabetes mellitus (finding)"]) and (exists (["Diagnosis": "Hypoglycemia unawareness in type 2 diabetes mellitus (disorder)"] )))
+	or (exists (["Diagnosis": "Brittle diabetes mellitus (finding)"]) and (exists (["Diagnosis": "Ketoacidosis (disorder)"])))
+	or (exists (["Diagnosis": "Brittle diabetes mellitus (finding)"]) and (exists (["Diagnosis": "Last hypoglycemia attack (finding)"])))
+	or (exists (["Encounter, Performed": "Endocrinologist (occupation)"]E
+		where duration in months of E.relevantPeriod >= 12))
+	or (exists (["Procedure, Performed": "Risk evaluation and mitigation strategy consultation (procedure)"]) and (exists (["Procedure, Performed": "Compliance issues discussed with patient (finding)"]))
+		and (exists (["Procedure, Performed": "Immunosuppressive therapy (procedure)"])))
+	)	
+
 define "Limitations":
-	["Diagnosis": "Partial Pancreas Transplant"]
+	(exists (["Diagnosis": "Partial Pancreas Transplant"])
+	or (exists (["Diagnosis":"Islet cell transplant (procedure)"]))
+	)
 	
 define "Coverage":
 	"Indications" and not "Limitations"
