@@ -32,6 +32,8 @@ valueset "Seizure (finding)":'2.16.840.1.113883.6.96'
 valueset "Confusional state (disorder)":'2.16.840.1.113883.6.96'
 valueset "Dizziness (finding)": '2.16.840.1.113883.6.96'
 valueset "Adverse Clinical Reaction":'2.16.840.1.113883.3.2074.1.1.30'
+valueset "First degree atrioventricular block (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
+
 
 context Patient
 

@@ -10,6 +10,8 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
+
+codesystem "SNOMEDCT" : '2.16.840.1.113883.6.96'
 valueset "Percutaneous needle biopsy of breast using ultrasound guidance (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Core needle biopsy of breast using mammography guidance (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Radiology result abnormal (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'

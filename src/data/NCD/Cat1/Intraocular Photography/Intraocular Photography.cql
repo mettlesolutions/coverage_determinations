@@ -20,6 +20,7 @@ valueset "Glaucoma (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Multiple sclerosis (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Ocular fundus photography (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Retinal photography (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
+valueset "Ophthalmologist (occupation)" : '2.16.840.1.113762.1.4.1099.14'
 
 context Patient
 
@@ -31,4 +32,5 @@ define "Coverage" :
 		and (exists (["Diagnosis" : "Glaucoma (disorder)"]))
 		and (exists (["Diagnosis" : "Multiple sclerosis (disorder)"]))
 		and (exists (["Procedure, Performed": "Retinal photography (procedure)"]))
+		and (exists (["Provider Characteristic":"Ophthalmologist (occupation)"]))
 		)
