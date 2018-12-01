@@ -63,12 +63,6 @@ valueset "Thrombolytic therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Hemorrhage AND/OR hematoma complicating procedure (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Thrombosis (disorder)": '2.16.840.1.113883.3.2074.1.1.30'
 valueset "Hematoma (disorder)": '2.16.840.1.113883.3.2074.1.1.30'
-valueset "Swelling (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Pain (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Cramp in calf (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "White discoloration of skin (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Cyanosis of skin (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Bleeds easily (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Easy bruising (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Hematuria": '2.16.840.1.113883.3.3157.1020'
 valueset "Bleeding from nose (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -79,18 +73,7 @@ parameter "Measurement Period" Interval<DateTime>
 
 context Patient
 
-define "Symptoms Of Thrombosis and Hemorrhage":
-        ( exists (["Symptom": "Swelling (finding)"])
-        or ( exists (["Symptom": "Pain (finding)"]) )
-        or ( exists (["Symptom": "Cramp in calf (finding)"]) )
-        or ( exists (["Symptom": "White discoloration of skin (finding)"]) )
-        or ( exists (["Symptom": "Cyanosis of skin (finding)"]) )
-        or ( exists (["Symptom": "Easy bruising (finding)"]) )  
-        or ( exists (["Symptom": "Hematuria"]) )
-        or ( exists (["Symptom": "Bleeding from nose (finding)"]) )    
-        or ( exists (["Symptom": "Joint swelling (finding)"]) ) 
-        or ( exists (["Symptom": "Bleeds easily (finding)"]) )
-        )
+
          
 define "Warfarin":
 	["Procedure, Performed": "Warfarin therapy (procedure)"]Wa
@@ -98,8 +81,7 @@ define "Warfarin":
          
 define "Indications and Limitations": 
          
-	"Symptoms Of Thrombosis and Hemorrhage"
-	or ( exists (["Diagnosis": "Thrombosis (disorder)"])
+        ( exists (["Diagnosis": "Thrombosis (disorder)"])
 	or ( exists (["Diagnosis": "Hemorrhage AND/OR hematoma complicating procedure (disorder)"]) )
 	or ( exists (["Diagnosis": "Coagulation/bleeding tests abnormal (finding)"]) )
 	or ( exists (["Diagnosis": "Hematoma (disorder)"]) )
@@ -134,4 +116,3 @@ define "Symptomatic":
 	
 define "Coverage":
 	"Indications and Limitations" and "Symptomatic"
-

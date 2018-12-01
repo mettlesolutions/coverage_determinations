@@ -20,12 +20,20 @@ valueset "Lung volume reduction surgery (procedure)": '2.16.840.1.113883.3.88.12
 //oncologic PET scan
 valueset "Heart disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
+parameter MeasurementPeriod default Interval[
+@2010-08-12T00:00:00.0,
+null
+)
+
 context Patient
 
 define "Requirements Of ICR Programs":
-          ( exists (["Procedure, Performed": "Insertion of carotid artery stent (procedure)"])
-          and ( exists (["Procedure, Performed": "Implantation of ventricular assist device (procedure)"]) )
-          and ( exists (["Procedure, Performed": "Lung volume reduction surgery (procedure)"]) ) 
+          ( exists (["Procedure, Performed": "Insertion of carotid artery stent (procedure)"]I
+          where I.relevantPeriod during MeasurementPeriod)
+          and ( exists (["Procedure, Performed": "Implantation of ventricular assist device (procedure)"]IO
+          where IO.relevantPeriod during MeasurementPeriod) )
+          and ( exists (["Procedure, Performed": "Lung volume reduction surgery (procedure)"]L
+          where L.relevantPeriod during MeasurementPeriod) ) 
           )
           
 define "Ornish Program for Reversing Heart Disease":
@@ -37,3 +45,4 @@ define "Not Covered":
            
 define "Coverage":
           "Ornish Program for Reversing Heart Disease"
+
