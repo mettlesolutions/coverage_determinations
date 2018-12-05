@@ -21,11 +21,12 @@ valueset "Nontraumatic intracerebral hemorrhage": '2.16.840.1.113762.1.4.1179.5'
 valueset "Reye's syndrome (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Metabolic encephalopathy (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Postnatal hypoxic encephalopathy (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-//viral encephalopathy
+valueset "Viral encephalitis (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Intensive care unit (environment)": '2.16.840.1.113762.1.4.1116.226'
 valueset "Intensive care neurological disorder (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //neurosurgical patient
-valueset "": ''
+valueset "Encephalopathy, unspecified": '2.16.840.1.113883.3.666.5.1591'
+valueset "Viral disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
 context Patient
 
@@ -35,10 +36,9 @@ define "Covered":
            or ( exists (["Diagnosis": "Nontraumatic intracerebral hemorrhage"]) )
            or ( exists (["Symptom": "Reye's syndrome (disorder)"]) ) 
            or ( exists (["Diagnosis": "Metabolic encephalopathy (disorder)"]) ) 
-           or ( exists (["Diagnosis": "Intensive care neurological disorder (disorder)"]) ) )
+           or ( exists (["Diagnosis": "Intensive care neurological disorder (disorder)"]) ) 
+           or ( exists (["Diagnosis": "Encephalopathy, unspecified"]) and ( exists (["Diagnosis": "Viral disease (disorder)"]) ) ) )
            and ( exists (["Procedure, Performed": "Intracranial pressure monitoring regime (regime/therapy)"]) )
            
 define "Coverage":
           "Covered"
-
-
