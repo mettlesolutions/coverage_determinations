@@ -157,7 +157,7 @@ valueset "Confirming patient identity prior to procedure (procedure)":'2.16.840.
 valueset "Date of onset - Reported":'2.16.840.1.113883.6.1'
 valueset "Patient identifier":'2.16.840.1.113883.6.1'
 valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
+//valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 valueset "Durable medical equipment education, guidance, and counseling (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Durable medical equipment case management (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Medical equipment or device education (procedure)":'2.16.840.1.113883.6.96'
@@ -175,14 +175,14 @@ context Patient
 define "BloodGasStudy":
 	["Procedure, Performed": "Blood gas analysis (procedure)"]P
 	where P.relevantPeriod during "Measurement Period"
-        
+
 
 define "Encounter Conduct":
 	exists(["Encounter, Performed": "Encounter Face to Face"]) and exists(["Encounter, Performed": "Seen by physician (finding)"])
 	or exists(["Encounter, Performed": "Encounter Face to Face"]) and exists(["Encounter, Performed": "Seen by clinical nurse specialist (finding)"])
 	or exists(["Encounter, Performed": "Encounter Face to Face"]) and exists(["Encounter, Performed": "Seen by nurse practitioner (finding)"])
 	or exists(["Encounter, Performed": "Encounter Face to Face"]) and exists(["Encounter, Performed": "Referred by physician assistant (finding)"])
-        
+
 
 //define "Equipments Description":
 
@@ -197,7 +197,7 @@ define "Inpatient Encounter-Diagnosis":
 	where E.relevantPeriod during "Measurement Period"
 	return E.diagnoses
 	else null
-	
+
 
 define "Outpatient Encounter-Diagnosis":
 	if exists("HomeOxygentherapy".result) then
@@ -205,10 +205,10 @@ define "Outpatient Encounter-Diagnosis":
 	where O.relevantPeriod during "Measurement Period"
 	return O.diagnoses
 	else null
-	
+
 
 define "Inpatient Encounter-Order":
-	if exists("HomeOxygentherapy".result) then		
+	if exists("HomeOxygentherapy".result) then
 	["Encounter, Performed": "Inpatient"]E
 	where E.relevantPeriod during "Measurement Period"
 	return E.authorDatetime
@@ -224,10 +224,10 @@ define "Outpatient Encounter-Order":
 
 define "Person Name":
 	"initial" union "title"
-	
+
 
 define "Patient ID":
-	["Procedure, Performed":"Checking patient identity (procedure)"]P 
+	["Procedure, Performed":"Checking patient identity (procedure)"]P
 	union ["Procedure, Performed":"Confirming patient identity prior to procedure (procedure)"]CP
 	return CP.result
 
@@ -246,7 +246,7 @@ define "Patient Encounter-Diagnosis":
 	"Inpatient Encounter-Diagnosis" union "Outpatient Encounter-Diagnosis"
 	//["Encounter, Performed": "Inpatient"]E where E.diagnoses is not null
 	//union ["Encounter, Performed": "Encounter Hospital Outpatient"]O where O.diagnoses is not null
-	//case 
+	//case
 	//when exists(E.result) then return E.diagnoses
 	//when exists(O.result) then return O.diagnoses
 	//else "Encounter Diagnosis"= null
@@ -283,11 +283,13 @@ define "Medical Record":
 
 
 define "Face-to-Face Encounter":
-	exists("Encounter Conduct")
-        union "WOPD Details Required"
+	if "Encounter Conduct"
+        then "WOPD Details Required"
+        else null
 
 
-define "Documentations Required": 
+define "Documentations Required":
 	"Face-to-Face Encounter"
 	union "Medical Record"
+
 
