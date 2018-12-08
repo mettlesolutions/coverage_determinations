@@ -1,4 +1,4 @@
-# Vertiporfin
+//Ocular Photodynamic Therapy (OPT)
 
 Covered;
 => OPT with verteporfin continues to be approved for a diagnosis of neovascular AMD with predominately classic subfoveal CNV lesions (where the area of classic CNV occupies ≥ 50% of the area of the entire lesion) at the initial visit as determined by an FA.
