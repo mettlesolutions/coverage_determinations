@@ -10,16 +10,16 @@ using QDM
 //parameter parameterName (dataType or default value)
 
 valueset "Body mass index [BMI]":'2.16.840.1.113883.6.103'
-valueset "Co-morbid conditions (finding)":'2.16.840.1.113883.6.96'
-valueset "Body mass index 30+ - obesity (finding)":'2.16.840.1.113883.6.96'
-valueset "Obesity (disorder)":'2.16.840.1.113883.6.96'
-valueset "Absence of therapeutic response (finding)":'2.16.840.1.113883.6.96'
-valueset "Laparoscopic adjustable gastric banding (procedure)":'2.16.840.1.113883.6.96'
-valueset "Laparoscopic sleeve gastrectomy (procedure)":'2.16.840.1.113883.6.96'
-valueset "Gastric stapling for obesity (procedure)":'2.16.840.1.113883.6.96'
-valueset "Stapling of stomach (procedure)":'2.16.840.1.113883.6.96'
-valueset "Intestinal bypass for morbid obesity (procedure)":'2.16.840.1.113883.6.96'
-valueset "Insertion of gastric balloon (procedure)":'2.16.840.1.113883.6.96'
+valueset "Co-morbid conditions (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Body mass index 30+ - obesity (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Obesity (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Absence of therapeutic response (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Laparoscopic adjustable gastric banding (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Laparoscopic sleeve gastrectomy (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Gastric stapling for obesity (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Stapling of stomach (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Intestinal bypass for morbid obesity (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Insertion of gastric balloon (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 
 define "Not Covered":

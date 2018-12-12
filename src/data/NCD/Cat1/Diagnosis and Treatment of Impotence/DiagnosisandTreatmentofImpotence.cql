@@ -9,13 +9,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Victim of abuse (finding)":'2.16.840.1.113883.6.96'
-valueset "Suspected victim of adult abuse (situation)":'2.16.840.1.113883.6.96'
-valueset "Copy of document requested (situation)":'2.16.840.1.113883.6.96'
-valueset "Mental disorder (disorder)":'2.16.840.1.113883.6.96'
-valueset "Inpatient stay (finding)":'2.16.840.1.113883.6.96'
-valueset "Impotence (disorder)":'2.16.840.1.113883.6.96'
-valueset "Procedure aiding diagnosis (procedure)":'2.16.840.1.113883.6.96'
+valueset "Victim of abuse (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Suspected victim of adult abuse (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Copy of document requested (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Mental disorder (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Inpatient stay (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Impotence (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Procedure aiding diagnosis (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 define "Abuse Conditions":
 	if (exists(["Assessment, Performed": "Suspected victim of adult abuse (situation)"]))

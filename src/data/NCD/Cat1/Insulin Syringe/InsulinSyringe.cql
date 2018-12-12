@@ -9,12 +9,12 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Supervision while performing activity (regime/therapy)":'2.16.840.1.113883.6.96'
-valueset "Physician service (procedure)":'2.16.840.1.113883.6.96'
-valueset "Physician (occupation)":'2.16.840.1.113883.6.96'
+valueset "Supervision while performing activity (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Physician service (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Physician (occupation)":'2.16.840.1.113762.1.4.1099.14'
 valueset "Emergent Situation":'2.16.840.1.113762.1.4.1116.496'
-valueset "Diabetes mellitus (disorder)":'2.16.840.1.113883.6.96'
-valueset "Seen by physician (finding)":'2.16.840.1.113883.6.96'
+valueset "Diabetes mellitus (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Seen by physician (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Procedure":
 	exists(["Assessment, Performed": "Seen by physician (finding)"])

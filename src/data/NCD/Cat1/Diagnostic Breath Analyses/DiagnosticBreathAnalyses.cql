@@ -9,12 +9,12 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Hydrogen breath test using lactose (procedure)":'2.16.840.1.113883.6.96'
-valueset "Lactose intolerance (disorder)":'2.16.840.1.113883.6.96'
-valueset "Small bowel bacterial overgrowth syndrome (disorder)":'2.16.840.1.113883.6.96'
-valueset "Carbon dioxide breath test (procedure)":'2.16.840.1.113883.6.96'
-valueset "Bile acid malabsorption syndrome (disorder)":'2.16.840.1.113883.6.96'
-valueset "Intestinal malabsorption of fat (disorder)":'2.16.840.1.113883.6.96'
+valueset "Hydrogen breath test using lactose (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Lactose intolerance (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Small bowel bacterial overgrowth syndrome (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Carbon dioxide breath test (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Bile acid malabsorption syndrome (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Intestinal malabsorption of fat (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Covered":
 	exists(["Diagnosis": "Lactose intolerance (disorder)"])

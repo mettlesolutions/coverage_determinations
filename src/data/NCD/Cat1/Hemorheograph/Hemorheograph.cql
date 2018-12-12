@@ -9,12 +9,12 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Peripheral vascular disease (disorder)":'2.16.840.1.113883.6.96'
-valueset "Preoperative procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Postoperative procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Evaluation of diagnostic study results (procedure)":'2.16.840.1.113883.6.96'
-valueset "Diagnostic procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Disease suspected (situation)":'2.16.840.1.113883.6.96'
+valueset "Peripheral vascular disease (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Preoperative procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Postoperative procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Evaluation of diagnostic study results (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Diagnostic procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Disease suspected (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 
 define "Covered":

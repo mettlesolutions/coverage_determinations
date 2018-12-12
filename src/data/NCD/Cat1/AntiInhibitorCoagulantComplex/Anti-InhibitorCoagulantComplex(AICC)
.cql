@@ -9,10 +9,10 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Factor VIII inhibitor disorder (disorder)":'2.16.840.1.113883.6.96'
-valueset "Hemophilia (disorder)":'2.16.840.1.113883.6.96'
+valueset "Factor VIII inhibitor disorder (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Hemophilia (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "General Major Bleeding Events":'2.16.840.1.113762.1.4.1179.5'
-valueset "Poor response to treatment (situation)":'2.16.840.1.113883.6.96'
+valueset "Poor response to treatment (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Covered":
 	exists(["Diagnosis": "Hemophilia (disorder)"])

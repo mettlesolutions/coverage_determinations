@@ -10,16 +10,16 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Tobacco user (finding)":'2.16.840.1.113883.6.96'
+valueset "Tobacco user (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Tobacco use disorder":'2.16.840.1.113883.6.103'
-valueset "Associated symptom (finding)":'2.16.840.1.113883.6.96'
-valueset "Mentally alert (finding)":'2.16.840.1.113883.6.96'
-valueset "Counseling about tobacco use (procedure)":'2.16.840.1.113883.6.96'
-valueset "Procedure started (situation)":'2.16.840.1.113883.6.96'
-valueset "Smoking cessation therapy (regime/therapy)":'2.16.840.1.113883.6.96'
+valueset "Associated symptom (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Mentally alert (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Counseling about tobacco use (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Procedure started (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Smoking cessation therapy (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "Smoking and tobacco use cessation counseling visit; intermediate, greater than 3 minutes up to 10 minutes":'2.16.840.1.113883.6.12'
 valueset "Smoking and tobacco use cessation counseling visit; intensive, greater than 10 minutes":'2.16.840.1.113883.6.12'
-valueset "Inpatient stay (finding)":'2.16.840.1.113883.6.96'
+valueset "Inpatient stay (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 
 define "Not Covered":

@@ -9,16 +9,16 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Treatment given (situation)":'2.16.840.1.113883.6.96'
-valueset "Acquired pes planus (disorder)":'2.16.840.1.113883.6.96'
-valueset "Congenital pes planus (disorder)":'2.16.840.1.113883.6.96'
-valueset "Dislocation or subluxation of foot (disorder)":'2.16.840.1.113883.6.96'
-valueset "Foot care (regime/therapy)":'2.16.840.1.113883.6.96'
-valueset "Routine procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Physical examination procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Disorder of foot (disorder)":'2.16.840.1.113883.6.96'
-valueset "Associated symptom (finding)":'2.16.840.1.113883.6.96'
-valueset "Consultation (procedure)":'2.16.840.1.113883.6.96'
+valueset "Treatment given (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Acquired pes planus (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Congenital pes planus (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Dislocation or subluxation of foot (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Foot care (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Routine procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Physical examination procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Disorder of foot (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Associated symptom (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Consultation (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 define "Condition1":
 	exists(["Assessment, Performed": "Treatment given (situation)"])

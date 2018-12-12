@@ -9,22 +9,22 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Physician service (procedure)":'2.16.840.1.113883.6.96'
-valueset "Mental disorder (disorder)":'2.16.840.1.113883.6.96'
-valueset "Psychoneurotic personality disorder (disorder)":'2.16.840.1.113883.6.96'
-valueset "Personality disorder (disorder)":'2.16.840.1.113883.6.96'
+valueset "Physician service (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Mental disorder (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Psychoneurotic personality disorder (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Personality disorder (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
-valueset "Family counseling (procedure)":'2.16.840.1.113883.6.96'
-valueset "Inpatient stay (finding)":'2.16.840.1.113883.6.96'
-valueset "Patient's condition improved (finding)":'2.16.840.1.113883.6.96'
-valueset "Finding of sense of purpose (finding)":'2.16.840.1.113883.6.96'
-valueset "Purposeless (finding)":'2.16.840.1.113883.6.96'
-valueset "Management procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Patient counseling management (procedure)":'2.16.840.1.113883.6.96'
-valueset "Patient condition assessed (procedure)":'2.16.840.1.113883.6.96'
-valueset "Assisting with procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Family counseled (situation)":'2.16.840.1.113883.6.96'
-valueset "Procedure on family member (situation)":'2.16.840.1.113883.6.96'
+valueset "Family counseling (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Inpatient stay (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Patient's condition improved (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Finding of sense of purpose (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Purposeless (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Management procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Patient counseling management (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Patient condition assessed (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Assisting with procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Family counseled (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Procedure on family member (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Condition1":
 	not exists(["Encounter, Performed": "Inpatient stay (finding)"]) 

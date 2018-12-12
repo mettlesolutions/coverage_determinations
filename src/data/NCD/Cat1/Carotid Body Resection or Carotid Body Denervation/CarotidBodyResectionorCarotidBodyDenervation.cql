@@ -10,18 +10,18 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Carotid body tumor (morphologic abnormality)":'2.16.840.1.113883.6.96'
-valueset "Excision of carotid body tumor (procedure)":'2.16.840.1.113883.6.96'
-valueset "Pulmonary sign AND/OR symptom (finding)":'2.16.840.1.113883.6.96'
-valueset "Symptom relieving factors (finding)":'2.16.840.1.113883.6.96'
-valueset "Symptom control (regime/therapy)":'2.16.840.1.113883.6.96'
-valueset "Free of symptoms (situation)":'2.16.840.1.113883.6.96'
-valueset "Associated symptom (finding)":'2.16.840.1.113883.6.96'
-valueset "Carotid sinus hypersensitivity (disorder)":'2.16.840.1.113883.6.96'
-valueset "Patient's condition deteriorating (finding)":'2.16.840.1.113883.6.96'
-valueset "Absence of therapeutic response (finding)":'2.16.840.1.113883.6.96'
-valueset "Denervation of carotid body (procedure)":'2.16.840.1.113883.6.96'
-valueset "Incision of carotid body (procedure)":'2.16.840.1.113883.6.96'
+valueset "Carotid body tumor (morphologic abnormality)":'2.16.840.1.113883.3.88.12.3221.8.9'
+valueset "Excision of carotid body tumor (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Pulmonary sign AND/OR symptom (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Symptom relieving factors (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Symptom control (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Free of symptoms (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Associated symptom (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Carotid sinus hypersensitivity (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Patient's condition deteriorating (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Absence of therapeutic response (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Denervation of carotid body (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Incision of carotid body (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 
 define "Resection Not Covered":

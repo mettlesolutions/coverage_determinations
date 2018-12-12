@@ -9,9 +9,9 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Oxygen measurement, partial pressure, arterial (procedure)":'2.16.840.1.113883.6.96'
-valueset "Oxygen saturation measurement (procedure)":'2.16.840.1.113883.6.96'
-valueset "Enrollment in clinical trial (procedure)":'2.16.840.1.113883.6.96'
+valueset "Oxygen measurement, partial pressure, arterial (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Oxygen saturation measurement (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Enrollment in clinical trial (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "percent":'1.3.6.1.4.1.12009.10.3.1'
 
 define "Covered":

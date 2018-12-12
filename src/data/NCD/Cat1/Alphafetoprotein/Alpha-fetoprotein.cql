@@ -9,18 +9,15 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "HCPCS": '2.16.840.1.113883.6.285'
-codesystem "NDFRT": '2.16.840.1.113883.3.26.1.5'
 
-valueset "alpha Fetoprotein (substance)":'2.16.840.1.113883.6.96'
-valueset "Hepatocellular carcinoma (morphologic abnormality)":'2.16.840.1.113883.6.96'
-valueset "Metastatic hepatocellular carcinoma (morphologic abnormality)":'2.16.840.1.113883.6.96'
-valueset "Alcoholic cirrhosis (disorder)":'2.16.840.1.113883.6.96'
-valueset "Infectious cirrhosis (disorder)":'2.16.840.1.113883.6.96'
-valueset "Hemochromatosis (disorder)":'2.16.840.1.113883.6.96'
-valueset "Alpha-1-antitrypsin deficiency (disorder)":'2.16.840.1.113883.6.96'
-valueset "Benign carcinoid tumor (morphologic abnormality)":'2.16.840.1.113883.6.96'
+valueset "alpha Fetoprotein (substance)":'2.16.840.1.113762.1.4.1010.2'
+valueset "Hepatocellular carcinoma (morphologic abnormality)":'2.16.840.1.113883.3.88.12.3221.8.9'
+valueset "Metastatic hepatocellular carcinoma (morphologic abnormality)":'2.16.840.1.113883.3.88.12.3221.8.9'
+valueset "Alcoholic cirrhosis (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Infectious cirrhosis (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Hemochromatosis (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Alpha-1-antitrypsin deficiency (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Benign carcinoid tumor (morphologic abnormality)":'2.16.840.1.113883.3.88.12.3221.8.9'
 
 
 define "High risk":

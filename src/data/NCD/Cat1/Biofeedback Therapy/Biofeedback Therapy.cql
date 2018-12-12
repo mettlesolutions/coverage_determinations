@@ -9,13 +9,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Muscular re-education (procedure)":'2.16.840.1.113883.6.96'
-valueset "Abnormal muscle function (finding)":'2.16.840.1.113883.6.96'
-valueset "Spasticity (finding)":'2.16.840.1.113883.6.96'
+valueset "Muscular re-education (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Abnormal muscle function (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Spasticity (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Muscle spasm":'2.16.840.1.113883.6.90'
-valueset "Weakness present (finding)":'2.16.840.1.113883.6.96'
-valueset "Muscle tension (finding)":'2.16.840.1.113883.6.96'
-valueset "Psychosomatic rheumatism (disorder)":'2.16.840.1.113883.6.96'
+valueset "Weakness present (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Muscle tension (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Psychosomatic rheumatism (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 
 define "Not Covered":

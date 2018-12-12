@@ -9,14 +9,14 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Radiation therapy procedure or service (procedure)":'2.16.840.1.113883.6.96'
-valueset "Clinical trial (procedure)":'2.16.840.1.113883.6.96'
-valueset "Absence of therapeutic response (finding)":'2.16.840.1.113883.6.96'
-valueset "Tumor stage T2b (finding)":'2.16.840.1.113883.6.96'
+valueset "Radiation therapy procedure or service (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Clinical trial (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Absence of therapeutic response (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Tumor stage T2b (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Gleason score in Specimen Qualitative":'2.16.840.1.113883.6.1'
 valueset "Prostate-Specific Antigen [Chemical/Ingredient]":'2.16.840.1.113883.3.26.1.5'
-valueset "Cryosurgery (procedure)":'2.16.840.1.113883.6.96'
-valueset "Prostate-specific antigen monitoring (regime/therapy)":'2.16.840.1.113883.6.96'
+valueset "Cryosurgery (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Prostate-specific antigen monitoring (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
 
 
 define "Conditions":

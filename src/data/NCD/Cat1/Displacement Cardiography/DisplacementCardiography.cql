@@ -10,10 +10,10 @@ using QDM
 //parameter parameterName (dataType or default value)
 
 valueset "Electrocardiographic procedure (procedure)":'	2.16.840.1.113883.6.96'
-valueset "Stress (finding)":'2.16.840.1.113883.6.96'
-valueset "Disorder of coronary artery (disorder)":'2.16.840.1.113883.6.96'
-valueset "Atypical angina (disorder)":'2.16.840.1.113883.6.96'
-valueset "Typical angina (disorder)":'2.16.840.1.113883.6.96'
+valueset "Stress (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Disorder of coronary artery (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Atypical angina (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Typical angina (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Male":'2.16.840.1.113883.5.1'
 valueset "Female":'2.16.840.1.113883.5.1'
 

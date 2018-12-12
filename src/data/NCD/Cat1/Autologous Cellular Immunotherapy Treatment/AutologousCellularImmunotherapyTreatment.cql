@@ -9,9 +9,9 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Hormone refractory prostate cancer (disorder)":'2.16.840.1.113883.6.96'
-valueset "Asymptomatic (finding)":'2.16.840.1.113883.6.96'
-valueset "Patient's condition improved (finding)":'2.16.840.1.113883.6.96'
+valueset "Hormone refractory prostate cancer (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Asymptomatic (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Patient's condition improved (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Condition":
 	exists(["Assessment, Performed": "Patient's condition improved (finding)"])

@@ -9,10 +9,10 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Electrocautery operation (procedure)":'2.16.840.1.113883.6.96'
-valueset "Neurolysis (procedure)":'2.16.840.1.113883.6.96'
-valueset "Destruction of lesion or structure by radiofrequency (procedure)":'2.16.840.1.113883.6.96'
-valueset "Chronic pain (finding)":'2.16.840.1.113883.6.96'
+valueset "Electrocautery operation (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Neurolysis (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Destruction of lesion or structure by radiofrequency (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Chronic pain (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Covered":
 	exists(["Diagnosis": "Chronic pain (finding)"]) 

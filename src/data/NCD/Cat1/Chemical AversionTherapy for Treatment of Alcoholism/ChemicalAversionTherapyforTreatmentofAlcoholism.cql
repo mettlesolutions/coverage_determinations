@@ -9,18 +9,18 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Medication therapy unnecessary (finding)":'2.16.840.1.113883.6.96'
+valueset "Medication therapy unnecessary (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Seen by physician (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Alcoholism (disorder)":'2.16.840.1.113883.6.96'
-valueset "Alcoholism counseling (procedure)":'2.16.840.1.113883.6.96'
-valueset "Aversion therapy - alcoholism (regime/therapy)":'2.16.840.1.113883.6.96'
-valueset "Patient referral for alcoholism rehabilitation (procedure)":'2.16.840.1.113883.6.96'
+valueset "Alcoholism (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Alcoholism counseling (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Aversion therapy - alcoholism (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Patient referral for alcoholism rehabilitation (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "Inpatient": '2.16.840.1.113883.3.666.5.307'
-valueset "Inpatient care (regime/therapy)":'2.16.840.1.113883.6.96'
-valueset "Follow-up in outpatient clinic (finding)":'2.16.840.1.113883.6.96'
-valueset "Hospital admission, precertified by medical audit action (procedure)":'2.16.840.1.113883.6.96'
-valueset "Hospital admission (procedure)":'2.16.840.1.113883.6.96'
-valueset "Documentation procedure (procedure)":'2.16.840.1.113883.6.96'
+valueset "Inpatient care (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Follow-up in outpatient clinic (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Hospital admission, precertified by medical audit action (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Hospital admission (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Documentation procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 define "Necessary":
 	exists(["Assessment, Performed": "Seen by physician (finding)"]) 

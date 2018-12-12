@@ -9,13 +9,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Genetic syndrome (disorder)":'2.16.840.1.113883.6.96'
-valueset "Fetus with hereditary disease (disorder)":'2.16.840.1.113883.6.96'
-valueset "Sexual nondevelopment (finding)":'2.16.840.1.113883.6.96'
-valueset "Chronic myeloid leukemia, disease (disorder)":'2.16.840.1.113883.6.96'
-valueset "Acute lymphoid leukemia, disease (disorder)":'2.16.840.1.113883.6.96'
-valueset "Myeloid leukemia (disorder)":'2.16.840.1.113883.6.96'
-valueset "Myelodysplastic syndrome (disorder)":'2.16.840.1.113883.6.96'
+valueset "Genetic syndrome (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Fetus with hereditary disease (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Sexual nondevelopment (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Chronic myeloid leukemia, disease (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Acute lymphoid leukemia, disease (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Myeloid leukemia (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Myelodysplastic syndrome (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 
 define "Covered":

@@ -9,17 +9,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "HCPCS": '2.16.840.1.113883.6.285'
-codesystem "NDFRT": '2.16.840.1.113883.3.26.1.5'
-
 valueset "Colorectal Cancer Chemotherapy":'2.16.840.1.113762.1.4.1116.257'
-valueset "oxaliplatin 5 MG/ML [Eloxatin]":'2.16.840.1.113883.6.88'
-valueset "Fluorouracil Injectable Solution [Adrucil]":'2.16.840.1.113883.6.88'
-valueset "capecitabine Oral Tablet [Xeloda]":'2.16.840.1.113883.6.88'
-valueset "Irinotecan hydrochloride 20 MG/ML [Camptosar]":'2.16.840.1.113883.6.88'
-valueset "cetuximab":'2.16.840.1.113883.6.88'
-valueset "bevacizumab":'2.16.840.1.113883.6.88'
+valueset "oxaliplatin 5 MG/ML [Eloxatin]":'2.16.840.1.113883.3.88.12.80.16'
+valueset "Fluorouracil Injectable Solution [Adrucil]":'2.16.840.1.113883.3.88.12.80.16'
+valueset "capecitabine Oral Tablet [Xeloda]":'2.16.840.1.113883.3.88.12.80.16'
+valueset "Irinotecan hydrochloride 20 MG/ML [Camptosar]":'2.16.840.1.113883.3.88.12.80.16'
+valueset "cetuximab":'2.16.840.1.113883.3.88.12.80.16'
+valueset "bevacizumab":'2.16.840.1.113883.3.88.12.80.16'
 
 define "Covered":
 	exists(["Medication, Administered":"oxaliplatin 5 MG/ML [Eloxatin]"])

@@ -9,11 +9,11 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Filler (substance)":'2.16.840.1.113883.6.96'
-valueset "Skin part (body structure)":'2.16.840.1.113883.6.96'
-valueset "Human immunodeficiency virus infection (disorder)":'2.16.840.1.113883.6.96'
-valueset "Lipodystrophy caused by antiretroviral drug (disorder)":'2.16.840.1.113883.6.96'
-valueset "Lipodystrophy of face (disorder)":'2.16.840.1.113883.6.96'
+valueset "Filler (substance)":'2.16.840.1.113762.1.4.1010.2'
+valueset "Skin part (body structure)":'2.16.840.1.113883.3.88.12.3221.8.9'
+valueset "Human immunodeficiency virus infection (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Lipodystrophy caused by antiretroviral drug (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Lipodystrophy of face (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Depression diagnosis":'2.16.840.1.113883.3.600.145'
 
 define "Covered":

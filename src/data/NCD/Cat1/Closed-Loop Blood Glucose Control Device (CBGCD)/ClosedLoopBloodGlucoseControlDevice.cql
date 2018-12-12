@@ -9,10 +9,10 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-valueset "Insulin dependent diabetes mellitus type IA (disorder)":'2.16.840.1.113883.6.96'
-valueset "Management procedure (procedure)":'2.16.840.1.113883.6.96'
-valueset "Crisis (finding)":'2.16.840.1.113883.6.96'
-valueset "Inpatient environment (environment)":'2.16.840.1.113883.6.96'
+valueset "Insulin dependent diabetes mellitus type IA (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Management procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
+valueset "Crisis (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+valueset "Inpatient environment (environment)":'2.16.840.1.113762.1.4.1111.126'
 
 
 define "Covered":
