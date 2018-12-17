@@ -1,6 +1,6 @@
-library AirFluidizedBed version '1'
+library AirFluidizedBed
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -8,6 +8,12 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+
 
 valueset "Pressure ulcer (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Pressure ulcer stage 3 (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
@@ -17,13 +23,13 @@ valueset "Confined to chair (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Institutionalized (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 valueset "Attending physician (occupation)":'2.16.840.1.113762.1.4.1099.14'
-valueset "assessment of a patient":'2.16.840.1.113883.6.13'
+valueset "assessment of a patient":'2.16.840.1.113762.1.4.1182.80'
 valueset "Comprehensive interview and evaluation (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "Conservative therapy (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "Treatment completed (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Wound, non-healed (morphologic abnormality)":'2.16.840.1.113883.3.88.12.3221.8.9'
 valueset "Wound care assessment (procedure)":'2.16.840.1.113883.3.88.12.80.28'
-valueset "month":'1.3.6.1.4.1.12009.10.3.1'
+valueset "month":'2.16.840.1.113883.1.11.12839'
 valueset "Indication for procedure (observable entity)":'2.16.840.1.113883.17.4077.2.2007'
 valueset "Inpatient stay (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Documentation of medication related action plan (procedure)":'2.16.840.1.113883.3.88.12.80.28'
@@ -67,62 +73,62 @@ valueset "Equipment maintenance status (finding)":'2.16.840.1.113883.3.88.12.322
 
 
 define "Conservative Treatment":
-	(["Procedure, Performed": "Repositioning (procedure)"]
-		union ["Procedure, Performed": "Assisting to stand for pressure area relief (procedure)"]
-		union ["Assessment, Performed": "Pressure point of skin over bony prominence (finding)"])
-	union (["Procedure, Performed":"Pressure ulcer care (regime/therapy)"]
-		union ["Diagnosis":"Healing ulcer (morphologic abnormality)"]
-		union ["Procedure, Performed":"Pressure ulcer prevention (procedure)"])
-	union (["Diagnosis":"Wound Infection (SNOMED)"]
-		union ["Procedure, Performed":"Wound care (regime/therapy)"])
-	union (["Diagnosis":"Wound Infection (SNOMED)"]
-		union ["Procedure, Performed":"Nutrition management (regime/therapy)"])
-	union (["Diagnosis":"Debridement (procedure)"]
-		union ["Diagnosis":"Impaired tissue repair (morphologic abnormality)"]
-		union ["Assessment, Performed": "Eschar of wound bed (finding)"])
+	([Procedure: "Repositioning (procedure)"]
+		union [Procedure: "Assisting to stand for pressure area relief (procedure)"]
+		union [Observation: "Pressure point of skin over bony prominence (finding)"])
+	union ([Procedure:"Pressure ulcer care (regime/therapy)"]
+		union [Condition:"Healing ulcer (morphologic abnormality)"]
+		union [Procedure:"Pressure ulcer prevention (procedure)"])
+	union ([Condition:"Wound Infection (SNOMED)"]
+		union [Procedure:"Wound care (regime/therapy)"])
+	union ([Condition:"Wound Infection (SNOMED)"]
+		union [Procedure:"Nutrition management (regime/therapy)"])
+	union ([Condition:"Debridement (procedure)"]
+		union [Condition:"Impaired tissue repair (morphologic abnormality)"]
+		union [Observation: "Eschar of wound bed (finding)"])
 
 define "Eval Condition":
-	if (exists(["Procedure, Performed":"Conservative Treatment"]) and not exists(["Assessment, Performed": "Absence of therapeutic response (finding)"]) 
-		and exists(["Assessment, Performed": "Wound, non-healed (morphologic abnormality)"])) 
-		then (exists(["Encounter, Performed": "Attending physician (occupation)"])
-			and exists(["Assessment, Performed": "assessment of a patient"])
-			and exists(["Procedure, Performed":"Prescription (procedure)"])
-			and exists(["Procedure, Performed":"Comprehensive interview and evaluation (procedure)"])
-			and exists(["Assessment, Performed": "Indication for procedure (observable entity)"])
-			and exists(["Procedure, Performed":"Documentation of medication related action plan (procedure)"])
-			and exists(["Assessment, Performed": "Inpatient stay (finding)"]))
+	if (exists([Procedure:"Conservative Treatment"]) and not exists([Observation: "Absence of therapeutic response (finding)"]) 
+		and exists([Observation: "Wound, non-healed (morphologic abnormality)"])) 
+		then (exists([Encounter: "Attending physician (occupation)"])
+			and exists([Observation: "assessment of a patient"])
+			and exists([Procedure:"Prescription (procedure)"])
+			and exists([Procedure:"Comprehensive interview and evaluation (procedure)"])
+			and exists([Observation: "Indication for procedure (observable entity)"])
+			and exists([Procedure:"Documentation of medication related action plan (procedure)"])
+			and exists([Observation: "Inpatient stay (finding)"]))
 		else false
 
 define "Debridement condition":
-	exists(exists(["Procedure, Performed":"Debridement of wound of skin (procedure)"])
-	and exists(["Procedure, Performed":"Dressing of wound (procedure)"])) during ["Procedure, Performed":"Conservative Treatment"]
+	exists(exists([Procedure:"Debridement of wound of skin (procedure)"])
+	and exists([Procedure:"Dressing of wound (procedure)"])) during [Procedure:"Conservative Treatment"]
 
 define "Caregiver":
-	exists(["Procedure, Performed": "Caregiver support (regime/therapy)"])
-	and exists(["Procedure, Performed":"Assisting with activity of daily living (procedure)"])
-	and exists(["Procedure, Performed":"Fluid balance regulation (procedure)"])
-	and exists(["Symptom": "Dry skin (finding)"])
-	and exists(["Procedure, Performed":"Repositioning (procedure)"])
-	and (exists(["Assessment, Performed": "Altered mental status (finding)"]) and exists(["Procedure, Performed":"Management procedure (procedure)"]))
-	and exists(["Procedure, Performed":"Dietary needs education (procedure)"])
-	and exists(["Procedure, Performed":"Prescribed medication education (procedure)"])	
+	exists([Procedure: "Caregiver support (regime/therapy)"])
+	and exists([Procedure:"Assisting with activity of daily living (procedure)"])
+	and exists([Procedure:"Fluid balance regulation (procedure)"])
+	and exists([Condition: "Dry skin (finding)"])
+	and exists([Procedure:"Repositioning (procedure)"])
+	and (exists([Observation: "Altered mental status (finding)"]) and exists([Procedure:"Management procedure (procedure)"]))
+	and exists([Procedure:"Dietary needs education (procedure)"])
+	and exists([Procedure:"Prescribed medication education (procedure)"])	
 
 define "Covered":
-	((exists(["Diagnosis":"Pressure ulcer stage 3 (disorder)"])
-		or exists(["Diagnosis":"Pressure ulcer stage 4 (disorder)"]))
-	or (exists(["Assessment, Performed": "Bed-ridden (finding)"])
-		or exists(["Assessment, Performed": "Confined to chair (finding)"]))
-	or (if exists("Not Covered") then exists(["Assessment, Performed": "Institutionalized (finding)"]) else false)
+	((exists([Condition:"Pressure ulcer stage 3 (disorder)"])
+		or exists([Condition:"Pressure ulcer stage 4 (disorder)"]))
+	or (exists([Observation: "Bed-ridden (finding)"])
+		or exists([Observation: "Confined to chair (finding)"]))
+	or (if "Not Covered" then exists([Observation: "Institutionalized (finding)"]) else false)
 	or "Eval Condition"
-	or exists("Debridement condition"))
+	or "Debridement condition")
 	and "Caregiver"
-	and (exists(["Encounter, Performed": "Seen by physician (finding)"]) and exists(["Encounter, Performed": "Home (environment)"]))		
+	and (exists([Encounter: "Seen by physician (finding)"]) and exists([Encounter: "Home (environment)"]))		
 
 	
 define "Not Covered":
-	if ((exists(["Diagnosis":"Pressure ulcer (disorder)"]) and exists(["Diagnosis":"Chronic obstructive lung disease (disorder)"]))
-		and exists(["Assessment, Performed": "Caregiver difficulty performing caretaking (finding)"])) 
-	then not exists(["Encounter, Performed": "Home (environment)"]) 
+	if ((exists([Condition:"Pressure ulcer (disorder)"]) and exists([Condition:"Chronic obstructive lung disease (disorder)"]))
+		and exists([Observation: "Caregiver difficulty performing caretaking (finding)"])) 
+	then not exists([Encounter: "Home (environment)"]) 
 	else false
 
 define "Coverage":

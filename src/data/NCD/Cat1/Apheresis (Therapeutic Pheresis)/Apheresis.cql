@@ -1,6 +1,6 @@
 library Apheresis version '1'
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -8,6 +8,13 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+
+valueset "Apheresis (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 valueset "Myasthenia gravis (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Therapeutic plasma exchange (procedure)":'2.16.840.1.113883.3.88.12.80.28'
@@ -50,72 +57,73 @@ valueset "Seen by physician (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
 
 define "Hospital Setting":
-	exists(["Assessment, Performed": "Under care of public health physician (finding)"])
-	and (exists(["Encounter, Performed": "Seen by physician (finding)"]) 
-		and exists(["Procedure, Performed": "Medical procedure AND/OR service (procedure)"]))
+	exists([Observation: "Under care of public health physician (finding)"])
+	and (exists([Encounter: "Seen by physician (finding)"])
+		and exists([Procedure: "Medical procedure AND/OR service (procedure)"]))
 
 
 define "Condition 1":
-	exists(["Procedure, Performed": "Therapeutic plasma exchange (procedure)"])
-	and exists(["Diagnosis": "Myasthenia gravis (disorder)"])
+	exists([Procedure: "Therapeutic plasma exchange (procedure)"])
+	and exists([Condition: "Myasthenia gravis (disorder)"])
 
 define "Condition 2":
-	exists(["Procedure, Performed": "Leukopheresis (procedure)"])
-	and exists(["Diagnosis": "Leukemia, disease (disorder)"])
+	exists([Procedure: "Leukopheresis (procedure)"])
+	and exists([Condition: "Leukemia, disease (disorder)"])
 
 define "Condition 3":
-	exists(["Procedure, Performed": "Plasmapheresis (procedure)"])
-	and exists(["Diagnosis": "Waldenström macroglobulinemia (disorder)"])
+	exists([Procedure: "Plasmapheresis (procedure)"])
+	and exists([Condition: "Waldenström macroglobulinemia (disorder)"])
 
 define "Condition 4":
-	exists(["Diagnosis": "Hyperglobulinemia (finding)"])
-	and (exists(["Diagnosis": "Multiple myeloma (disorder)"])
-		or exists(["Diagnosis": "Cryoglobulinemia (disorder)"])
-		or exists(["Diagnosis": "Hyperviscosity syndrome (disorder)"]))
+	exists([Condition: "Hyperglobulinemia (finding)"])
+	and (exists([Condition: "Multiple myeloma (disorder)"])
+		or exists([Condition: "Cryoglobulinemia (disorder)"])
+		or exists([Condition: "Hyperviscosity syndrome (disorder)"]))
 
 define "Condition 5":
-	(exists(["Procedure, Performed": "Plasmapheresis (procedure)"]) 
-	or exists(["Procedure, Performed": "Therapeutic plasma exchange (procedure)"]))
-	and exists(["Diagnosis": "Thrombotic thrombocytopenic purpura (disorder)"])
-	
+	(exists([Procedure: "Plasmapheresis (procedure)"])
+	or exists([Procedure: "Therapeutic plasma exchange (procedure)"]))
+	and exists([Condition: "Thrombotic thrombocytopenic purpura (disorder)"])
+
 define "Condition 6":
-	(exists(["Procedure, Performed": "Plasmapheresis (procedure)"]) 
-	or exists(["Procedure, Performed": "Therapeutic plasma exchange (procedure)"]))
-	and (exists(["Diagnosis": "Rheumatoid vasculitis (disorder)"]) and exists("Serious or Life Threatening Illness"))
+	(exists([Procedure: "Plasmapheresis (procedure)"])
+	or exists([Procedure: "Therapeutic plasma exchange (procedure)"]))
+	and (exists([Condition: "Rheumatoid vasculitis (disorder)"]) and exists("Serious or Life Threatening Illness"))
 
 define "Condition 7":
 	false
 
 define "Condition 8":
-	exists(["Procedure, Performed": "Therapeutic plasma exchange (procedure)"])
-	and exists(["Diagnosis": "Goodpasture's syndrome (disorder)"])
-	
+	exists([Procedure: "Therapeutic plasma exchange (procedure)"])
+	and exists([Condition: "Goodpasture's syndrome (disorder)"])
+
 define "Condition 9":
 	false
-	
+
 define "Condition 10":
-	exists(["Diagnosis": "Chronic inflammatory demyelinating polyneuropathy (disorder)"]) 
-	and exists("Serious or Life Threatening Illness")
-	and exists("Absence of therapeutic response (finding)")
-	
+	exists([Condition: "Chronic inflammatory demyelinating polyneuropathy (disorder)"])
+	and exists([Condition: "Serious or Life Threatening Illness"])
+	and exists([Observation: "Absence of therapeutic response (finding)"])
+
 define "Condition 11":
-	(exists(["Diagnosis": "Scleroderma with organ / system involvement (disorder)"]) or exists(["Diagnosis": "Polymyositis (disorder)"])) 
-	and exists("Serious or Life Threatening Illness")
-	and exists("Absence of therapeutic response (finding)")
-	
+	(exists([Condition: "Scleroderma with organ / system involvement (disorder)"]) or exists([Condition: "Polymyositis (disorder)"]))
+	and exists([Condition: "Serious or Life Threatening Illness"])
+	and exists([Observation: "Absence of therapeutic response (finding)"])
+
 define "Condition 12":
-	exists(["Diagnosis": "Guillain-Barré syndrome (disorder)"])
-	
+	exists([Condition: "Guillain-Barré syndrome (disorder)"])
+
 define "Condition 13":
-	exists(["Diagnosis": "Systemic lupus erythematosus (disorder)"])
-	and exists("Serious or Life Threatening Illness")
-	and exists("Absence of therapeutic response (finding)")
+	exists([Condition: "Systemic lupus erythematosus (disorder)"])
+	and exists([Condition: "Serious or Life Threatening Illness"])
+	and exists([Observation: "Absence of therapeutic response (finding)"])
 
 
 define "Covered":
-	"Hospital Setting" and ("Condition 1" or "Condition 2" or "Condition 3" or "Condition 4" or "Condition 5" or "Condition 6" 
-	or "Condition 7" or "Condition 8" or "Condition 9" or "Condition 10" or "Condition 11" or "Condition 12" or "Condition 13")
-	
+	if (exists([Procedure:"Apheresis (procedure)"]) and "Hospital Setting" and ("Condition 1" or "Condition 2" or "Condition 3" or "Condition 4" or "Condition 5" or "Condition 6"
+	or "Condition 7" or "Condition 8" or "Condition 9" or "Condition 10" or "Condition 11" or "Condition 12" or "Condition 13"))
+	then true
+	else false
 	
 define "Coverage":
 	"Covered"

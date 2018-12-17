@@ -1,6 +1,6 @@
 library CarcinoembryonicAntigen version '1'
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -9,6 +9,12 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+
+valueset "Carcinoembryonic Antigen Test":'2.16.840.1.113762.1.4.1116.35'
 valueset "Carcinoembryonic antigen monitoring (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "Carcinoma of colon (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Response to treatment (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
@@ -37,24 +43,27 @@ valueset "Laboratory test result abnormal (situation)":'2.16.840.1.113883.3.88.1
 valueset "Laboratory test not necessary (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 define "Liver metastatis indication":
-	if ((exists(["Diagnosis": "Metastasis from malignant tumor of liver (disorder)"])
-		and exists(["Procedure, Performed": "Excision of liver metastasis (procedure)"]))
-		and (exists(["Diagnosis": "Carcinoma of colon, stage II (finding)"])
-			or exists(["Diagnosis": "Carcinoma of colon, stage III (finding)"])))
-	then (exists(["Procedure, Performed": "Postoperative procedure (procedure)"])
-		and exists(["Procedure, Performed": "Carcinoembryonic antigen measurement (procedure)"]))
+	if ((exists([Condition: "Metastasis from malignant tumor of liver (disorder)"])
+		and exists([Procedure: "Excision of liver metastasis (procedure)"]))
+		and (exists([Condition: "Carcinoma of colon, stage II (finding)"])
+			or exists([Condition: "Carcinoma of colon, stage III (finding)"])))
+	then (exists([Procedure: "Postoperative procedure (procedure)"])
+		and exists([Procedure: "Carcinoembryonic antigen measurement (procedure)"]))
 	else false
 
-define "Covered": 
-	(exists(["Diagnosis": "Carcinoma of colon (disorder)"])
-		and exists(["Procedure, Performed": "Monitoring following treatment for cancer (regime/therapy)"]))
-	or (exists(["Assessment, Performed": "Using decision making strategies (finding)"])
-		and exists(["Procedure, Performed": "Developing a treatment plan (procedure)"]))
-	or (exists(["Assessment, Performed": "Tumor site not specified (finding)"])
-		or exists(["Assessment, Performed": "Extent of tumor involvement not specified (finding)"]))
-	or ("Liver metastatis indication")
-	or (exists(["Diagnosis": "Metastatic carcinoid tumor (disorder)"])
-		and exists(["Procedure, Performed": "Carcinoembryonic antigen measurement (procedure)"]CA where CA.components=2))
+define "Covered":
+	if (exists([Procedure: "Carcinoembryonic Antigen Test"])
+	and ((exists([Condition: "Carcinoma of colon (disorder)"])
+		and exists([Procedure: "Monitoring following treatment for cancer (regime/therapy)"]))
+		or (exists([Observation: "Using decision making strategies (finding)"])
+			and exists([Procedure: "Developing a treatment plan (procedure)"]))
+		or (exists([Observation: "Tumor site not specified (finding)"])
+			or exists([Observation: "Extent of tumor involvement not specified (finding)"]))
+		or ("Liver metastatis indication")
+		or (exists([Condition: "Metastatic carcinoid tumor (disorder)"])
+			and exists([Procedure: "Carcinoembryonic antigen measurement (procedure)"]))))
+	then true
+	else false
 	
 	
 define "Coverage": 

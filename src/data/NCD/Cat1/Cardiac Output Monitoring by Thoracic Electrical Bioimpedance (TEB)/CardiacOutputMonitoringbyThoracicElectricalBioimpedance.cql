@@ -1,6 +1,6 @@
 library CardiacOutputMonitoringbyThoracicElectricalBioimpedance
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -8,6 +8,11 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Dyspnea (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Shortness of breath":'2.16.840.1.113883.6.103'
@@ -52,68 +57,71 @@ valueset "Hypertension":'2.16.840.1.113762.1.4.1032.9'
 valueset "Management procedure (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 define "Condition1":
-	exists(["Diagnosis": "Dyspnea (finding)"])
-	and exists(["Diagnosis": "Shortness of breath"])
-	and (exists(["Procedure, Performed": "Interview, history AND/OR physical examination (procedure)"])
-		and exists(["Procedure, Performed": "Gathering of past medical history (procedure)"])
-		and exists(["Procedure, Performed": "Medical assessment (procedure)"])
-		and exists(["Assessment, Performed": "Unable to analyze information (finding)"]))
-	and (exists(["Encounter, Performed": "Attending physician (occupation)"])
-		and exists(["Procedure, Recommended": "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
-		and not exists(["Assessment, Performed": "Medication therapy unnecessary (finding)"]))
-		
+	exists([Condition: "Dyspnea (finding)"])
+	and exists([Condition: "Shortness of breath"])
+	and (exists([Procedure: "Interview, history AND/OR physical examination (procedure)"])
+		and exists([Procedure: "Gathering of past medical history (procedure)"])
+		and exists([Procedure: "Medical assessment (procedure)"])
+		and exists([Observation: "Unable to analyze information (finding)"]))
+	and (exists([Encounter: "Attending physician (occupation)"])
+		and exists([ProcedureRequest: "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
+		and not exists([Observation: "Medication therapy unnecessary (finding)"]))
+
 define "Condition2":
-	exists(["Procedure, Performed": "Atrioventricular sequential pacing (procedure)"])
-	and (exists(["Procedure, Performed": "Interview, history AND/OR physical examination (procedure)"])
-		and exists(["Procedure, Performed": "Gathering of past medical history (procedure)"])
-		and exists(["Procedure, Performed": "Medical assessment (procedure)"])
-		and exists(["Assessment, Performed": "Unable to analyze information (finding)"]))
-	and (exists(["Encounter, Performed": "Attending physician (occupation)"])
-		and exists(["Procedure, Recommended": "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
-		and not exists(["Assessment, Performed": "Medication therapy unnecessary (finding)"]))
-		
+	exists([Procedure: "Atrioventricular sequential pacing (procedure)"])
+	and (exists([Procedure: "Interview, history AND/OR physical examination (procedure)"])
+		and exists([Procedure: "Gathering of past medical history (procedure)"])
+		and exists([Procedure: "Medical assessment (procedure)"])
+		and exists([Observation: "Unable to analyze information (finding)"]))
+	and (exists([Encounter: "Attending physician (occupation)"])
+		and exists([ProcedureRequest: "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
+		and not exists([Observation: "Medication therapy unnecessary (finding)"]))
+
 define "Condition3":
-	exists(["Diagnosis": "Congestive heart failure (disorder)"])
-	and exists(["Diagnosis": "Terminal illness (finding)"])
-	and (exists(["Assessment, Performed": "Awaiting transplantation of organ (situation)"])
-		and exists(["Procedure, Performed": "Transplantation of heart (procedure)"])
+	exists([Condition: "Congestive heart failure (disorder)"])
+	and exists([Condition: "Terminal illness (finding)"])
+	and (exists([Observation: "Awaiting transplantation of organ (situation)"])
+		and exists([Procedure: "Transplantation of heart (procedure)"])
 		and exists("Home (environment)")
-		and exists(["Assessment, Performed": "Preferred place of death discussed with patient (situation)"])
-		and exists(["Assessment, Performed": "Determination of outcome, death unavoidable (finding)"]))
-		
+		and exists([Observation: "Preferred place of death discussed with patient (situation)"])
+		and exists([Observation: "Determination of outcome, death unavoidable (finding)"]))
+
 define "Condition4":
-	exists(["Diagnosis": "Heart transplant failure and rejection (disorder)"])
-	and (not exists(["Procedure, Performed": "Myocardial biopsy (procedure)"])
-		or (if (exists(["Procedure, Recommended": "Myocardial biopsy (procedure)"])
-				and exists(["Procedure, Performed": "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])) 
-			then ((not exists(["Assessment, Performed": "Medication therapy unnecessary (finding)"])
-				and exists(["Procedure, Recommended": "Myocardial biopsy (procedure)"]))
-				and exists(["Procedure, Performed": "Documentation procedure (procedure)"]))
+	exists([Condition: "Heart transplant failure and rejection (disorder)"])
+	and (not exists([Procedure: "Myocardial biopsy (procedure)"])
+		or (if (exists([ProcedureRequest: "Myocardial biopsy (procedure)"])
+				and exists([Procedure: "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"]))
+			then ((not exists([Observation: "Medication therapy unnecessary (finding)"])
+				and exists([ProcedureRequest: "Myocardial biopsy (procedure)"]))
+				and exists([Procedure: "Documentation procedure (procedure)"]))
 			else false))
-	
+
 define "Condition5":
-	exists(["Diagnosis": "Congestive heart failure (disorder)"])
-	and exists(["Procedure, Performed": "Management of fluid therapy (procedure)"])
-	and (exists(["Procedure, Performed": "Interview, history AND/OR physical examination (procedure)"])
-		and exists(["Procedure, Performed": "Gathering of past medical history (procedure)"])
-		and exists(["Procedure, Performed": "Medical assessment (procedure)"])
-		and exists(["Assessment, Performed": "Unable to analyze information (finding)"]))
-	and (exists(["Encounter, Performed": "Attending physician (occupation)"])
-		and exists(["Procedure, Recommended": "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
-		and not exists(["Assessment, Performed": "Medication therapy unnecessary (finding)"]))
-		
-define "Covered": 
-	"Condition1" or "Condition2" or "Condition3" or "Condition3" or "Condition4"
+	exists([Condition: "Congestive heart failure (disorder)"])
+	and exists([Procedure: "Management of fluid therapy (procedure)"])
+	and (exists([Procedure: "Interview, history AND/OR physical examination (procedure)"])
+		and exists([Procedure: "Gathering of past medical history (procedure)"])
+		and exists([Procedure: "Medical assessment (procedure)"])
+		and exists([Observation: "Unable to analyze information (finding)"]))
+	and (exists([Encounter: "Attending physician (occupation)"])
+		and exists([ProcedureRequest: "Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
+		and not exists([Observation: "Medication therapy unnecessary (finding)"]))
+
+define "Covered":
+	if (exists([Procedure:"Monitoring of cardiac output using thoracic impedance cardiography (regime/therapy)"])
+	and ("Condition1" or "Condition2" or "Condition3" or "Condition3" or "Condition4"))
+	then true
+	else false
 	
 define "Not Covered":
-	(exists(["Diagnosis": "Aortic valve regurgitation (disorder)"])
-	and (exists(["Assessment, Performed": "Disease suspected (situation)"])
-		or not exists(["Assessment, Performed": "Disease, alleged but not proven (finding)"])))
-	or exists(["Procedure, Performed": "Mandatory minute volume ventilation (procedure)"])
-	or (exists(["Assessment, Performed": "Procedure started (situation)"])
-		and exists(["Procedure, Performed": "Coronary artery bypass grafting (procedure)"]))
-	or (exists(["Diagnosis": "Hypertension"])
-		and exists(["Procedure, Performed": "Management procedure (procedure)"]))
+	(exists([Condition: "Aortic valve regurgitation (disorder)"])
+	and (exists([Observation: "Disease suspected (situation)"])
+		or not exists([Observation: "Disease, alleged but not proven (finding)"])))
+	or exists([Procedure: "Mandatory minute volume ventilation (procedure)"])
+	or (exists([Observation: "Procedure started (situation)"])
+		and exists([Procedure: "Coronary artery bypass grafting (procedure)"]))
+	or (exists([Condition: "Hypertension"])
+		and exists([Procedure: "Management procedure (procedure)"]))
 	
 define "Coverage":
 	"Covered" and not "Not Covered"

@@ -1,6 +1,6 @@
 library AprepitantforChemotherapyInducedEmesis version '1'
 
-using QDM version '5.0'
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -8,6 +8,11 @@ using QDM version '5.0'
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "aprepitant Oral Product":'2.16.840.1.113883.3.88.12.80.16'
 valueset "Serotonin 5HT-3 Antagonists [MoA]":'2.16.840.1.113883.3.26.1.5'
@@ -42,71 +47,71 @@ valueset "Antineoplastic chemotherapy regimen (regime/therapy)":'2.16.840.1.1138
 parameter "Measurement Period" Interval<DateTime>
 
 define "anticancer chemotherapeutic agents":
-	exists(["Medication, Active":"alemtuzumab [Chemical/Ingredient]"])
-	or exists(["Medication, Active":"Azacitidine"])
-	or exists(["Medication, Active":"bendamustine"])
-	or exists(["Medication, Active":"Carboplatin"])
-	or exists(["Medication, Active":"Carmustine"])
-	or exists(["Medication, Active":"Cisplatin"])
-	or exists(["Medication, Active":"clofarabine"])
-	or exists(["Medication, Active":"Cyclophosphamide"])
-	or exists(["Medication, Active":"Cytarabine"])
-	or exists(["Medication, Active":"Dacarbazine"])
-	or exists(["Medication, Active":"Daunorubicin"])
-	or exists(["Medication, Active":"Doxorubicin"])
-	or exists(["Medication, Active":"Epirubicin"])
-	or exists(["Medication, Active":"Idarubicin"])
-	or exists(["Medication, Active":"Ifosfamide"])
-	or exists(["Medication, Active":"irinotecan"])
-	or exists(["Medication, Active":"Lomustine"])
-	or exists(["Medication, Active":"Mechlorethamine"])
-	or exists(["Medication, Active":"oxaliplatin"])
-	or exists(["Medication, Active":"Streptozocin"])
-	
+	exists([MedicationStatement:"alemtuzumab [Chemical/Ingredient]"])
+	or exists([MedicationStatement:"Azacitidine"])
+	or exists([MedicationStatement:"bendamustine"])
+	or exists([MedicationStatement:"Carboplatin"])
+	or exists([MedicationStatement:"Carmustine"])
+	or exists([MedicationStatement:"Cisplatin"])
+	or exists([MedicationStatement:"clofarabine"])
+	or exists([MedicationStatement:"Cyclophosphamide"])
+	or exists([MedicationStatement:"Cytarabine"])
+	or exists([MedicationStatement:"Dacarbazine"])
+	or exists([MedicationStatement:"Daunorubicin"])
+	or exists([MedicationStatement:"Doxorubicin"])
+	or exists([MedicationStatement:"Epirubicin"])
+	or exists([MedicationStatement:"Idarubicin"])
+	or exists([MedicationStatement:"Ifosfamide"])
+	or exists([MedicationStatement:"irinotecan"])
+	or exists([MedicationStatement:"Lomustine"])
+	or exists([MedicationStatement:"Mechlorethamine"])
+	or exists([MedicationStatement:"oxaliplatin"])
+	or exists([MedicationStatement:"Streptozocin"])
+
 define "anticancer chemotherapeutic agents Administration":
-	["Medication, Administered":"alemtuzumab [Chemical/Ingredient]"]
-	union ["Medication, Administered":"Azacitidine"]
-	union ["Medication, Administered":"bendamustine"]
-	union ["Medication, Administered":"Carboplatin"]
-	union ["Medication, Administered":"Carmustine"]
-	union ["Medication, Administered":"Cisplatin"]
-	union ["Medication, Administered":"clofarabine"]
-	union ["Medication, Administered":"Cyclophosphamide"]
-	union ["Medication, Administered":"Cytarabine"]
-	union ["Medication, Administered":"Dacarbazine"]
-	union ["Medication, Administered":"Daunorubicin"]
-	union ["Medication, Administered":"Doxorubicin"]
-	union ["Medication, Administered":"Epirubicin"]
-	union ["Medication, Administered":"Idarubicin"]
-	union ["Medication, Administered":"Ifosfamide"]
-	union ["Medication, Administered":"irinotecan"]
-	union ["Medication, Administered":"Lomustine"]
-	union ["Medication, Administered":"Mechlorethamine"]
-	union ["Medication, Administered":"oxaliplatin"]
-	union ["Medication, Administered":"Streptozocin"]
+	[MedicationAdministration:"alemtuzumab [Chemical/Ingredient]"]
+	union [MedicationAdministration:"Azacitidine"]
+	union [MedicationAdministration:"bendamustine"]
+	union [MedicationAdministration:"Carboplatin"]
+	union [MedicationAdministration:"Carmustine"]
+	union [MedicationAdministration:"Cisplatin"]
+	union [MedicationAdministration:"clofarabine"]
+	union [MedicationAdministration:"Cyclophosphamide"]
+	union [MedicationAdministration:"Cytarabine"]
+	union [MedicationAdministration:"Dacarbazine"]
+	union [MedicationAdministration:"Daunorubicin"]
+	union [MedicationAdministration:"Doxorubicin"]
+	union [MedicationAdministration:"Epirubicin"]
+	union [MedicationAdministration:"Idarubicin"]
+	union [MedicationAdministration:"Ifosfamide"]
+	union [MedicationAdministration:"irinotecan"]
+	union [MedicationAdministration:"Lomustine"]
+	union [MedicationAdministration:"Mechlorethamine"]
+	union [MedicationAdministration:"oxaliplatin"]
+	union [MedicationAdministration:"Streptozocin"]
 	
-	
+
 define "Agents Relevant Period":
-	"anticancer chemotherapeutic agents Administration"M 
-		where M.relevantPeriod during "Measurement Period"
-	return M.relevantPeriod
-	
+	"anticancer chemotherapeutic agents Administration"M
+		where M.effective["Measurement Period"]
+	return M.effective["Measurement Period"]
+
 define "Three drug regimen":
-	exists(["Medication, Administered":"aprepitant Oral Product"])
-	and exists(["Medication, Administered":"Serotonin 5HT-3 Antagonists [MoA]"])
-	and exists(["Medication, Administered":"Dexamethasone Oral Product"])	
-	
-	//exists(["Medication, Administered":"aprepitant Oral Product"]A where A.relevantPeriod during "Measurement Period" and A.relevantPeriod starts before or within 48 hours after start of "Agents Relevant Period")
-	//and exists(["Medication, Administered":"Serotonin 5HT-3 Antagonists [MoA]"]S where S.relevantPeriod during "Measurement Period")
-	//and exists(["Medication, Administered":"Dexamethasone Oral Product"]D where D.relevantPeriod during "Measurement Period")
+	exists([MedicationAdministration:"aprepitant Oral Product"])
+	and exists([MedicationAdministration:"Serotonin 5HT-3 Antagonists [MoA]"])
+	and exists([MedicationAdministration:"Dexamethasone Oral Product"])
+
+	//exists([MedicationAdministration:"aprepitant Oral Product"]A where A.relevantPeriod during "Measurement Period" and A.relevantPeriod starts before or within 48 hours after start of "Agents Relevant Period")
+	//and exists([MedicationAdministration:"Serotonin 5HT-3 Antagonists [MoA]"]S where S.relevantPeriod during "Measurement Period")
+	//and exists([MedicationAdministration:"Dexamethasone Oral Product"]D where D.relevantPeriod during "Measurement Period")
 	
 define "Covered":
 	if "anticancer chemotherapeutic agents" then "Three drug regimen"
 	else false
 	
 define "Not covered":
-	exists(["Diagnosis": "Drug-induced nausea and vomiting (disorder)"])
-	and exists(["Procedure, Performed": "Antineoplastic chemotherapy regimen (regime/therapy)"])
+	exists([Condition: "Drug-induced nausea and vomiting (disorder)"])
+	and exists([Procedure: "Antineoplastic chemotherapy regimen (regime/therapy)"])
 
 define "Coverage":
 	"Covered" and not "Not covered"
