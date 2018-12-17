@@ -1,7 +1,8 @@
 //Hospital and Skilled Nursing Facility Admission Diagnostic Procedures
-library ChlamydiaScreening_Common version '2'
+library HospitalandSkilledNursingFacilityAdmissionDiagnosticProcedures
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -23,23 +24,23 @@ valueset "Medical consultation with outpatient (procedure)" : '2.16.840.1.113883
 context Patient
 
 define "Cover":
-		(exists (["Diagnostic Study, Performed" : "Chest x-ray"])
-		and (exists (["Procedure, Performed": "Patient status determination (procedure)"]))
+		(exists (["ProcedureRequest" : "Chest x-ray"])
+		and (exists (["Procedure": "Patient status determination (procedure)"]))
 		)
 
 define "Covered":
-		(exists (["Diagnostic Study, Performed" : "Chest x-ray"])
-		and (exists (["Laboratory Test, Performed" : "Urinalysis (procedure)"]))
-		and (exists (["Procedure, Performed" : "Diagnostic procedure (procedure)"]))
-		and (exists (["Encounter, Performed":"Hospital admission (procedure)"]))
-		or (exists (["Encounter, Performed":"Skilled nursing facility (environment)"]))
+		(exists (["ProcedureRequest" : "Chest x-ray"])
+		and (exists (["Observation" : "Urinalysis (procedure)"]))
+		and (exists (["Procedure" : "Diagnostic procedure (procedure)"]))
+		and (exists (["Encounter":"Hospital admission (procedure)"]))
+		or (exists (["Encounter":"Skilled nursing facility (environment)"]))
 		and "Cover"
 		)
 define "Not Covered":
-		(exists (["Procedure, Performed" : "Medical consultation with outpatient (procedure)" ])
-		and (exists (["Procedure, Performed" : "Diagnostic procedure (procedure)"]))
-		and not  (exists (["Encounter, Performed":"Hospital admission (procedure)"]))
-		or not (exists (["Encounter, Performed":"Skilled nursing facility (environment)"]))
+		(exists (["Procedure" : "Medical consultation with outpatient (procedure)" ])
+		and (exists (["Procedure" : "Diagnostic procedure (procedure)"]))
+		and not  (exists (["Encounter":"Hospital admission (procedure)"]))
+		or not (exists (["Encounter":"Skilled nursing facility (environment)"]))
 		)
 		
 define "Coverage":

@@ -1,9 +1,8 @@
 //Laparoscopic Cholecystectomy
 
+library LaparoscopicCholecystectomy
 
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -26,18 +25,23 @@ valueset "Inpatient stay (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 context Patient
 
 define "Covered":
-	(exists (["Diagnosis": "Cholecystitis (disorder)"])
-	and (exists (["Procedure, Performed": "Laparoscopic cholecystectomy (procedure)"]))
+	(exists (["Condition": "Cholecystitis (disorder)"])
+	and (exists (["Procedure": "Laparoscopic cholecystectomy (procedure)"]))
 	)
 	
-define "Claim":
-		(exists (["Encounter, Performed" : "Inpatient stay (finding)"])
-		and (exists (["Procedure, Performed" :"Laparoscopy (procedure)"]))
-		or (exists (["Procedure, Performed" :"Surgical procedure (procedure)"]))
-		or (exists (["Procedure, Performed" :"Cholecystectomy (procedure)"]))
-		or (exists (["Procedure, Performed" :"Laparoscopic cholecystectomy with cholangiography (procedure)"]))
-		or (exists (["Procedure, Performed" :"Surgical procedure (procedure)"]))
+define "Claim 1":
+		if(exists (["Encounter" : "Inpatient stay (finding)"]))
+		then
+		 	(exists (["Procedure" :"Laparoscopy (procedure)"]))
+		else
+		 	null
+		 	
+define "Claim 2":
+		(exists (["Procedure" :"Surgical procedure (procedure)"])
+		or (exists (["Procedure" :"Cholecystectomy (procedure)"]))
+		or (exists (["Procedure" :"Laparoscopic cholecystectomy with cholangiography (procedure)"]))
+		or (exists (["Procedure" :"Surgical procedure (procedure)"]))
 		)
 		
 define "Coverage":
-		"Covered" and "Claim"
+		"Covered" and "Claim 1" and "Claim 2"

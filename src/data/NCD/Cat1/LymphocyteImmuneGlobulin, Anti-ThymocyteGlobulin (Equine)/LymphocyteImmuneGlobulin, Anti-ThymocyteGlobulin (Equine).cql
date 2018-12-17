@@ -1,7 +1,8 @@
 //Lymphocyte Immune Globulin, Anti-Thymocyte Globulin (Equine)
 
-library ChlamydiaScreening_Common version '2'
-using QDM
+library LymphocyteImmuneGlobulinAntiThymocyteGlobulinEquine
+
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -17,8 +18,8 @@ valueset "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin" : '2.16.840.1.113
 context Patient
 
 define "Covered":
-		(exists (["Diagnosis": "Renal transplant rejection (disorder)	"])
-		and (exists (["Medication, Administered" : "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin"]))
+		(exists (["Condition": "Renal transplant rejection (disorder)	"])
+		and (exists (["MedicationAdministration" : "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin"]))
 		)
 		
 define "Coverage":

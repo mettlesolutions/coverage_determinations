@@ -1,8 +1,8 @@
 //Ocular Photodynamic Therapy (OPT)
-library  ChlamydiaScreening_Common version '2'
+library  OcularPhotodynamicTherapyOPT
 
-using QDM
-
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -42,37 +42,37 @@ parameter MeasurementPeriod2 default @2002-08-20T00:00:00.0
 context Patient
 
 define "Cover Condition":
-		(exists (["Diagnosis" :"Age-related macular degeneration (disorder)"])
-		and (exists (["Medication, Administered":"Verteporfin"]))
-		and (exists (["Procedure, Performed":"Photodynamic therapy (procedure)"] P
-		where P.relevantPeriod during MeasurementPeriod))
+		(exists (["Condition" :"Age-related macular degeneration (disorder)"])
+		and (exists (["MedicationAdministration":"Verteporfin"]))
+		and (exists (["Procedure":"Photodynamic therapy (procedure)"] P
+		 where (P.performed) during MeasurementPeriod))
 		)
 
 define "Cover Condition1":
-		(exists (["Diagnosis" :"Age-related macular degeneration (disorder)"])
-		and (exists (["Medication, Administered":"Verteporfin"]))
-		and (exists (["Procedure, Performed":"Photodynamic therapy (procedure)"] P
-		where P.relevantPeriod during MeasurementPeriod2))
+		(exists (["Condition" :"Age-related macular degeneration (disorder)"])
+		and (exists (["MedicationAdministration":"Verteporfin"]))
+		and (exists (["Procedure":"Photodynamic therapy (procedure)"] P
+		where (P.performed) during MeasurementPeriod2))
 		) 
 define "Condition 1.1":
-		(exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"])
-		and (exists (["Procedure, Performed" : "Initial patient assessment (procedure)"]))
-		and (exists (["Diagnostic Study, Performed": "Fluorescein angiography of eye (procedure)"]))
+		(exists (["Condition": "Classic choroidal neovascular membrane (disorder)"])
+		and (exists (["Procedure" : "Initial patient assessment (procedure)"]))
+		and (exists (["DiagnosticReport": "Fluorescein angiography of eye (procedure)"]))
 		)
 define "Condition 1.2":
-		(exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"])
-		and (exists (["Procedure, Performed" :"Ophthalmic examination and evaluation, follow-up (procedure)"]))
-		and (exists (["Diagnostic Study, Performed": "Fluorescein angiography of eye (procedure)"]F
-		where F.relevantPeriod during MeasurementPeriod))
-		or (exists (["Diagnostic Study, Performed": "Optical coherence tomography (procedure)"]O
-		where O.relevantPeriod during MeasurementPeriod1))
+		(exists (["Condition": "Classic choroidal neovascular membrane (disorder)"])
+		and (exists (["Procedure" :"Ophthalmic examination and evaluation, follow-up (procedure)"]))
+		and (exists (["DiagnosticReport": "Fluorescein angiography of eye (procedure)"]F
+		where (F.effective) during MeasurementPeriod))
+		or (exists (["DiagnosticReport": "Optical coherence tomography (procedure)"]O
+		where (O.effective) during MeasurementPeriod1))
 		)
 		
 define "Condition 1.3":
-		not (exists (["Diagnosis" :"Multiple lesions (finding)"])
-		or not (exists (["Diagnosis" : "Lesion size cannot be determined (finding)"]))
-		or not (exists (["Procedure, Performed" :  "Visual acuity testing (procedure)"]))
-		and (exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"]))
+		not (exists (["Condition" :"Multiple lesions (finding)"])
+		or not (exists (["Condition" : "Lesion size cannot be determined (finding)"]))
+		or not (exists (["Procedure" :  "Visual acuity testing (procedure)"]))
+		and (exists (["Condition": "Classic choroidal neovascular membrane (disorder)"]))
 		)
 		
 
@@ -80,24 +80,24 @@ define "Condition 1":
 		"Condition 1.1" and "Condition 1.2" and "Condition 1.3"
 		
 define "Condition 2":
-		(exists (["Diagnosis": "Occult neovascularization of macula (disorder)"])
-		and not (exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"]))
-		and (exists (["Diagnosis" :"Age-related macular degeneration (disorder)"]))
+		(exists (["Condition": "Occult neovascularization of macula (disorder)"])
+		and not (exists (["Condition": "Classic choroidal neovascular membrane (disorder)"]))
+		and (exists (["Condition" :"Age-related macular degeneration (disorder)"]))
 		)
 define "Condition 3":
- 		(exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"])
-		and (exists (["Diagnosis" :"Age-related macular degeneration (disorder)"]))
+ 		(exists (["Condition": "Classic choroidal neovascular membrane (disorder)"])
+		and (exists (["Condition" :"Age-related macular degeneration (disorder)"]))
 		)
 	
 define "Condition for Condition 2 and Condition 3":
-			(exists (["Diagnosis" :"Lesion of eye structure (finding)"] D
-			where D.prevalencePeriod before MeasurementPeriod and duration in months of D.prevalencePeriod = 3)
-			and (exists (["Procedure, Performed" : "Initial patient assessment (procedure)"]))
+			(exists (["Condition" :"Lesion of eye structure (finding)"] D
+			where (D.onset) before MeasurementPeriod and duration in months of( D.onset) = 3)
+			and (exists (["Procedure" : "Initial patient assessment (procedure)"]))
 			)
 			or 
-			(exists (["Diagnosis" :"Lesion of eye structure (finding)"]E
-			where E.prevalencePeriod before MeasurementPeriod)
-			and (exists (["Procedure, Performed" : "Initial patient assessment (procedure)"]))
+			(exists (["Condition" :"Lesion of eye structure (finding)"]E
+			where (E.onset) during  MeasurementPeriod)
+			and (exists (["Procedure" : "Initial patient assessment (procedure)"]))
 			)
 			
 define "Covered Condition":
@@ -108,8 +108,8 @@ define "Covered Condition":
 			null
 			
 define "Others":
-		(exists (["Diagnosis" :"Pathologic Myopia"])
-		or (exists (["Diagnosis" :"Ocular histoplasmosis syndrome (disorder)"]))
+		(exists (["Condition" :"Pathologic Myopia"])
+		or (exists (["Condition" :"Ocular histoplasmosis syndrome (disorder)"]))
 		and "Cover Condition"
 		)
 			
@@ -117,8 +117,8 @@ define "Covered":
 		"Cover Condition" and "Condition 1" and "Covered Condition" and "Others"
 			
 define "Not Covered":
-		(exists (["Diagnosis":"Atrophic retina (disorder)"])
-		or (exists (["Diagnosis" :"Extrafoveal ocular fixation (finding)"]))
+		(exists (["Condition":"Atrophic retina (disorder)"])
+		or (exists (["Condition" :"Extrafoveal ocular fixation (finding)"]))
 		and "Cover Condition" and "Cover Condition1"
 		)
 		

@@ -1,7 +1,7 @@
 //Laser Procedures
-library ChlamydiaScreening_Common version '2'
+library LaserProcedures
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -17,7 +17,10 @@ valueset "Medical practitioner (occupation)" : '2.16.840.1.113762.1.4.1099.14'
 
 context Patient
 
-define "Coverage":
-		(exists (["Provider Care Experience" : "Laser procedure (procedure)"])
-		and (exists (["Provider Characteristic" : "Medical practitioner (occupation)"]))
+define "Covered":
+		(exists (["Observation" : "Laser procedure (procedure)"])
+		and (exists (["Encounter" : "Medical practitioner (occupation)"]))
 		)
+		
+define "Coverage":
+		"Covered"

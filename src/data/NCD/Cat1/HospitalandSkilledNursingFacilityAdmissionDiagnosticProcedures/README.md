@@ -11,3 +11,6 @@ The major factors which support a determination that a diagnostic procedure perf
 Where the Medicare Administrative Contractor has not already done so, consult with the Quality Improvement Organizations (QIOs) to obtain information gathered by the QIOs on a sample basis as to whether x-rays and diagnostic tests are being specifically ordered as described under subsection (A).
 
 
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=196&ncdver=1&bc=AAAAgAAAAAAA&
+
+

@@ -1,7 +1,7 @@
 //Nonselective(Random)TransfusionsandLivingRelatedDonorSpecificTransfusions(DST)inKidneyTransplantation
-library ChlamydiaScreening_Common version '2'
+library NonselectiveRandomTransfusionsandLivingRelatedDonorSpecificTransfusionsDSTinKidneyTransplantation
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -17,8 +17,11 @@ valueset "Transplant of kidney (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Covered":
-		if
-		   (exists["Procedure, Performed":"Blood Transfusion"]) then
-		   ["Procedure, Performed": "Transplant of kidney (procedure)"]
+		if(exists["Procedure":"Blood Transfusion"]) 
+		then
+		   (exists ["Procedure": "Transplant of kidney (procedure)"])
 		else
 		  null
+		  
+define "Coverage":
+		"Covered"

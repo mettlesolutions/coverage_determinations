@@ -1,7 +1,7 @@
 //Lymphocyte Mitogen Response Assays
-library ChlamydiaScreening_Common version '2'
+library LymphocyteMitogenResponseAssays
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -23,15 +23,15 @@ valueset "Surgical procedure (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Covered" :
-		(exists (["Diagnosis":"Immunodeficiency disorder (disorder)"])
-		and (exists (["Diagnosis":"Lymphocyte function antigen-1 defect (disorder)"]))
-		and (exists (["Procedure, Performed":"Lymphocyte proliferation test (procedure)"]))
+		(exists (["Condition":"Immunodeficiency disorder (disorder)"])
+		and (exists (["Condition":"Lymphocyte function antigen-1 defect (disorder)"]))
+		and (exists (["Procedure":"Lymphocyte proliferation test (procedure)"]))
 		)
 		
 define "Not Covered":
-		(exists (["Procedure, Performed":"Local chemotherapy for malignant neoplasm (procedure)"])
-		and (exists (["Procedure, Performed":"Radiation therapy procedure or service (procedure)"]))
-		and (exists (["Procedure, Performed":"Surgical procedure (procedure)"]))
+		(exists (["Procedure":"Local chemotherapy for malignant neoplasm (procedure)"])
+		and (exists (["Procedure":"Radiation therapy procedure or service (procedure)"]))
+		and (exists (["Procedure":"Surgical procedure (procedure)"]))
 		)
 		
 define "Coverage":

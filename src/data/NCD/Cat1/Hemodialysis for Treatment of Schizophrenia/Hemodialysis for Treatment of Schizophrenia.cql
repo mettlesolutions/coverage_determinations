@@ -1,7 +1,7 @@
 //Hemodialysis for Treatment of Schizophrenia
-library ChlamydiaScreening_Common version '2'
+library HemodialysisforTreatmentofSchizophrenia
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -17,8 +17,8 @@ valueset "Schizophrenia (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 context Patient
 
 define "Not Covered":
-		(exists (["Diagnosis" : "Schizophrenia (disorder)" ])
-		and (exists (["Procedure, Performed" : "Hemodialysis (procedure)"]))
+		(exists (["Condition" : "Schizophrenia (disorder)" ])
+		and (exists (["Procedure" : "Hemodialysis (procedure)"]))
 		)
 		
 define "Coverage":

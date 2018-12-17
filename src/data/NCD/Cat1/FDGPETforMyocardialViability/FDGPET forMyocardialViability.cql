@@ -1,7 +1,9 @@
 //FDG PET for Myocardial Viability
-library ChlamydiaScreening_Common version '2'
+library FDGPETforMyocardialViability
 
-using QDM
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -15,45 +17,50 @@ valueset "Positron emission tomography myocardial rest imaging using fluorodeoxy
 valueset "Single photon emission computed tomography of heart (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Myocardial revascularization (procedure)" :'2.16.840.1.113883.3.88.12.80.28'
 valueset "Positron emission tomography heart study (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
-valueset "Summary report (record artifact)":'2.16.840.1.113762.1.4.1116.529'
-valueset "Physician (occupation)" : '2.16.840.1.113762.1.4.1096.129'
+valueset "Documenting observations (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
+valueset "Referred by primary care physician (finding)":'2.16.840.1.113762.1.4.1096.216'
 valueset "Inconclusive (qualifier value)" : '2.16.840.1.113762.1.4.1185.8'
 
 valueset "Ischemic congestive cardiomyopathy (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Left ventricular systolic dysfunction (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Left ventricular diastolic dysfunction (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
+parameter MeasurementPeriod default @2002-01-01T00:00:00.0
+parameter MeasurementPeriod1 default @2002-10-01T00:00:00.0
+
+
 context Patient
 
+
 define "Cover":
-		(exists (["Diagnosis": "Ischemic congestive cardiomyopathy (disorder)"])
-		and (exists (["Diagnosis":"Left ventricular systolic dysfunction (disorder)"]))
-		or (exists (["Diagnosis":"Left ventricular diastolic dysfunction (disorder)"]))
+		(exists (["Condition": "Ischemic congestive cardiomyopathy (disorder)"])
+		and (exists (["Condition":"Left ventricular systolic dysfunction (disorder)"]))
+		or (exists (["Condition":"Left ventricular diastolic dysfunction (disorder)"]))
 		)
 		
 define "Covered 1":
-		"Cover" and (exists (["Procedure, Performed": "Positron emission tomography myocardial rest imaging using fluorodeoxyglucose (procedure)"])
-		and (exists (["Procedure, Performed":"Single photon emission computed tomography of heart (procedure)"] S
-		where S.result = "Inconclusive (qualifier value)"))
+		"Cover" and (exists (["Procedure": "Positron emission tomography myocardial rest imaging using fluorodeoxyglucose (procedure)"])
+		and (exists (["Procedure":"Single photon emission computed tomography of heart (procedure)"] S
+		where (S.performed) during MeasurementPeriod and S.outcome = "Inconclusive (qualifier value)"))
 		)
 		
 define "Covered 2":
-		(exists (["Procedure, Performed": "Positron emission tomography myocardial rest imaging using fluorodeoxyglucose (procedure)"])
-		or (exists (["Procedure, Performed": "Myocardial revascularization (procedure)"]))
-		or (exists (["Procedure, Performed":"Single photon emission computed tomography of heart (procedure)"] S
-		where S.result = "Inconclusive (qualifier value)"))
+		(exists (["Procedure": "Positron emission tomography myocardial rest imaging using fluorodeoxyglucose (procedure)"])
+		or (exists (["Procedure": "Myocardial revascularization (procedure)"]))
+		or (exists (["Procedure":"Single photon emission computed tomography of heart (procedure)"] S
+		where (S.performed) during MeasurementPeriod1 and  S.outcome = "Inconclusive (qualifier value)"))
 		)
 		
 define "Limitation 1":
-		(exists (["Procedure, Performed":"Single photon emission computed tomography of heart (procedure)"] S
-		where S.result = "Inconclusive (qualifier value)"))
-		and (exists ((["Procedure, Performed":"Positron emission tomography heart study (procedure)"]))
+		(exists (["Procedure":"Single photon emission computed tomography of heart (procedure)"] S
+		where S.outcome = "Inconclusive (qualifier value)"))
+		and (exists ((["Procedure":"Positron emission tomography heart study (procedure)"]))
 		)
 		
 define "Limitation 2":
-		(exists ((["Procedure, Performed":"Positron emission tomography myocardial rest imaging using fluorodeoxyglucose (procedure)"] P			
-		where P.result = "Inconclusive (qualifier value)"))
-		and not (exists (["Procedure, Performed":"Single photon emission computed tomography of heart (procedure)"])) 
+		(exists ((["Procedure":"Positron emission tomography myocardial rest imaging using fluorodeoxyglucose (procedure)"] P			
+		where P.outcome = "Inconclusive (qualifier value)"))
+		and not (exists (["Procedure":"Single photon emission computed tomography of heart (procedure)"])) 
 		)
 		
 define "Indications":
@@ -64,8 +71,8 @@ define "Limitations":
 		
 define "Coverage":
 		"Indications" and "Limitations" and
-		 (exists (["Diagnostic Study, Performed" : "Summary report (record artifact)"])
-		 and (exists (["Provider Characteristic" : "Physician (occupation)"]))
+		 (exists (["Procedure" : "Documenting observations (procedure)"])
+		 and (exists (["Observation" : "Referred by primary care physician (finding)"]))
 		 )
 		
 		

@@ -1,7 +1,7 @@
 //Electrotherapy for Treatment of Facial Nerve Paralysis (Bell's Palsy)
-library ChlamydiaScreening_Common version '2'
+library ElectrotherapyforTreatmentofFacialNerveParalysis
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -17,8 +17,8 @@ valueset "Electrotherapy (regime/therapy)":'2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Not Covered":
-		(exists (["Diagnosis" :"Bell's palsy (disorder)"])
-		and (exists (["Procedure, Performed" :"Electrotherapy (regime/therapy)"]))
+		(exists (["Condition" :"Bell's palsy (disorder)"])
+		and (exists (["Procedure" :"Electrotherapy (regime/therapy)"]))
 		)
 		
 define "Coverage":

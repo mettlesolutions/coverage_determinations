@@ -1,8 +1,8 @@
 //Intraoperative Ventricular Mapping
 
-library ChlamydiaScreening_Common version '2'
+library IntraoperativeVentricularMapping
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -25,15 +25,18 @@ valueset "Electrocardiographic monitoring (procedure)" : '2.16.840.1.113883.3.88
 context Patient
 		
 define "Process 1":
-		(exists (["Diagnosis":"Bundle branch block (disorder)"])
-		and (exists (["Diagnosis":"Congenital heart disease (disorder)"]))
-		and  (exists ["Procedure, Performed":"Bundle of His recording (procedure)" included in ["Procedure, Performed":"Open heart surgery (procedure)"]])
+		(exists (["Condition":"Bundle branch block (disorder)"])
+		and (exists (["Condition":"Congenital heart disease (disorder)"]))
+		and  (exists ["Procedure":"Bundle of His recording (procedure)" included in ["Procedure":"Open heart surgery (procedure)"]])
 		)
 		
-define "Coverage" :
-		(exists (["Diagnosis" : "Wolff-Parkinson-White pattern (disorder)"])
-		and (exists (["Diagnosis": "Ventricular pre-excitation (disorder)"]))
-		and "Process 1" and (exists (["Diagnosis" : "Ventricular tachycardia (disorder)"]))
-		and (exists (["Diagnosis":"Supraventricular tachycardia (disorder)"]))
-		and (exists (["Laboratory Test, Performed" : "Electrocardiographic monitoring (procedure)"]))
+define "Covered" :
+		(exists (["Condition" : "Wolff-Parkinson-White pattern (disorder)"])
+		and (exists (["Condition": "Ventricular pre-excitation (disorder)"]))
+		and "Process 1" and (exists (["Condition" : "Ventricular tachycardia (disorder)"]))
+		and (exists (["Condition":"Supraventricular tachycardia (disorder)"]))
+		and (exists (["Observation" : "Electrocardiographic monitoring (procedure)"]))
 		)
+		
+define "Coverage":
+		"Covered"

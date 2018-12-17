@@ -1,8 +1,8 @@
 //Intraocular Photography
 
-library ChlamydiaScreening_Common version '2'
+library IntraocularPhotography
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -24,13 +24,16 @@ valueset "Ophthalmologist (occupation)" : '2.16.840.1.113762.1.4.1099.14'
 
 context Patient
 
-define "Coverage" :
-		(exists (["Diagnosis" : "Malignant tumor of eye (disorder)"])
-		and (exists (["Diagnosis" : "Age-related macular degeneration (disorder)"]))
-		and (exists (["Diagnosis" : "Disorder of choroid of eye (disorder)"]))
-		and (exists (["Diagnosis" : "Retinopathy co-occurrent and due to diabetes mellitus (disorder)"]))
-		and (exists (["Diagnosis" : "Glaucoma (disorder)"]))
-		and (exists (["Diagnosis" : "Multiple sclerosis (disorder)"]))
-		and (exists (["Procedure, Performed": "Retinal photography (procedure)"]))
-		and (exists (["Provider Characteristic":"Ophthalmologist (occupation)"]))
+define "Covered" :
+		(exists (["Condition" : "Malignant tumor of eye (disorder)"])
+		and (exists (["Condition" : "Age-related macular degeneration (disorder)"]))
+		and (exists (["Condition" : "Disorder of choroid of eye (disorder)"]))
+		and (exists (["Condition" : "Retinopathy co-occurrent and due to diabetes mellitus (disorder)"]))
+		and (exists (["Condition" : "Glaucoma (disorder)"]))
+		and (exists (["Condition" : "Multiple sclerosis (disorder)"]))
+		and (exists (["Procedure": "Retinal photography (procedure)"]))
+		and (exists (["Encounter":"Ophthalmologist (occupation)"]))
 		)
+		
+define "Coverage":
+		"Covered"

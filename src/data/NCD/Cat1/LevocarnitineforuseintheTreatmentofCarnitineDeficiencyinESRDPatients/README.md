@@ -11,3 +11,6 @@ Covered:
 
 Not Covered:
 Continued use of levocarnitine will not be covered if improvement has not been demonstrated within 6 months of initiation of treatment
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=159&ncdver=2&bc=AAAAgAAAAAAA&

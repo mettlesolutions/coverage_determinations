@@ -1,7 +1,9 @@
 //Gamma Glutamyl Transferase
-library ChlamydiaScreening_Common version '2'
+library GammaGlutamylTransferase
 
-using QDM
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -44,55 +46,57 @@ parameter "Measurement Period" Interval<DateTime>
 context Patient
 
 define "Indication":
-		(exists (["Diagnosis" : "Alcoholism (disorder)"])
-		or (exists (["Diagnosis" : "Drug-induced disorder of liver (disorder)"]))
-		and (exists (["Diagnosis" : "Alcoholic liver damage (disorder)" ]))
-		and (exists (["Diagnosis" : "Viral hepatitis (disorder)"]))
-		and (exists (["Diagnosis" : "Tuberculosis of liver (disorder)"]))
-		and (exists (["Diagnosis" : "Amebic dysentery (disorder)"]))
+		(exists (["Condition" : "Alcoholism (disorder)"])
+		or (exists (["Condition" : "Drug-induced disorder of liver (disorder)"]))
+		and (exists (["Condition" : "Alcoholic liver damage (disorder)" ]))
+		and (exists (["Condition" : "Viral hepatitis (disorder)"]))
+		and (exists (["Condition" : "Tuberculosis of liver (disorder)"]))
+		and (exists (["Condition" : "Amebic dysentery (disorder)"]))
 		)
 define "Indication 1":
 		
-		 (exists (["Diagnosis" : "Primary malignant neoplasm of liver (disorder)"])
-		and (exists (["Diagnosis" : "Secondary malignant neoplasm of liver (disorder)"]))
-		or (exists (["Diagnosis" : "Malnutrition (calorie) (disorder)"]))
-		or (exists (["Diagnosis" : "Diabetes mellitus (disorder)"]))
-		or (exists (["Diagnosis" :"Disorder of mineral metabolism (disorder)"]))
-		or (exists (["Diagnosis" : "Disorder of iron metabolism (disorder)"]))
-		or (exists (["Diagnosis" : "Amyloidosis (disorder)"]))
-		or (exists (["Diagnosis" :"Pulmonary sarcoidosis (disorder)"]))
-		or (exists (["Diagnosis" : "Portal hypertension (disorder)"]))
-		or (exists (["Diagnosis" : "Systemic lupus erythematosus (disorder)"]))
-		and (exists (["Diagnosis" : "Disorder of gastrointestinal tract (disorder)"]))
-		and (exists (["Diagnosis" : "Disorder of pancreas (disorder)"]))
-		and (exists (["Procedure, Performed":"Transplantation of liver (procedure)" included in ["Encounter, Performed" : "Patient encounter status (finding)"]]))
-		and (exists (["Diagnosis": "Finding of alkaline phosphatase level (finding)"]))
+		 (exists (["Condition" : "Primary malignant neoplasm of liver (disorder)"])
+		and (exists (["Condition" : "Secondary malignant neoplasm of liver (disorder)"]))
+		or (exists (["Condition" : "Malnutrition (calorie) (disorder)"]))
+		or (exists (["Condition" : "Diabetes mellitus (disorder)"]))
+		or (exists (["Condition" :"Disorder of mineral metabolism (disorder)"]))
+		or (exists (["Condition" : "Disorder of iron metabolism (disorder)"]))
+		or (exists (["Condition" : "Amyloidosis (disorder)"]))
+		or (exists (["Condition" :"Pulmonary sarcoidosis (disorder)"]))
+		or (exists (["Condition" : "Portal hypertension (disorder)"]))
+		or (exists (["Condition" : "Systemic lupus erythematosus (disorder)"]))
+		and (exists (["Condition" : "Disorder of gastrointestinal tract (disorder)"]))
+		and (exists (["Condition" : "Disorder of pancreas (disorder)"]))
+		and (exists (["Procedure":"Transplantation of liver (procedure)" included in ["Encounter" : "Patient encounter status (finding)"]]))
+		and (exists (["Condition": "Finding of alkaline phosphatase level (finding)"]))
 		)
 define "Indications" : 
 		"Indication" and "Indication 1"
-		and (exists (["Procedure, Performed" :"Gamma glutamyl transferase measurement (procedure)"]))
+		and (exists (["Procedure" :"Gamma glutamyl transferase measurement (procedure)"]))
 		
 
 define "Limitation":
-		if(exists ["Diagnosis" : "Chronic liver disease (disorder)"] and not "Indications"
-	 	and(exists ["Procedure, Performed":"Gamma glutamyl transferase measurement (procedure)"] G
-			where G.result = "Gamma-glutamyl transferase level normal (finding)"))
+		if(exists ["Condition" : "Chronic liver disease (disorder)"] and not "Indications"
+	 	and(exists ["Procedure":"Gamma glutamyl transferase measurement (procedure)"] G
+			where G.outcome = "Gamma-glutamyl transferase level normal (finding)"))
 		then
-			(exists ["Procedure, Performed":"Gamma glutamyl transferase measurement (procedure)"] G
-			where G.components = 1)
-		else
 			null
+		else
+			(exists ["Condition" : "Chronic liver disease (disorder)"] and not "Indications"
+	 	and(exists ["Procedure":"Gamma glutamyl transferase measurement (procedure)"] G
+			where G.outcome = "Gamma-glutamyl transferase level normal (finding)"))
+			
 		
 define "Limitation 1":
-		(exists (["Diagnosis":"Liver enzymes abnormal (finding)"])
-		and (exists (["Procedure, Performed":"Gamma glutamyl transferase measurement (procedure)"]G
-		where duration in weeks of G.relevantPeriod = 1 and G.components = 1))
+		(exists (["Condition":"Liver enzymes abnormal (finding)"])
+		and (exists (["Procedure":"Gamma glutamyl transferase measurement (procedure)"]T
+		where duration in weeks of (T.performed) = 1 ))
 		)
 		
 define "Limitation 2":
-		(exists (["Diagnosis" : "Disorder of liver (disorder)"])
-		and not (exists (["Diagnosis" : "Cytochrome-c oxidase deficiency (disorder)"]))
-		and not (exists (["Procedure, Performed":"Gamma glutamyl transferase measurement (procedure)"]))
+		(exists (["Condition" : "Disorder of liver (disorder)"])
+		and not (exists (["Condition" : "Cytochrome-c oxidase deficiency (disorder)"]))
+		and not (exists (["Procedure":"Gamma glutamyl transferase measurement (procedure)"]))
 		)
 		
 define "Limitations":

@@ -1,7 +1,7 @@
 //Laetrile and Related Substances
-library ChlamydiaScreening_Common version '2'
+library LaetrileandRelatedSubstances
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -16,8 +16,8 @@ valueset "Hospital admission (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Not Covered":
-		(exists (["Encounter, Performed":"Hospital admission (procedure)"])
-		and (exists (["Medication, Administered" : "Amygdalin (substance)"]))
+		(exists (["Encounter":"Hospital admission (procedure)"])
+		and (exists (["MedicationAdministration" : "Amygdalin (substance)"]))
 		)
 		
 define "Coverage":

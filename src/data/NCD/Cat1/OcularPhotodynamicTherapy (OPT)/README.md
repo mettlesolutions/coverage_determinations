@@ -23,3 +23,6 @@ Not Covered:
 
 Others:
 OPT with verteporfin for other ocular indications, such as pathologic myopia or presumed ocular histoplasmosis syndrome
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=349&ncdver=2&bc=AAAAgAAAAAAA&

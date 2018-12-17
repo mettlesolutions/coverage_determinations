@@ -21,3 +21,6 @@ Limitations
 =>When used to determine if other abnormal enzyme tests reflect liver abnormality rather than other tissue, it generally is not necessary to repeat a GGT more than one time per week.
 =>Because of the extreme sensitivity of GGT as a marker for cytochrome oxidase induction or cell membrane permeability, it is generally not useful in monitoring patients with known liver disease.
 
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=153&ncdver=1&bc=AAAAgAAAAAAA&
+

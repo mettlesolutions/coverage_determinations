@@ -1,8 +1,8 @@
 //Electroencephalographic Monitoring During Surgical Procedures Involving the Cerebral Vasculature
 
-library ChlamydiaScreening_Common version '2'
+library ElectroencephalographicMonitoringDuringSurgicalProceduresInvolvingtheCerebralVasculature
 
-using QDM version '5.3'
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -30,22 +30,22 @@ valueset '"Technologists, Technicians & Other Technical Service Providers"; "Tec
 context Patient
 
 define "Condition 1":
-		(exists (["Diagnosis" :"Under general anesthesia (finding)"])
-		and (exists (["Procedure, Performed" : "Electroencephalographic procedure (procedure)"]))
+		(exists (["Condition" :"Under general anesthesia (finding)"])
+		and (exists (["Procedure" : "Electroencephalographic procedure (procedure)"]))
 		)
 		
 define "Condition 2" :
-		(exists (["Procedure, Performed" : "Intracranial/cerebral perfusion pressure monitoring (regime/therapy)"])
-		and (exists (["Procedure, Performed" : "Electroencephalographic procedure (procedure)"]))
-		and (exists (["Provider Care Experience" : "Electroencephalographic procedure (procedure)"]))
-		or (exists (["Provider Care Experience" : '"Technologists, Technicians & Other Technical Service Providers"; "Technician, Other", EEG']))
+		(exists (["Procedure" : "Intracranial/cerebral perfusion pressure monitoring (regime/therapy)"])
+		and (exists (["Procedure" : "Electroencephalographic procedure (procedure)"]))
+		and (exists (["Observation" : "Electroencephalographic procedure (procedure)"]))
+		or (exists (["Observation" : '"Technologists, Technicians & Other Technical Service Providers"; "Technician, Other", EEG']))
 		)
 define "Condition 3":
-		(exists (["Procedure, Performed" : "Carotid endarterectomy (procedure)"])
-		and (exists (["Procedure, Performed" : "Neurologic Procedure S"]))
-		and (exists (["Procedure, Performed":"Repair of aneurysm (procedure)"]))
-		and (exists (["Procedure, Performed" : "Induced hypotension (procedure)" ]))
-		and (exists (["Procedure, Performed" : "Electroencephalographic procedure (procedure)"]))
+		(exists (["Procedure" : "Carotid endarterectomy (procedure)"])
+		and (exists (["Procedure" : "Neurologic Procedure S"]))
+		and (exists (["Procedure":"Repair of aneurysm (procedure)"]))
+		and (exists (["Procedure" : "Induced hypotension (procedure)" ]))
+		and (exists (["Procedure" : "Electroencephalographic procedure (procedure)"]))
 		)
 		
 define "Coverage":

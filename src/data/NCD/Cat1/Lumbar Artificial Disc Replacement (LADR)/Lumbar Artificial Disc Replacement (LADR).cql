@@ -1,7 +1,8 @@
 //Lumbar Artificial Disc Replacement (LADR)
-library ChlamydiaScreening_Common version '2'
+library LumbarArtificialDiscReplacement
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -28,15 +29,15 @@ define InInitialPopulation 1:
 	AgeInYearsAt(start of MeasurementPeriod) <= 60
 
 define "Condition 1":
-		InInitialPopulation and (exists (["Procedure, Performed" : "Removal of total disc arthroplasty (artificial disc), anterior approach, single interspace; lumbar	"]L
-		where L.relevantPeriod during MeasurementPeriod1))
+		InInitialPopulation and (exists (["Procedure" : "Removal of total disc arthroplasty (artificial disc), anterior approach, single interspace; lumbar	"]L
+		where (L.performed) during MeasurementPeriod1))
 		
 define "Condition 2":
-		InInitialPopulation and (exists (["Procedure, Performed" : "Removal of total disc arthroplasty (artificial disc), anterior approach, single interspace; lumbar	"]L
-		where L.relevantPeriod during MeasurementPeriod))
+		InInitialPopulation and (exists (["Procedure" : "Removal of total disc arthroplasty (artificial disc), anterior approach, single interspace; lumbar	"]L
+		where (L.performed) during MeasurementPeriod))
 		
 define "Condition 3" : 
-		InInitialPopulation 1 and (exists (["Procedure, Performed" : "Removal of total disc arthroplasty (artificial disc), anterior approach, single interspace; lumbar	"]))
+		InInitialPopulation 1 and (exists (["Procedure" : "Removal of total disc arthroplasty (artificial disc), anterior approach, single interspace; lumbar	"]))
 
 
 define "Not Covered":

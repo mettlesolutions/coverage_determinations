@@ -1,7 +1,7 @@
 //Hydrophilic Contact Lens For Corneal Bandage
-library ChlamydiaScreening_Common version '2'
+library HydrophilicContactLensForCornealBandage
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -28,25 +28,25 @@ valueset "Fitting of contact lens (procedure)" : '2.16.840.1.113883.3.88.12.80.2
 context Patient
 
 define "Corneal Pathology":
-			(exists (["Diagnosis":"Bullous keratopathy (disorder)"])
-			or (exists (["Diagnosis" :"Keratoconjunctivitis sicca (disorder)"]))
-			or (exists (["Diagnosis" :"Corneal ulcer (disorder)"]))
-			and (exists (["Diagnosis" :"Corneal erosion (disorder)"]))
-			or  (exists (["Diagnosis" :"Keratitis (disorder)"]))
-			or  (exists (["Diagnosis" : "Descemetocele (disorder)"]))
-			or  (exists (["Diagnosis" :"Corneal edema (disorder)"]))
-			or  (exists (["Diagnosis" :"Corneal ectasia (disorder)"]))
-			or  (exists (["Diagnosis" :"Mooren's ulcer (disorder)"]))
-			or  (exists (["Diagnosis" :"Dystrophy of anterior cornea (disorder)"]))
-			or (exists (["Diagnosis": "Neurotrophic keratoconjunctivitis (disorder)"]))
+			(exists (["Condition":"Bullous keratopathy (disorder)"])
+			or (exists (["Condition" :"Keratoconjunctivitis sicca (disorder)"]))
+			or (exists (["Condition" :"Corneal ulcer (disorder)"]))
+			and (exists (["Condition" :"Corneal erosion (disorder)"]))
+			or  (exists (["Condition" :"Keratitis (disorder)"]))
+			or  (exists (["Condition" : "Descemetocele (disorder)"]))
+			or  (exists (["Condition" :"Corneal edema (disorder)"]))
+			or  (exists (["Condition" :"Corneal ectasia (disorder)"]))
+			or  (exists (["Condition" :"Mooren's ulcer (disorder)"]))
+			or  (exists (["Condition" :"Dystrophy of anterior cornea (disorder)"]))
+			or (exists (["Condition": "Neurotrophic keratoconjunctivitis (disorder)"]))
 			)
 			
 define "Condition 1(Covered)":
-           "Corneal Pathology" and ( exists (["Procedure, Performed": "Fitting of contact lens (procedure)"]) )
+           "Corneal Pathology" and ( exists (["Procedure": "Fitting of contact lens (procedure)"]) )
 			
 define "Condition 2(Covered)":
-           ( exists (["Procedure, Performed": "Fitting of contact lens (procedure)"]) 
-           and ( exists (["Encounter, Performed": "Physician service (procedure)"]) ) )
+           ( exists (["Procedure": "Fitting of contact lens (procedure)"]) 
+           and ( exists (["Encounter": "Physician service (procedure)"]) ) )
            
 define "Coverage":
            "Condition 1(Covered)" or "Condition 2(Covered)"

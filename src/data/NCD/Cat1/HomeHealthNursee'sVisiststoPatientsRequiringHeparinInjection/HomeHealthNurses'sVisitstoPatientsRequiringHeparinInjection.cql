@@ -1,7 +1,9 @@
 //Home Health Nurses' Visits to Patients Requiring Heparin Injection
-library ChlamydiaScreening_Common version '2'
+library HomeHealthNursesVisitstoPatientsRequiringHeparinInjection
 
-using QDM
+
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -26,35 +28,35 @@ valueset "Professional nurse (occupation)" : '2.16.840.1.113762.1.4.1096.205'
 context Patient
 
 define "Condition 1":
-		(exists (["Patient Characteristic" : "Housebound (finding)"])
-		and (exists (["Diagnosis" : "Pregnant (finding)"]))
-		and (exists (["Procedure, Order" : "Anticoagulant therapy (procedure)"]))
+		(exists (["Condition" : "Housebound (finding)"])
+		and (exists (["Condition" : "Pregnant (finding)"]))
+		and (exists (["Procedure" : "Anticoagulant therapy (procedure)"]))
 		)
 define "Condition 2":
-		(exists (["Patient Characteristic" : "Housebound (finding)"])
-		and (exists (["Diagnosis" : "Deep venous thrombosis (disorder)"]))
-		or (exists (["Diagnosis" : "Pulmonary embolism (disorder)"]))
+		(exists (["Condition" : "Housebound (finding)"])
+		and (exists (["Condition" : "Deep venous thrombosis (disorder)"]))
+		or (exists (["Condition" : "Pulmonary embolism (disorder)"]))
 		)
 define "Covered":
 		"Condition 1" or "Condition 2" and
-		 (exists ["Procedure, Performed" :"Subcutaneous injection (procedure)" included in ["Procedure, Performed" : "Low dose heparin prophylaxis (procedure)"]]
-		and (exists (["Provider Characteristic" :"Professional nurse (occupation)"]))
-		and (exists (["Provider Characteristic" :"Professional nurse (occupation)"]))
+		 (exists ["Procedure" :"Subcutaneous injection (procedure)" included in ["Procedure" : "Low dose heparin prophylaxis (procedure)"]]
+		and (exists (["Encounter" :"Professional nurse (occupation)"]))
+		and (exists (["Encounter" :"Professional nurse (occupation)"]))
 		)
 		
 define "Limitation 1" :
-		(not exists (["Diagnosis" : "Pregnant (finding)"])
-		and  (exists ["Procedure, Performed" : "Subcutaneous injection (procedure)" included in
-		 ["Procedure, Performed" : "Low dose heparin prophylaxis (procedure)"]L
-		where duration in days of L.relevantPeriod = 7 and duration in months of L.relevantPeriod = 6 ])
+		(not exists (["Condition" : "Pregnant (finding)"])
+		and  (exists ["Procedure" : "Subcutaneous injection (procedure)" included in
+		 ["Procedure" : "Low dose heparin prophylaxis (procedure)"]L
+		where duration in days of( L.performed) = 7 and duration in months of (L.performed) = 6 ])
 		)
 		
 define "Limitation 2" :
-		(exists (["Diagnosis" : "Pregnant (finding)"])
-		and  (exists (["Procedure, Performed" : "Subcutaneous injection (procedure)" included in 
-		["Procedure, Performed" : "Low dose heparin prophylaxis (procedure)"]L
-		where (duration in days of L.relevantPeriod = 7 and duration in months of L.relevantPeriod = 6 ) or
-		 (duration in days of L.relevantPeriod = 7 and duration in months of L.relevantPeriod > 6 )])
+		(exists (["Condition" : "Pregnant (finding)"])
+		and  (exists (["Procedure" : "Subcutaneous injection (procedure)" included in 
+		["Procedure" : "Low dose heparin prophylaxis (procedure)"]L
+		where (duration in days of (L.performed) = 7 and duration in months of (L.performed) = 6 ) or
+		 (duration in days of (L.performed) = 7 and duration in months of (L.performed) > 6 )])
 		 ))
 		 
 define "Coverage":

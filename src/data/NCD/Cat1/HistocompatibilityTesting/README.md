@@ -11,3 +11,6 @@ This testing is covered under Medicare when used for any of the indications list
 It is covered for ankylosing spondylitis in cases where other methods of diagnosis would not be appropriate or have yielded inconclusive results. Request documentation supporting the medical necessity of the test from the physician in all cases where ankylosing spondylitis is indicated as the reason for the test.
 
 
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=188&ncdver=1&bc=AAAAgAAAAAAA&
+
+

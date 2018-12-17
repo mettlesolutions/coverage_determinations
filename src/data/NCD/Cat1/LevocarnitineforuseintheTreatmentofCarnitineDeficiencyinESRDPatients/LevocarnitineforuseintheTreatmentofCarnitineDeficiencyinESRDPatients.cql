@@ -1,7 +1,8 @@
 //Levocarnitine for use in the Treatment of Carnitine Deficiency in ESRD Patients
-library ChlamydiaScreening_Common version '2'
+library LevocarnitineforuseintheTreatmentofCarnitineDeficiencyinESRDPatients
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -25,29 +26,30 @@ valueset "Erythropoietin therapy (procedure)" : '2.16.840.1.113883.3.88.12.80.28
 valueset "Patient's condition improved (finding)" : '2.16.840.1.113762.1.4.1096.114'
 valueset "Procedure discontinued by healthcare professional (situation)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 
+parameter MeasurementPeriod Interval<DateTime>
 context Patient
 
 define "Cover Condition" : 
-		(exists (["Diagnosis": "End-stage renal disease (disorder)"])
-		and (exists (["Procedure, Performed":"Dialysis procedure (procedure)"] D
-		where duration in months of D.relevantPeriod >= 3))
+		(exists (["Condition": "End-stage renal disease (disorder)"])
+		and (exists (["Procedure":"Dialysis procedure (procedure)"] D
+		where duration in months of (D.performed) =  3))
 		)
 define "Condition":
-		(exists (["Diagnosis" :  "Carnitine deficiency (disorder)"])
-		and (exists (["Procedure, Performed" : "Plasma free carnitine level (procedure)"]P
-		where P.result = 40 'micromol/L' ))
-		and (exists (["Procedure, Performed" : "Documentation procedure (procedure)"]))
+		(exists (["Condition" :  "Carnitine deficiency (disorder)"])
+		and (exists (["Procedure" : "Plasma free carnitine level (procedure)"]P
+		where P.outcome = 40 'micromol/L' ))
+		and (exists (["Procedure" : "Documentation procedure (procedure)"]))
 		)
 define "Condition 1" :
-		(exists (["Diagnosis" : "Erythropoietin resistance in anemia of chronic kidney disease (disorder)"])
-		or (exists (["Procedure, Performed" : "Hematocrit determination (procedure)"] H
-		where H.result < 30 '%'))
-		and not (exists (["Procedure, Performed":"Erythropoietin therapy (procedure)"]))
+		(exists (["Condition" : "Erythropoietin resistance in anemia of chronic kidney disease (disorder)"])
+		or (exists (["Procedure" : "Hematocrit determination (procedure)"] H
+		where H.outcome  = 30 '%'))
+		and not (exists (["Procedure":"Erythropoietin therapy (procedure)"]))
 		)
 define "Condition 2" :
-		if(exists (["Diagnosis": "End-stage renal disease (disorder)"])
-		and (exists (["Procedure, Performed":"Dialysis procedure (procedure)"] D
-		where duration in days of D.relevantPeriod = 30)) and Count(["Diagnosis" : "Hemodialysis-associated hypotension (disorder)"]) = 2)
+		if(exists (["Condition": "End-stage renal disease (disorder)"])
+		and (exists (["Procedure":"Dialysis procedure (procedure)"] D
+		where duration in days of( D.performed) = 30)) and Count(["Condition" : "Hemodialysis-associated hypotension (disorder)"]) = 2)
 		then
 			true
 		else
@@ -57,23 +59,23 @@ define "Conditions":
 		"Condition" and "Condition 1" or "Condition 2"
 		
 define "Covered 1":
-		"Cover Condition" and "Conditions" and (exists (["Medication, Administered": "Levocarnitine"]))
+		"Cover Condition" and "Conditions" and (exists (["MedicationAdministration": "Levocarnitine"]))
 		
 define "Covered 2":
-		(exists (["Medication, Administered": "Levocarnitine"])	
-		and (exists (["Encounter, Performed" : "Procedure discontinued by healthcare professional (situation)"]))
-		and (exists (["Procedure, Performed" : "Plasma free carnitine level (procedure)"]P
-		where P.result = 40 'micromol/L' )) 
-		and (exists (["Diagnosis" : "Erythropoietin resistance in anemia of chronic kidney disease (disorder)"]))
+		(exists (["MedicationAdministration": "Levocarnitine"])	
+		and (exists (["Encounter" : "Procedure discontinued by healthcare professional (situation)"]))
+		and (exists (["Procedure" : "Plasma free carnitine level (procedure)"]P
+		where P.outcome = 40 'micromol/L' )) 
+		and (exists (["Condition" : "Erythropoietin resistance in anemia of chronic kidney disease (disorder)"]))
 		)
 		
 define "Covered":
 		"Covered 1" and "Covered 2"
 		
 define "Not Covered": 
-		 "Cover Condition"  and (exists (["Medication, Administered": "Levocarnitine"] L
-		 where duration in months of L.relevantPeriod = 6)
-		 and not (exists (["Encounter, Performed":"Patient's condition improved (finding)"]))
+		 "Cover Condition"  and (exists (["MedicationAdministration": "Levocarnitine"] L
+		 where duration in months of (L.effective) = 6)
+		 and not (exists (["Encounter":"Patient's condition improved (finding)"]))
 		 )
 	
 define "Coverage":

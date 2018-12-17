@@ -1,7 +1,7 @@
 //Hydrophilic Contact Lens
-library ChlamydiaScreening_Common version '2'
+library HydrophilicContactLens
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -21,16 +21,16 @@ valueset "Fitting of contact lens (procedure)" : '2.16.840.1.113883.3.88.12.80.2
 context Patient
 
 define "Covered":
-		(exists (["Diagnosis":"Aphakia (disorder)"])
-		and (exists (["Procedure, Performed" : "Prescribing, fitting and supply of ocular prosthesis (procedure)"]))
-		and (exists (["Procedure, Performed" : "Fitting of contact lens (procedure)"]))
+		(exists (["Condition":"Aphakia (disorder)"])
+		and (exists (["Procedure" : "Prescribing, fitting and supply of ocular prosthesis (procedure)"]))
+		and (exists (["Procedure" : "Fitting of contact lens (procedure)"]))
 		)
 		
 define "Not Covered":
-		(exists (["Diagnosis": "Myopia (disorder)"])
-		or (exists (["Diagnosis" :"Astigmatism (disorder)"]))
-		or (exists (["Diagnosis" : "Regular astigmatism (disorder)"]))
-		and (exists (["Procedure, Performed" : "Fitting of contact lens (procedure)"]))
+		(exists (["Condition": "Myopia (disorder)"])
+		or (exists (["Condition" :"Astigmatism (disorder)"]))
+		or (exists (["Condition" : "Regular astigmatism (disorder)"]))
+		and (exists (["Procedure" : "Fitting of contact lens (procedure)"]))
 		)
 		
 define "Coverage":

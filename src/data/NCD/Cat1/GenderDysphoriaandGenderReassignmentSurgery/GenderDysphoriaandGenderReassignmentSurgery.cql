@@ -1,7 +1,9 @@
 //Gender Dysphoria and Gender Reassignment Surgery
-library ChlamydiaScreening_Common version '2'
+library GenderDysphoriaandGenderReassignmentSurgery
 
-using QDM
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -15,13 +17,14 @@ valueset "Gender reassignment surgery (procedure)" : '2.16.840.1.113883.3.88.12.
 valueset "Gender dysphoria (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 
 parameter MeasurementPeriod default @2016-08-30T00:00:00.0
+
 context Patient
 
 define "Not Covered":
-		(exists (["Diagnosis" :"Gender dysphoria (disorder)"])
-		and (exists (["Procedure, Performed" : "Gender reassignment surgery (procedure)"] G
-		where G.relevantPeriod during MeasurementPeriod))
+		(exists (["Condition" :"Gender dysphoria (disorder)"])
+		and (exists (["Procedure" : "Gender reassignment surgery (procedure)"]G
+		where  (G.performed) during MeasurementPeriod))
 		)
-
+		
 define "Coverage":
-		"Not Covered"
+		"Not Covered" 
