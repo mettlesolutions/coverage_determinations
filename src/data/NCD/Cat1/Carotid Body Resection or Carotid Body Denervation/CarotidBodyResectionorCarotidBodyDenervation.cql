@@ -1,7 +1,6 @@
 library CarotidBodyResectionOrCarotidBodyDenervation
 
-
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -9,6 +8,11 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Carotid body tumor (morphologic abnormality)":'2.16.840.1.113883.3.88.12.3221.8.9'
 valueset "Excision of carotid body tumor (procedure)":'2.16.840.1.113883.3.88.12.80.28'
@@ -25,29 +29,29 @@ valueset "Incision of carotid body (procedure)":'2.16.840.1.113883.3.88.12.80.28
 
 
 define "Resection Not Covered":
-	exists(["Assessment, Performed": "Pulmonary sign AND/OR symptom (finding)"])
-	and exists(["Assessment, Performed": "Symptom relieving factors (finding)"])
+	exists([Observation: "Pulmonary sign AND/OR symptom (finding)"])
+	and exists([Observation: "Symptom relieving factors (finding)"])
 
 
 define "Resection Covered":
-	exists(["Diagnosis": "Carotid body tumor (morphologic abnormality)"])
-	and (exists(["Assessment, Performed": "Free of symptoms (situation)"])
-		or exists(["Assessment, Performed": "Associated symptom (finding)"]))
+	exists([Condition: "Carotid body tumor (morphologic abnormality)"])
+	and (exists([Observation: "Free of symptoms (situation)"])
+		or exists([Observation: "Associated symptom (finding)"]))
 
 
 define "Denervation Covered":
-	exists(["Diagnosis": "Carotid sinus hypersensitivity (disorder)"])
-	and exists(["Assessment, Performed": "Absence of therapeutic response (finding)"])
-	and exists(["Assessment, Performed": "Patient's condition deteriorating (finding)"])
+	exists([Condition: "Carotid sinus hypersensitivity (disorder)"])
+	and exists([Observation: "Absence of therapeutic response (finding)"])
+	and exists([Observation: "Patient's condition deteriorating (finding)"])
 
 define "Resection Coverage":
 	if ("Resection Covered" and not "Resection Not Covered")
-	then exists(["Procedure, Performed": "Incision of carotid body (procedure)"]) 
+	then exists([Procedure: "Incision of carotid body (procedure)"])
 	else false
 
 define "Denervation Coverage":
 	if "Denervation Covered"
-	then exists(["Procedure, Performed": "Denervation of carotid body (procedure)"]) 
+	then exists([Procedure: "Denervation of carotid body (procedure)"])
 	else false
 
 define "Coverage":

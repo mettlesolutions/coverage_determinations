@@ -1,6 +1,6 @@
 library ComputerEnhancedPerimetry
 
-using QDM
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -9,13 +9,21 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+
 valueset "Visual field study (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 valueset "Glaucoma (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
-
+valueset "Computed perimetry (procedure)":'2.16.840.1.113883.3.88.12.80.28'
 
 define "Covered":
-	exists(["Diagnosis": "Glaucoma (disorder)"])
-	and exists(["Procedure, Performed": "Visual field study (procedure)"])
+	if (exists([Procedure: "Computed perimetry (procedure)"])
+	and exists([Condition: "Glaucoma (disorder)"])
+	and exists([Procedure: "Visual field study (procedure)"]))
+	then true
+	else false
 
 define "Coverage": 
 	"Covered"
