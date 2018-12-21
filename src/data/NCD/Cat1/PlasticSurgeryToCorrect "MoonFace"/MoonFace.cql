@@ -1,7 +1,9 @@
 //Plastic Surgery to Correct "Moon Face"
-library ChlamydiaScreening_Common version '2'
+library PlasticSurgerytoCorrectMoonFace
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -17,12 +19,14 @@ valueset "Accidental injury (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Corticosteroids": '2.16.840.1.113883.3.464.1003.196.12.1482'
 valueset "Preoperative state (finding)" : '2.16.840.1.113883.17.4077.2.2004'
 
+parameter MeasurementPeriod default @1989-05-01T00:00:00.0
 context Patient
 
 define"Not Covered":
-		(exists (["Diagnosis" : "Accidental injury (disorder)"])
-                and (exists (["Diagnosis" :"Preoperative state (finding)"]))
-		and (exists (["Procedure, Performed":"Cosmetic surgery (procedure)"]))
+		(exists (["Condition" : "Accidental injury (disorder)"])
+                and (exists (["Condition" :"Preoperative state (finding)"]))
+		and (exists (["Procedure":"Cosmetic surgery (procedure)"] C
+		where C.performed on or after MeasurementPeriod))
 		)
 define "Coverage":
 		not "Not Covered"

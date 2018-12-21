@@ -1,8 +1,8 @@
 //Services Provided for the Diagnosis and Treatment of Diabetic Sensory Neuropathy with Loss of Protective Sensation (aka Diabetic Peripheral Neuropathy)
-library ChlamydiaScreening_Common version '2'
+library ServicesProvidedfortheDiagnosisandTreatmentofDiabeticSensoryNeuropathywithLossofProtectiveSensation
 
-using QDM
-
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -40,66 +40,66 @@ parameter MeasurementPeriod default @2002-07-01T00:00:00.0
 context Patient
 
 define "Indication":
-		(exists (["Diagnosis": "Neuropathy co-occurrent and due to diabetes mellitus (disorder)"])
-		and (exists (["Diagnosis" : "Loss of protective sensation of skin of foot (finding)"]))
-		and (exists (["Procedure, Performed":  "Diabetic foot examination (regime/therapy)"]))
+		(exists (["Condition": "Neuropathy co-occurrent and due to diabetes mellitus (disorder)"])
+		and (exists (["Condition" : "Loss of protective sensation of skin of foot (finding)"]))
+		and (exists (["Procedure":  "Diabetic foot examination (regime/therapy)"]))
 		)
 define "Documentation":
-		(exists (["Diagnosis": "Neuropathy co-occurrent and due to diabetes mellitus (disorder)"])
-		and (exists (["Diagnosis" : "Loss of protective sensation of skin of foot (finding)"]))
-		and (exists (["Procedure, Performed": "Documentation procedure (procedure)" ]))
+		(exists (["Condition": "Neuropathy co-occurrent and due to diabetes mellitus (disorder)"])
+		and (exists (["Condition" : "Loss of protective sensation of skin of foot (finding)"]))
+		and (exists (["Procedure": "Documentation procedure (procedure)" ]))
 		)
 		
 define "Cover Condition":
-		(exists (["Procedure, Performed" : "Physician service (procedure)"])
-		and (exists (["Procedure, Performed":  "Diabetic foot examination (regime/therapy)"]D
-		where duration in months of D.relevantPeriod < 6))
-		and "Documentation" and not(exists (["Provider Characteristic" :"Podiatrist (occupation)"]))
-		)
+		(exists (["Procedure" : "Physician service (procedure)"])
+		and (exists (["Procedure":  "Diabetic foot examination (regime/therapy)"]D
+		where duration in months of (D.performed) < 6))
+		and "Documentation")
+		
 define "Condition 1":
-		(exists (["Diagnosis" : "Entire plantar surface of toe (body structure)"])
-		and (exists (["Procedure, Performed" :  "Rhythmical exercises (regime/therapy)"]))
+		(exists (["Condition" : "Entire plantar surface of toe (body structure)"])
+		and (exists (["Procedure" :  "Rhythmical exercises (regime/therapy)"]))
 		)
 		
 define "Cover Condition 2":
-		 (exists (["Diagnosis" : "Loss of protective sensation of skin of foot (finding)"])
-		 and (exists (["Procedure, Performed" :  "Monofilament foot sensation test (procedure)"]))
+		 (exists (["Condition" : "Loss of protective sensation of skin of foot (finding)"])
+		 and (exists (["Procedure" :  "Monofilament foot sensation test (procedure)"]))
 		 and "Condition 1"
 		 )
 
 define "Condition":
-		(exists (["Diagnosis" : "Entire plantar surface of toe (body structure)"])
-		and (exists (["Diagnosis" : "Absence of sensation (finding)"]))
-		and (exists (["Procedure, Performed" : "Assessment using Semmes-Weinstein monofilament test (procedure)"]))
-		and (exists (["Procedure, Performed": "Documentation procedure (procedure)" ]))
-		and (exists (["Diagnosis": "Peripheral neuritis (disorder)"]))
-		and  (exists (["Diagnosis" : "Loss of protective sensation of skin of foot (finding)"]))
+		(exists (["Condition" : "Entire plantar surface of toe (body structure)"])
+		and (exists (["Condition" : "Absence of sensation (finding)"]))
+		and (exists (["Procedure" : "Assessment using Semmes-Weinstein monofilament test (procedure)"]))
+		and (exists (["Procedure": "Documentation procedure (procedure)" ]))
+		and (exists (["Condition": "Peripheral neuritis (disorder)"]))
+		and  (exists (["Condition" : "Loss of protective sensation of skin of foot (finding)"]))
 		)
 define "Physical Examination":
-		(exists (["Diagnosis":"Foot structure (body structure)"])
-		and (exists (["Procedure, Performed":"Evaluation procedure (procedure)"]))
-		and (exists (["Procedure, Performed" : "Foot X-ray orthopedic/biomechanical examination (procedure)"]))
-		or (exists (["Procedure, Performed":"Assessment of skin integrity (procedure)"]))
-		or (exists (["Procedure, Performed":"Provision of special footwear (procedure)"]))
+		(exists (["Condition":"Foot structure (body structure)"])
+		and (exists (["Procedure":"Evaluation procedure (procedure)"]))
+		and (exists (["Procedure" : "Foot X-ray orthopedic/biomechanical examination (procedure)"]))
+		or (exists (["Procedure":"Assessment of skin integrity (procedure)"]))
+		or (exists (["Procedure":"Provision of special footwear (procedure)"]))
 		)
 		
 define "Examination":
-	(exists (["Procedure, Performed":"History taking (procedure)"])
+	(exists (["Procedure":"History taking (procedure)"])
 	or "Physical Examination"
-	or (exists (["Patient Care Experience" :  "Patient education (procedure)"]))
+	or (exists (["Observation" : "Patient education (procedure)"]))
 	)
 	
 define "Limit":
-		(exists (["Procedure, Performed" : "Corn and callus procedures (procedure)"])
-		or (exists (["Procedure, Performed": "Debridement of nail (procedure)"]))
-		or (exists (["Procedure, Performed" : "Trimming (procedure)"]))
+		(exists (["Procedure" : "Corn and callus procedures (procedure)"])
+		or (exists (["Procedure": "Debridement of nail (procedure)"]))
+		or (exists (["Procedure" : "Trimming (procedure)"]))
 		)
 	
 define "Others":
-		(exists (["Diagnosis": "Peripheral neuritis (disorder)"])
-		and (exists (["Encounter, Performed":"Seen by primary care physician (finding)"]))
-		 and (exists (["Diagnosis" : "Loss of protective sensation of skin of foot (finding)"]))
-		and (exists (["Encounter, Performed":"Referral to footcare protection program (procedure)"]))
+		(exists (["Condition": "Peripheral neuritis (disorder)"])
+		and (exists (["Encounter":"Seen by primary care physician (finding)"]))
+		 and (exists (["Condition" : "Loss of protective sensation of skin of foot (finding)"]))
+		and (exists (["Encounter":"Referral to footcare protection program (procedure)"]))
 		)
 		
 define "Covered":

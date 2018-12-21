@@ -29,3 +29,7 @@ The diagnosis of diabetic sensory neuropathy with LOPS should be established and
 Others:
  Other causes of peripheral neuropathy should be considered and investigated by the primary care physician prior to initiating or referring for foot care for persons with LOPS.
 
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=171&ncdver=1&bc=AAAAgAAAAAAA&
+

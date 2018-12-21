@@ -1,8 +1,9 @@
 //Transfer Factor for Treatment of Multiple Sclerosis
-library ChlamydiaScreening_Common version '2'
+library TransferFactorforTreatmentofMultipleSclerosis
 
-using QDM
+using FHIR
 
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -20,11 +21,11 @@ valueset "Increased (qualifier value)" :'2.16.840.1.113883.11.20.9.44'
 context Patient
 
 define "Not Covered":
-		(exists (["Diagnosis" : "Sensitized leukocyte (finding)"])
-		and (exists (["Diagnosis" : "Cellular immune defect (finding)"] D
+		(exists (["Condition" : "Sensitized leukocyte (finding)"])
+		and (exists (["Condition" : "Cellular immune defect (finding)"] D
 		where D.severity = "Increased (qualifier value)"))
-		and (exists (["Diagnosis" : "Multiple sclerosis (disorder)"]))
-		and (exists (["Procedure, Performed" : "Transfer factor test (procedure)"]))
+		and (exists (["Condition" : "Multiple sclerosis (disorder)"]))
+		and (exists (["Procedure" : "Transfer factor test (procedure)"]))
 		)
 		
 define "Coverage":

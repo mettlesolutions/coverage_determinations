@@ -18,3 +18,5 @@ Limitations
 => evaluation of patients with signs or symptoms suggestive of malignancy. The service may be ordered at times necessary to assess either the presence of recurrent disease or the patient's response to treatment with subsequent treatment cycles.
 
 The CA 125 is specifically not covered for aiding in the differential diagnosis of patients with a pelvic mass as the sensitivity and specificity of the test is not sufficient. In general, a single "tumor marker" will suffice in following a patient with one of these malignancies.
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=130&ncdver=2&bc=AAAAgAAAAAAA&

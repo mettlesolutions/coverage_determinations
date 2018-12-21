@@ -1,8 +1,8 @@
 //ProstateSpecificAntigen
-library ChlamydiaScreening_Common version '2'
+library ProstateSpecificAntigen
 
-using QDM version '5.3'
-
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -18,11 +18,8 @@ valueset "Adenocarcinoma of prostate (disorder)": '2.16.840.1.113883.3.526.2.92'
 valueset "Residual tumor stage finding (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Carcinoma of prostate (disorder)": '2.16.840.1.113883.3.526.3.319'
 valueset "Radical prostatectomy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-//antiandrogen therapy
-//Digital Rectal Examination
 //valueset "Rectal examination (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Procedure aiding diagnosis (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-//Metastatic diesease
 valueset "Persistent infection (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Lower urinary tract infectious disease (disorder)": '2.16.840.1.113883.3.464.1003.112.11.1016'
 valueset "Urine stream interrupted (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -36,35 +33,40 @@ valueset "Urinary urgency (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Benign prostatic hyperplasia (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Carcinoma in situ (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Metastatic Cancer": '2.16.840.1.113762.1.4.1116.351'
+valueset "Male (finding)" : '2.16.840.1.113883.3.2074.1.1.14'
 
 //hesitancy
 //urgency
-//insitu carcinoma
 
 parameter "MeasurementPeriod" Interval<DateTime>
+parameter MeasurementPeriod1 default @2003-01-01T00:00:00.0
 
 context Patient
 
 define "Symptoms":
-	(exists (["Symptom": "Nocturia (finding)"])
-	or exists (["Symptom": "Incontinence (finding)"])
-	or exists (["Symptom": "Hematuria, unspecified"])
-	or exists (["Symptom": "Slowing of urinary stream (finding)"])
-	or exists (["Symptom" : "Urinary urgency (finding)"])
-	or exists (["Symptom": "Urinary hesitancy (finding)"]))
+	(exists (["Patient":"Male (finding)"])
+	and (exists (["Condition": "Nocturia (finding)"]))
+	or exists (["Condition": "Incontinence (finding)"])
+	or exists (["Condition": "Hematuria, unspecified"])
+	or exists (["Condition": "Slowing of urinary stream (finding)"])
+	or exists (["Condition" : "Urinary urgency (finding)"])
+	or exists (["Condition": "Urinary hesitancy (finding)"]))
 	
 define "Indications":
-	(exists (["Physical Exam, Performed": "Benign prostatic hyperplasia (disorder)"]) 
-	or exists (["Diagnosis": "Carcinoma of prostate (disorder)"])
-	or exists (["Diagnosis": "Adenocarcinoma of prostate (disorder)"])
+	"Symptoms" and
+	(exists (["Observation": "Benign prostatic hyperplasia (disorder)"]) 
+	or exists (["Condition": "Carcinoma of prostate (disorder)"])
+	or exists (["Condition": "Adenocarcinoma of prostate (disorder)"])
+	and (exists (["Procedure" : "Prostate Specific Antigen Test"]S
+	where S.performed during MeasurementPeriod1))
 	)
 	
 define "Limitation1":
-	(exists (["Diagnosis": "Carcinoma in situ (disorder)"]) and  (exists (["Diagnostic Study, Performed": "Prostate Specific Antigen Test"]P
+	(exists (["Condition": "Carcinoma in situ (disorder)"]) and  (exists (["DiagnosticReport": "Prostate Specific Antigen Test"]P
 		where P.result = 'abnormal' )))
 define "Limit":
-	["Diagnostic Study, Performed": "Prostate Specific Antigen Test"]D 
-	where D.relevantPeriod in "MeasurementPeriod"
+	["DiagnosticReport": "Prostate Specific Antigen Test"]D 
+	where (D.effective) in "MeasurementPeriod"
 	and "Symptoms"
 	
 define "Limitation2":

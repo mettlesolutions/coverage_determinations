@@ -7,3 +7,7 @@ Coverage:
 =>Keratoplasty that treats specific lesions of the cornea, such as phototherapeutic keratectomy that removes scar tissue from the visual field, deals with an abnormality of the eye and is not cosmetic surgery
 
 The use of lasers to treat ophthalmic disease constitutes opthalmalogic surgery. 
+
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=72&ncdver=1&bc=AAAAgAAAAAAA&

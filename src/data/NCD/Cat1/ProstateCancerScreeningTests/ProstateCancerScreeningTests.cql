@@ -1,7 +1,9 @@
 //Prostate Cancer Screening Test
-library ChlamydiaScreening_Common version '2'
+library ProstateCancerScreeningTest
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -37,54 +39,58 @@ valueset "Age more than 50 years, male (finding)": '2.16.840.1.113883.3.88.12.32
 valueset "Seen by nurse practitioner (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Seen by physician (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Referred by physician assistant (finding)": '2.16.840.1.113762.1.4.1096.216'
+
 parameter "Measurement Period" Interval<DateTime>
+parameter MeasurementPeriod1 default @2006-06-19T00:00:00.0
 
 context Patient
 
 define "Prostate Cancer Screening Test":
-           (exists (["Procedure, Performed": "Digital examination of rectum (procedure)"])
-            and (exists (["Laboratory Test, Performed": "Prostate Specific Antigen Test"])
+           (exists (["Procedure": "Digital examination of rectum (procedure)"]D
+           where D.performed during MeasurementPeriod1)
+            and (exists (["Observation": "Prostate Specific Antigen Test"])
            ))
 define "Practitioner":
-       (exists (["Physical Exam, Performed": "Seen by nurse practitioner (finding)"]))
-        	or (exists (["Physical Exam, Performed": "Referred by physician assistant (finding)"]))
-         	or (exists (["Physical Exam, Performed": "Seen by physician (finding)"]))
-        	or (exists (["Physical Exam, Performed": "Referral to clinical nurse specialist (procedure)"]))
-         	or (exists (["Physical Exam, Performed": "Referral to nurse midwife (procedure)"]))
+       (exists (["Encounter": "Seen by nurse practitioner (finding)"]))
+        	or (exists (["Encounter": "Referred by physician assistant (finding)"]))
+         	or (exists (["Encounter": "Seen by physician (finding)"]))
+        	or (exists (["Encounter": "Referral to clinical nurse specialist (procedure)"]))
+         	or (exists (["Encounter": "Referral to nurse midwife (procedure)"]))
          
          
 
 define "General(Coverage)":
-         (exists (["Diagnosis": "Prostate Cancer"])) and "Prostate Cancer Screening Test"
+         (exists (["Condition": "Prostate Cancer"])) and "Prostate Cancer Screening Test"
 
 define "Condition 1(Screening Digital Rectal Examinations)":
-         (exists (["Patient Characteristic": "Age more than 50 years, male (finding)"])
-              and (exists (["Procedure, Performed": "Digital examination of rectum (procedure)"]) DE
-               where duration in months of DE.relevantPeriod >= 12 and DE.authorDatetime="Practitioner" ))
+         (exists (["Patient": "Age more than 50 years, male (finding)"])
+              and (exists (["Procedure": "Digital examination of rectum (procedure)"]) DE
+               where duration in months of (DE.performed) >= 12 and DE.performer="Practitioner" and DE.performed during MeasurementPeriod1 ))
                
 define "Condition 2(Screening Digital Rectal Examinations)":
-            (exists (["Diagnosis": "Prostate nodule (disorder)"]) and (exists (["Procedure, Performed": "Digital examination of rectum (procedure)"] D
-              where D.authorDatetime= "Practitioner" )))
-              or (exists (["Diagnosis": "Prostate specific antigen abnormal (finding)"]) and (exists (["Procedure, Performed": "Digital examination of rectum (procedure)"] R
-              where R. authorDatetime= "Practitioner")))
+            (exists (["Condition": "Prostate nodule (disorder)"]) and (exists (["Procedure": "Digital examination of rectum (procedure)"] D
+              where D.performer.role= "Practitioner" )))
+              or (exists (["Condition": "Prostate specific antigen abnormal (finding)"]) and (exists (["Procedure": "Digital examination of rectum (procedure)"] R
+              where R.performer.role= "Practitioner")))
 
 define "Screening Digital Rectal Examinations":
               "Condition 1(Screening Digital Rectal Examinations)" and "Condition 2(Screening Digital Rectal Examinations)"       
                        
 define "Condition 1(Screening Prostate Specific Antigen Tests)":
-                (exists (["Patient Characteristic": "Age more than 50 years, male (finding)"])
-              and (exists (["Laboratory Test, Performed": "Prostate Specific Antigen Test"]) PSA
-               where duration in months of PSA.relevantPeriod >= 12  and PSA.authorDatetime= "Practitioner"))
+                (exists (["Patient": "Age more than 50 years, male (finding)"])
+              and (exists (["Observation": "Prostate Specific Antigen Test"]) PSA
+               where duration in months of (PSA.effective) >= 12  and PSA.performer= "Practitioner" and (PSA.effective) during MeasurementPeriod1))
 
 define "Condition 2(Screening Prostate Specific Antigen Tests)":
-                (exists (["Laboratory Test, Recommended": "Prostate Specific Antigen Test"]) P
-              where P.reason = (exists (["Diagnosis" :"Adenocarcinoma of prostate (disorder)"]) and (exists (["Diagnosis":"Malignant tumor of exocrine pancreas (disorder)"]))
-               and P.authorDatetime= "Practitioner"))
+		(exists (["Condition" :"Adenocarcinoma of prostate (disorder)"])
+		 and (exists (["Condition":"Malignant tumor of exocrine pancreas (disorder)"]))
+                and (exists (["Observation": "Prostate Specific Antigen Test"]) P
+               where P.performer= "Practitioner"))
  
 define "Condition 3(Screening Prostate Specific Antigen Tests)":
-                  (exists (["Diagnosis": "Primary malignant neoplasm of prostate (disorder)"]) and
-                  (exists (["Laboratory Test, Recommended": "Prostate Specific Antigen Test"])) and 
-                  (exists (["Procedure, Performed": "Immunocytochemical procedure (procedure)"])))           
+                  (exists (["Condition": "Primary malignant neoplasm of prostate (disorder)"]) and
+                  (exists (["Observation": "Prostate Specific Antigen Test"])) and 
+                  (exists (["Procedure": "Immunocytochemical procedure (procedure)"])))           
  
 define "Screening Prostate Specific Antigen Tests":
            "Condition 1(Screening Prostate Specific Antigen Tests)" and "Condition 2(Screening Prostate Specific Antigen Tests)" 

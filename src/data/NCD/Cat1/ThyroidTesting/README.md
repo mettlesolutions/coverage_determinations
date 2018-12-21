@@ -16,4 +16,6 @@ Monitor thyroid hormone levels (for example, patients with goiter, thyroid nodul
 
 Limiations
 =>Testing may be covered up to two times a year in clinically stable patients
-=>more frequent testing may be reasonable and necessary for patients whose thyroid therapy has been altered or in whom symptoms or signs of hyperthyroidism or hypothyroidism are noted.
+=>more frequent testing may be reasonable and necessary for patients whose thyroid therapy has been altered or in whom symptoms or signs of hyperthyroidism or hypothyroidism 
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=101&ncdver=1&bc=AAAAgAAAAAAA&
