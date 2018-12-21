@@ -1,7 +1,9 @@
 //Plethysmography 
-library ChlamydiaScreening_Common version '2'
+library Plethysmography
 
-using QDM
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -31,31 +33,36 @@ valueset "Venous occlusion plethysmography (procedure)" : '2.16.840.1.113883.3.8
 //Capacitance Plethysmography
 //Mechanical Oscillometry 
 
-
-
+parameter MeasurementPeriod default @1980-11-15T00:00:00.0
 context Patient
 
 define "Segmental Plethysmography":
-		(exists (["Procedure, Performed":"Regional plethysmography (procedure)"])
-		and(exists (["Procedure, Performed":"Impedance plethysmography (procedure)"]))
-		and(exists (["Procedure, Performed":"Pulse volume recorder plethysmography (procedure)"]))
+		(exists (["Procedure":"Regional plethysmography (procedure)"]R
+		where R.performed during MeasurementPeriod)
+		and(exists (["Procedure":"Impedance plethysmography (procedure)"]I
+		where I.performed during MeasurementPeriod))
+		and(exists (["Procedure":"Pulse volume recorder plethysmography (procedure)"]P
+		where P.performed during MeasurementPeriod))
 		)
 
 define "Ultrasonic Measurement of Blood Flow (Doppler)":
-		(exists (["Diagnosis" : "Peripheral vascular disease (disorder)"])
-		and (exists (["Procedure, Performed":"Color doppler ultrasound (procedure)"]))
+		(exists (["Condition" : "Peripheral vascular disease (disorder)"])
+		and (exists (["Procedure":"Color doppler ultrasound (procedure)"]D
+		where D.performed during MeasurementPeriod))
 		)
 
 define "Covered":
-	"Segmental Plethysmography" and "Ultrasonic Measurement of Blood Flow (Doppler)" and 
-	( exists (["Procedure, Performed": "Ocular plethysmography (procedure)"]) ) 
-	and ( exists (["Procedure, Performed": "Strain gauge plethysmography (procedure)"]) ) 
+	"Segmental Plethysmography"  and "Ultrasonic Measurement of Blood Flow (Doppler)" and 
+	( exists (["Procedure": "Ocular plethysmography (procedure)"]O
+	where O.performed during MeasurementPeriod) ) 
+	and ( exists (["Procedure": "Strain gauge plethysmography (procedure)"]S
+	where S.performed during MeasurementPeriod) ) 
 
 define "Not Covered":
-		 (exists (["Procedure, Performed":"Photoplethysmography (procedure)"])
-		and (exists (["Procedure, Performed":"Impedance plethysmography (procedure)"]))
-		and (exists (["Procedure, Performed":"Venous occlusion plethysmography (procedure)" ]))
+		 (exists (["Procedure":"Photoplethysmography (procedure)"])
+		and (exists (["Procedure":"Impedance plethysmography (procedure)"]))
+		and (exists (["Procedure":"Venous occlusion plethysmography (procedure)" ]))
 		)
 		
 define "Coverage":
-		"Covered" and "Not Covered"
+		"Covered" and  "Not Covered" during MeasurementPeriod

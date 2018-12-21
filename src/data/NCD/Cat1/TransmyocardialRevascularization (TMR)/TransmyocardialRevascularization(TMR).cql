@@ -1,8 +1,9 @@
 //Transmyocardial Revascularization (TMR)
-library ChlamydiaScreening_Common version '2'
+library TransmyocardialRevascularization
 
-using QDM
+using FHIR
 
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -31,36 +32,38 @@ valueset "Physician (occupation)" : '2.16.840.1.113762.1.4.1096.129'
 valueset "Referral to general pathology service (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Consultation for laboratory medicine (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 
+parameter MeasurementPeriod default @1999-07-01T00:00:00.0
 context Patient
 
 define "Refactory to treatments":
-		(exists (["Procedure, Performed" : "Medical therapy (procedure)"])
-		and (exists (["Procedure, Performed" :"Drug therapy (procedure)"]))
-		and (exists (["Procedure, Performed" : "Percutaneous transluminal coronary angioplasty (procedure)"])
-		or (exists (["Procedure, Performed" :"Placement of stent (procedure)"]))
-		or (exists (["Procedure, Performed" : "Coronary bypass graft angiography (procedure)"]))
+		(exists (["Procedure" : "Medical therapy (procedure)"])
+		and (exists (["Procedure" :"Drug therapy (procedure)"]))
+		and (exists (["Procedure" : "Percutaneous transluminal coronary angioplasty (procedure)"])
+		or (exists (["Procedure" :"Placement of stent (procedure)"]))
+		or (exists (["Procedure" : "Coronary bypass graft angiography (procedure)"]))
 		))
 
 define "Condition 2":
-		(exists (["Procedure, Performed" : "Ejection Fraction"]) EF
-		where EF.result > 25 '%' and (exists (["Diagnosis":"Myocardial ischemia (disorder)"]) and (exists (["Procedure, Performed" :"Percutaneous coronary intervention (procedure)"]))
-		and (exists (["Diagnosis":"Ventricular fibrillation (disorder)"])) or (exists (["Diagnosis":"Cardiac arrhythmia, unspecified"]))
-		or (exists (["Diagnosis" :"Congestive heart failure, unspecified"])) or (exists (["Diagnosis" :"Acute myocardial infarction (disorder)"])))
+		(exists (["Procedure" : "Ejection Fraction"]) EF
+		where EF.outcome = 25 '%' and (exists (["Condition":"Myocardial ischemia (disorder)"]) and (exists (["Procedure" :"Percutaneous coronary intervention (procedure)"]))
+		and (exists (["Condition":"Ventricular fibrillation (disorder)"])) or (exists (["Condition":"Cardiac arrhythmia, unspecified"]))
+		or (exists (["Condition" :"Congestive heart failure, unspecified"])) or (exists (["Condition" :"Acute myocardial infarction (disorder)"])))
 		)
 		
 define "Condition 1":
-		(exists (["Diagnosis" : "Angina (disorder)"])) and "Refactory to treatments"
+		(exists (["Condition" : "Angina (disorder)"])) and "Refactory to treatments"
 		
 define "Providers":
-		(exists (["Provider Characteristic" : "Professional nurse (occupation)"]) 
-		or (exists (["Provider Characteristic" : "Physician (occupation)"]))
-		or (exists (["Provider Characteristic" : "Referral to general pathology service (procedure)"]))
-		or (exists (["Provider Characteristic" : "Consultation for laboratory medicine (procedure)"]))
+		(exists (["Practitioner" : "Professional nurse (occupation)"]) 
+		or (exists (["Practitioner" : "Physician (occupation)"]))
+		or (exists (["Practitioner" : "Referral to general pathology service (procedure)"]))
+		or (exists (["Practitioner" : "Consultation for laboratory medicine (procedure)"]))
 		)
 
 define "Covered":
-		"Providers" and (exists (["Provider Care Experience" : "Transmyocardial revascularization by laser technique (procedure)"])
-		and (exists (["Provider Care Experience" : "Cardiac intensive care unit (environment)"])))
+		"Providers" and (exists (["Observation" : "Transmyocardial revascularization by laser technique (procedure)"]T
+		where (T.effective) during MeasurementPeriod)
+		and (exists (["Observation" : "Cardiac intensive care unit (environment)"])))
 		
 define "Coverage":
 		"Condition 1" or "Condition 2" or "Covered"

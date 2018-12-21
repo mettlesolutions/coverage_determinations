@@ -1,7 +1,8 @@
 //Tumor Antigen by Immunoassay - CA 125
-library ChlamydiaScreening_Common version '2'
+library TumorAntigenbyImmunoassayCA125
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -33,23 +34,26 @@ valueset "Chemotherapy (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Postoperative monitoring (regime/therapy)" : '2.16.840.1.113883.3.88.12.80.28'
 // three serum levels
 // signs or symptoms suggestive of malignancy
+parameter MeasurementPeriod default @2003-01-03T00:00:00.0
 
 context Patient
 
-define   "Indication 1":
-		(exists (["Diagnosis" :"Malignant tumor of ovary (disorder)"])
-		or (exists (["Diagnosis" : "Carcinoma of fallopian tube (disorder)"]))
-		or (exists (["Diagnosis" : "Primary malignant neoplasm of endometrium (disorder)"]))
-		or (exists (["Diagnosis" :  "Carcinoma of endocervix (disorder)"]))
-		or (exists (["Diagnosis" : "Mesothelioma (malignant, clinical disorder) (disorder)"]))
-		or (exists (["Diagnosis" : "Extraovarian primary peritoneal carcinoma (disorder)"]))
-		and (exists (["Procedure, Performed": "CA 125 measurement (procedure)"]))
+define "Indication 1":
+		(exists (["Condition" :"Malignant tumor of ovary (disorder)"])
+		or (exists (["Condition" : "Carcinoma of fallopian tube (disorder)"]))
+		or (exists (["Condition" : "Primary malignant neoplasm of endometrium (disorder)"]))
+		or (exists (["Condition" :  "Carcinoma of endocervix (disorder)"]))
+		or (exists (["Condition" : "Mesothelioma (malignant, clinical disorder) (disorder)"]))
+		or (exists (["Condition" : "Extraovarian primary peritoneal carcinoma (disorder)"]))
+		and (exists (["Procedure": "CA 125 measurement (procedure)"]M
+		where M.performed during MeasurementPeriod))
 		)
 define "Indication 2" :
-		(exists (["Procedure, Performed" : "Preoperative procedure (procedure)"] and ["Patient Characteristic Sex" :"Female (finding)"])
-		and (exists (["Diagnosis" :"On examination - central pelvic mass (finding)"]))
-		and (exists (["Procedure, Performed" :"CA 125 measurement (procedure)"]))
-		and (exists (["Procedure, Performed" : "Postoperative monitoring (regime/therapy)"]))
+		(exists (["Procedure" : "Preoperative procedure (procedure)"] and ["Patient" :"Female (finding)"])
+		and (exists (["Condition" :"On examination - central pelvic mass (finding)"]))
+		and (exists (["Procedure" :"CA 125 measurement (procedure)"]C
+		where C.performed during MeasurementPeriod))
+		and (exists (["Procedure" : "Postoperative monitoring (regime/therapy)"]))
 		)
 		
 define "Coverage":

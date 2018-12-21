@@ -1,8 +1,9 @@
 //Urinary Drainage Bags
-library ChlamydiaScreening_Common version '2'
+library UrinaryDrainageBags
 
-using QDM
+using FHIR
 
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -16,13 +17,17 @@ valueset "Urinary retention care (regime/therapy)" : '2.16.840.1.113883.3.88.12.
 valueset "Disorder of urinary bladder (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Urinary incontinence (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 //leg or beside drainage bags 
+parameter MeasurementPeriod default @1997-06-05T00:00:00.0
 
 context Patient
 
 define "Covered":
-	 	(exists (["Diagnosis": "Disorder of urinary bladder (disorder)"])
-		and (exists (["Diagnosis" : "Urinary incontinence (finding)"]))
-		and (exists (["Procedure, Performed":"Urine specimen collection (procedure)"]))
-		and (exists (["Procedure, Performed":"Urinary retention care (regime/therapy)"]))
+	 	(exists (["Condition": "Disorder of urinary bladder (disorder)"])
+		and (exists (["Condition" : "Urinary incontinence (finding)"]))
+		and (exists (["Procedure":"Urine specimen collection (procedure)"]))
+		and (exists (["Procedure":"Urinary retention care (regime/therapy)"]))
 		)
+		
+define "Coverage":
+		"Covered" during MeasurementPeriod
 

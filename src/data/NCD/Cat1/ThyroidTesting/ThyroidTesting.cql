@@ -1,8 +1,9 @@
 //Thyroid Testing
-library ChlamydiaScreening_Common version '2'
+library ThyroidTesting
 
-using QDM
+using FHIR
 
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -65,47 +66,50 @@ valueset "Hemolytic anemia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Goiter (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Patient's condition stable (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 
-
+parameter MeasurementPeriod default @2003-01-01T00:00:00.0
+context Patient
 
 define "Thyroid Function Tests":
-           (exists (["Diagnosis": "Euthyroid (finding)"])
-           or(exists (["Diagnosis": "Hypothyroidism (disorder)"]))
-           or (exists (["Diagnosis":"Goiter due to thyroiditis (disorder)"]))
-           or (exists (["Diagnosis" :"Thyroid nodule (disorder)"]))
-           or (exists (["Diagnosis": "Secondary hypothyroidism (disorder)"]))
-           or (exists (["Diagnosis": "Goiter due to thyroiditis (disorder)"]))
-           or (exists (["Diagnosis": "Thyroid nodule (disorder)"]))
-           or (exists (["Diagnosis":  "Iodine hypothyroidism (disorder)"] union ["Procedure, Performed": "Drug therapy (procedure)"]))
-           or (exists (["Diagnosis": "Hyperthyroidism (disorder)"]))
+           (exists (["Condition": "Euthyroid (finding)"])
+           or(exists (["Condition": "Hypothyroidism (disorder)"]))
+           or (exists (["Condition":"Goiter due to thyroiditis (disorder)"]))
+           or (exists (["Condition" :"Thyroid nodule (disorder)"]))
+           or (exists (["Condition": "Secondary hypothyroidism (disorder)"]))
+           or (exists (["Condition": "Goiter due to thyroiditis (disorder)"]))
+           or (exists (["Condition": "Thyroid nodule (disorder)"]))
+           or (exists (["Condition":  "Iodine hypothyroidism (disorder)"] union ["Procedure": "Drug therapy (procedure)"]))
+           or (exists (["Condition": "Hyperthyroidism (disorder)"]))
            )
            
 define "Condition 1(Indications)":
-          (exists (["Diagnosis": "Disease (disorder)"])
-          or (exists (["Diagnosis": "Malignant neoplasm of thyroid gland"] union ["Diagnosis": "Neoplasm of uncertain behavior of other and unspecified endocrine glands"]))
- 	  and (exists (["Procedure, Performed" :  "Thyroid function tests normal (finding)"]))
+          (exists (["Condition": "Disease (disorder)"])
+          or (exists (["Condition": "Malignant neoplasm of thyroid gland"] union ["Condition": "Neoplasm of uncertain behavior of other and unspecified endocrine glands"]))
+ 	  and (exists (["Procedure" :  "Thyroid function tests normal (finding)"]T
+ 	  where T.performed during MeasurementPeriod))
  	  )
  	  
 define "Condition 2(Indications)":
-            (exists (["Diagnosis": "Metabolic disease (disorder)"])
-            or (exists (["Diagnosis": "Malnutrition (calorie) (disorder)"]))
-            or (exists (["Diagnosis": "Hyperlipidemia (disorder)"]))
-            or (exists (["Diagnosis" :"Anemia (disorder)"]))
-            or (exists (["Diagnosis": "Psychotic disorder (disorder)"]))
-            or (exists (["Diagnosis": "Depressive disorder, not elsewhere classified"]))
-            or (exists (["Diagnosis": "Cardiac arrhythmia (disorder)"]))
-            or (exists (["Diagnosis": "Disorder of menstruation (disorder)"]))
-            or (exists (["Diagnosis": "Poor skin condition (finding)"]))
-            or (exists (["Diagnosis": "Myalgia (SNOMED)"]))
-            or (exists (["Diagnosis": "Disturbance of consciousness (finding)"]))
-            or (exists (["Diagnosis": "Malaise (finding)"]))
-            or (exists (["Diagnosis": "Hypothermia (finding)"]))
-            or (exists (["Symptom" : "Nervous system symptoms (finding)"]))
-            or (exists (["Symptom" :"Skin symptom (finding)"]))
-            or (exists (["Symptom" : "Psychosomatic musculoskeletal symptoms (finding)" ]))
-            or (exists (["Symptom" :  "Cardiovascular symptoms (finding)"])) 
-            or (exists (["Symptom" :  "Gastrointestinal symptom (finding)"]))
-            or (exists (["Diagnosis": "History of malignant neoplasm of endocrine gland (situation)"]))
-            and (exists (["Procedure, Performed" :  "Thyroid function tests normal (finding)"]))
+            (exists (["Condition": "Metabolic disease (disorder)"])
+            or (exists (["Condition": "Malnutrition (calorie) (disorder)"]))
+            or (exists (["Condition": "Hyperlipidemia (disorder)"]))
+            or (exists (["Condition" :"Anemia (disorder)"]))
+            or (exists (["Condition": "Psychotic disorder (disorder)"]))
+            or (exists (["Condition": "Depressive disorder, not elsewhere classified"]))
+            or (exists (["Condition": "Cardiac arrhythmia (disorder)"]))
+            or (exists (["Condition": "Disorder of menstruation (disorder)"]))
+            or (exists (["Condition": "Poor skin condition (finding)"]))
+            or (exists (["Condition": "Myalgia (SNOMED)"]))
+            or (exists (["Condition": "Disturbance of consciousness (finding)"]))
+            or (exists (["Condition": "Malaise (finding)"]))
+            or (exists (["Condition": "Hypothermia (finding)"]))
+            or (exists (["Condition" : "Nervous system symptoms (finding)"]))
+            or (exists (["Condition" :"Skin symptom (finding)"]))
+            or (exists (["Condition" : "Psychosomatic musculoskeletal symptoms (finding)" ]))
+            or (exists (["Condition" :  "Cardiovascular symptoms (finding)"])) 
+            or (exists (["Condition" :  "Gastrointestinal symptom (finding)"]))
+            or (exists (["Condition": "History of malignant neoplasm of endocrine gland (situation)"]))
+            and (exists (["Procedure" :  "Thyroid function tests normal (finding)"]F
+            where F.performed during MeasurementPeriod))
             )
             
             
@@ -113,10 +117,10 @@ define "Indications":
            "Thyroid Function Tests" or "Condition 1(Indications)" or "Condition 2(Indications)"
            
 define "Limitation 1": 
-           (exists (["Diagnosis": "Patient's condition stable (finding)"])
-           and (exists (["Procedure, Performed": "Thyroid stimulating hormone measurement (procedure)"] T
-           where T.components = 2))  
+           (exists (["Condition": "Patient's condition stable (finding)"])
+           and (exists (["Procedure": "Thyroid stimulating hormone measurement (procedure)"]H
+           where H.performed during MeasurementPeriod))  
            )
                 
 define "Coverage":
-		"Indications" and "Limitation 1"
+		"Indications" and Count("Limitation 1") = 2

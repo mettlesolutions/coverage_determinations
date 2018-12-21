@@ -1,7 +1,9 @@
 //Sweat Test
-library ChlamydiaScreening_Common version '2'
+library SweatTest
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
+
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -19,11 +21,11 @@ valueset "Sympathectomy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Indications and Limitations":
-          (exists (["Diagnosis": "Cystic fibrosis (disorder)"]) and  (exists (["Laboratory Test, Performed": "Sweat test (procedure)"])))
+          (exists (["Condition": "Cystic fibrosis (disorder)"]) and  (exists (["Observation": "Sweat test (procedure)"])))
           
 define "Not Covered":
-       (exists (["Diagnosis": "Peripheral vascular disease (disorder)"]) and  (exists (["Procedure, Performed": "Sympathectomy (procedure)"]))
-       and (exists (["Laboratory Test, Performed": "Sweat test (procedure)"]))
+       (exists (["Condition": "Peripheral vascular disease (disorder)"]) and  (exists (["Procedure": "Sympathectomy (procedure)"]))
+       and (exists (["Observation": "Sweat test (procedure)"]))
        )
        
 define "Coverage":

@@ -1,7 +1,9 @@
 //Refractive Keratoplasty
 
-library ChlamydiaScreening_Common version '2'
-using QDM
+library RefractiveKeratoplasty
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
+
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -34,37 +36,47 @@ valueset "Epiretinal membrane (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Disorder of eye region (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Surgical procedure on eye proper using laser (procedure)" :'2.16.840.1.113883.3.88.12.80.28'
 valueset "Refractive keratoplasty by laser surgery (procedure)" :'2.16.840.1.113883.3.88.12.80.28'
+valueset "Ophthalmologist (occupation)" : '2.16.840.1.113762.1.4.1099.14'
+parameter MeasurementPeriod default @1997-05-01T00:00:00.0
 
 context Patient
 
 define "Not Covered": 
-	(exists (["Diagnosis": "Myopia (disorder)"]) and (exists (["Procedure, Performed": "Keratoplasty (procedure)"]))
-	or (exists (["Diagnosis": "Hypermetropia (disorder)"])) and (exists (["Procedure, Performed": "Keratoplasty (procedure)"]))
-	or (exists (["Diagnosis": "Presbyopia (disorder)"])) and (exists (["Procedure, Performed": "Keratoplasty (procedure)"]))
-	or (exists (["Diagnosis": "Astigmatism (disorder)"])) and (exists (["Procedure, Performed": "Keratoplasty (procedure)"]))
-	)
-	
-define "Covered":
-	(exists (["Diagnosis" : "Wears glasses (finding)"])
-	and (exists (["Procedure, Performed": "Keratoplasty (procedure)"])
-	or (exists (["Procedure, Performed" : "Fitting of contact lens (procedure)"])))
-	and (exists (["Procedure, Performed": "Cataract surgery (procedure)"]))
-	and not (exists (["Procedure, Performed" : "Cosmetic surgery (procedure)"]))
+	(exists (["Condition": "Myopia (disorder)"]) and (exists (["Procedure": "Keratoplasty (procedure)"]))
+	or (exists (["Condition": "Hypermetropia (disorder)"])) and (exists (["Procedure": "Keratoplasty (procedure)"]))
+	or (exists (["Condition": "Presbyopia (disorder)"])) and (exists (["Procedure": "Keratoplasty (procedure)"]))
+	or (exists (["Condition": "Astigmatism (disorder)"])) and (exists (["Procedure": "Keratoplasty (procedure)"]))
 	)
 	
 define "Covered 1":
-	(exists (["Diagnosis": "Lesion of eye structure (finding)"])
-	and (exists (["Procedure, Performed": "Keratoplasty (procedure)"])))
-	or
-	 (exists (["Diagnosis" : "Epiretinal membrane (disorder)"])
-	and (exists (["Procedure, Performed" : "Refractive keratoplasty by laser surgery (procedure)"]))
-	and not (exists (["Procedure, Performed" : "Cosmetic surgery (procedure)"]))
+	(exists (["Condition" : "Wears glasses (finding)"])
+	and (exists (["Procedure": "Keratoplasty (procedure)"]K
+	where K.performed during MeasurementPeriod)
+	or (exists (["Procedure" : "Fitting of contact lens (procedure)"])))
+	and (exists (["Procedure": "Cataract surgery (procedure)"]))
+	and not (exists (["Procedure" : "Cosmetic surgery (procedure)"]))
 	)
 	
 define "Covered 2":
-		(exists (["Diagnosis" :"Disorder of eye region (disorder)"])
-		and (exists (["Procedure, Performed" : "Surgical procedure on eye proper using laser (procedure)"]))
+	(exists (["Condition": "Lesion of eye structure (finding)"])
+	and (exists (["Procedure": "Keratoplasty (procedure)"]K
+	where K.performed during MeasurementPeriod)))
+	or
+	 (exists (["Condition" : "Epiretinal membrane (disorder)"])
+	and (exists (["Procedure" : "Refractive keratoplasty by laser surgery (procedure)"]K
+	where K.performed during MeasurementPeriod))
+	and not (exists (["Procedure" : "Cosmetic surgery (procedure)"]))
+	)
+	
+define "Covered 3":
+		(exists (["Condition" :"Disorder of eye region (disorder)"])
+		and (exists (["Procedure" : "Surgical procedure on eye proper using laser (procedure)"]S
+		where S.performed during MeasurementPeriod))
 		)
+		
+define "Covered":
+		"Covered 1" and "Covered 2" and "Covered 3" and 
+		(exists (["Encounter":"Ophthalmologist (occupation)"]))
 	
 define "Coverage":
-	 "Covered" and "Covered 1" and "Covered 2" and "Not Covered"
+	 "Covered" and "Not Covered"

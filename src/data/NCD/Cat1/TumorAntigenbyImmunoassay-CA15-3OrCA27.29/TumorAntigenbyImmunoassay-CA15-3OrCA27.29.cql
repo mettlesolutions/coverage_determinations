@@ -1,9 +1,9 @@
 //TumorAntigenbyImmunoassay-CA15-3OrCA27.29
-library ChlamydiaScreening_Common version '2'
+library TumorAntigenbyImmunoassayCA153OrCA2729
 
-using QDM
+using FHIR
 
-
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -23,20 +23,22 @@ valueset "Malignant neoplasm of breast (disorder)" : '2.16.840.1.113883.3.88.12.
 //Post Surgical Therapy
 valueset "Tumor marker measurement (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 
-
+parameter MeasurementPeriod default @2003-01-03T00:00:00.0
 context Patient
 
 define "Condition1 of Indications":
-        ( exists (["Diagnosis": "Multiple malignancy (disorder)"]) and ( exists (["Procedure, Performed": "Tumor marker monitoring (regime/therapy)"]) ) 
-        and ( exists (["Laboratory Test, Performed": "Tumor marker measurement (procedure)"]) ) )
+        ( exists (["Condition": "Multiple malignancy (disorder)"]) and ( exists (["Procedure": "Tumor marker monitoring (regime/therapy)"]M
+        where M.performed during MeasurementPeriod) ) 
+        and ( exists (["Observation": "Tumor marker measurement (procedure)"]) ) )
         
 define "Condition2 of Indications":
-		(exists (["Diagnosis" :"Malignant neoplasm of breast (disorder)"]) and 
-		(exists (["Diagnostic Study, Performed" : "Screening for cancer (procedure)"]))
-		and (exists(["Procedure, Performed" :'Cancer antigen 15-3 measurement (procedure)'])))
-		 or (exists (["Diagnosis" :"Malignant neoplasm of breast (disorder)"]) and 
-		(exists (["Diagnostic Study, Performed" : "Screening for cancer (procedure)"])) and
-		 (exists (["Procedure, Performed" : "Measurement of cancer antigen 27-29 (procedure)"]))
+		(exists (["Condition" :"Malignant neoplasm of breast (disorder)"]) and 
+		(exists (["DiagnosticReport" : "Screening for cancer (procedure)"]))
+		and (exists(["Procedure" :'Cancer antigen 15-3 measurement (procedure)'])))
+		 or (exists (["Condition" :"Malignant neoplasm of breast (disorder)"]) and 
+		(exists (["DiagnosticReport" : "Screening for cancer (procedure)"])) and
+		 (exists (["Procedure" : "Measurement of cancer antigen 27-29 (procedure)"]C
+		 where C.performed during MeasurementPeriod))
 		 )
 		 	
 define "Coverage":

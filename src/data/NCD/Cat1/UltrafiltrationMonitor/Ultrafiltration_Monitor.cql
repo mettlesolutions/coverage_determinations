@@ -1,8 +1,10 @@
 //Ultrafiltration Monitor
-library ChlamydiaScreening_Common version '2'
+library UltrafiltrationMonitor
 
-using QDM
+using FHIR
 
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -17,18 +19,22 @@ valueset "Dialysis procedure (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Intermittent hemodialysis with sequential ultrafiltration (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Renal dialysis (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 
-
+parameter MeasurementPeriod default @1983-07-11T00:00:00.0
 
 context Patient
 
 
 define "Covered":
-		(exists (["Diagnosis":"End Stage Renal Disease"]) and 
-		(exists (["Procedure, Performed" : "Ultrafiltration (procedure)"]) and (exists (["Procedure, Performed" : "Intermittent hemodialysis with sequential ultrafiltration (procedure)"])))
+		(exists (["Condition":"End Stage Renal Disease"]) and 
+		(exists (["Procedure" : "Ultrafiltration (procedure)"]U
+		where U.performed during MeasurementPeriod) and 
+		(exists (["Procedure" : "Intermittent hemodialysis with sequential ultrafiltration (procedure)"]H
+		where H.performed during MeasurementPeriod)))
 		)
 	
 define "Not Covered":
-		(exists (["Procedure, Performed" : "Ultrafiltration (procedure)"]) or  (exists (["Procedure, Performed":"Renal dialysis (procedure)"])))
+		(exists (["Procedure" : "Ultrafiltration (procedure)"]H
+		where H.performed during MeasurementPeriod) and  (exists (["Procedure":"Renal dialysis (procedure)"])))
 		
 		
 define "Coverage":

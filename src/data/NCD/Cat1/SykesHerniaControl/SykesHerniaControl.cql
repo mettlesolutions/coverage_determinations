@@ -1,7 +1,8 @@
 //Sykes Hernia Control
-library  ChlamydiaScreening_Common version '2'
+library  SykesHerniaControl
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -18,8 +19,8 @@ valueset "Hernia repair (procedure)"  :'2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Covered":
-		(exists (["Procedure, Performed" : "Hernia repair (procedure)"])
-		and (exists (["Procedure, Performed":"Application of truss (procedure)"]))
+		(exists (["Procedure" : "Hernia repair (procedure)"])
+		and (exists (["Procedure":"Application of truss (procedure)"]))
 		)
 		
 define "Coverage":

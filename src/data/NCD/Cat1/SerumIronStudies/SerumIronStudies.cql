@@ -1,7 +1,7 @@
 //Serum Iron Studies
-library ChlamydiaScreening_Common version '2'
-
-using QDM version '5.3'
+library SerumIronStudies
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -86,157 +86,164 @@ valueset "Male (finding)": '2.16.840.1.113883.3.2074.1.1.14'
 valueset "Female (finding)": '2.16.840.1.113883.3.2074.1.1.14'
 valueset "Insulin treated type 2 diabetes mellitus (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Normal (qualifier value)": '2.16.840.1.113762.1.4.1185.7'
-valueset "Summary report (record artifact)" : '2.16.840.1.113762.1.4.1116.529'
+valueset "Documentation procedure (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
+parameter MeasurementPeriod1 default @2003-01-01T00:00:00.0
+
+context Patient
 
 define "Normal Serum Ferritin Level In Males":
-            (exists (["Patient Characteristic Sex": "Male (finding)"]) 
-             and (exists (["Laboratory Test, Performed": "Serum ferritin measurement (procedure)"] ST
-          where ST.result = Interval[12,300]) ) )
+            (exists (["Patient": "Male (finding)"]) 
+             and (exists (["Observation": "Serum ferritin measurement (procedure)"] ST
+          where  (ST.effective) during MeasurementPeriod1 and (ST.value) = Interval[12,300]) ) )
           
 define "Normal Serum Ferritin Level In Females":
-            (exists (["Patient Characteristic Sex": "Female (finding)"]) 
-             and (exists (["Laboratory Test, Performed": "Serum ferritin measurement (procedure)"] ST
-          where ST.result = Interval[12,150]) ) )
+            (exists (["Patient": "Female (finding)"]) 
+             and (exists (["Observation": "Serum ferritin measurement (procedure)"] ST
+          where  (ST.effective) during MeasurementPeriod1 and (ST.value) = Interval[12,150]) ) )
 
 
 define "Iron Deficiencies":
-    (exists (["Diagnosis": "Mean corpuscular volume - low (finding)"])
-    or (exists (["Diagnosis": "Mean corpuscular volume - low (finding)"] union ["Diagnosis": "Hemoglobin low (finding)"]))
-    or (exists (["Diagnosis": "Mean corpuscular volume - normal (finding)"] union ["Diagnosis": "Hemoglobin low (finding)"]))
-    or (exists (["Diagnosis": "Mean corpuscular volume - low (finding)"] union ["Diagnosis": "Increased size (finding)"] union ["Diagnosis": "Red cell distribution width determination (procedure)"]))
-    or (exists (["Diagnosis": "Mean corpuscular volume - normal (finding)"] union ["Diagnosis": "Increased size (finding)"] union ["Diagnosis": "Red cell distribution width determination (procedure)"]))
-    or (exists (["Diagnosis": "Pica (disorder)"]))
-    or (exists (["Diagnosis": "Chronic gastrointestinal hemorrhage (disorder)"]))
-    or (exists (["Diagnosis": "Acute gastrointestinal hemorrhage (disorder)"]))
-    or (exists (["Diagnosis": "Hematuria, unspecified"]))
-    or (exists (["Diagnosis": "Menorrhagia (finding)"]))
-    or (exists (["Diagnosis": "Malabsorption - iron (disorder)"]))
-    or (exists (["Procedure, Performed": "Posterior gastrojejunostomy (procedure)"]))
-    or (exists (["Diagnosis": "Malnutrition (calorie) (disorder)"]))
-    or (exists (["Diagnosis": "Malignant (primary) neoplasm, unspecified"]))
-    or (exists (["Diagnosis": "Chronic inflammatory disorder (disorder)"]))
+    (exists (["Condition": "Mean corpuscular volume - low (finding)"])
+    or (exists (["Condition": "Mean corpuscular volume - low (finding)"] union ["Condition": "Hemoglobin low (finding)"]))
+    or (exists (["Condition": "Mean corpuscular volume - normal (finding)"] union ["Condition": "Hemoglobin low (finding)"]))
+    or (exists (["Condition": "Mean corpuscular volume - low (finding)"] union ["Condition": "Increased size (finding)"] union ["Condition": "Red cell distribution width determination (procedure)"]))
+    or (exists (["Condition": "Mean corpuscular volume - normal (finding)"] union ["Condition": "Increased size (finding)"] union ["Condition": "Red cell distribution width determination (procedure)"]))
+    or (exists (["Condition": "Pica (disorder)"]))
+    or (exists (["Condition": "Chronic gastrointestinal hemorrhage (disorder)"]))
+    or (exists (["Condition": "Acute gastrointestinal hemorrhage (disorder)"]))
+    or (exists (["Condition": "Hematuria, unspecified"]))
+    or (exists (["Condition": "Menorrhagia (finding)"]))
+    or (exists (["Condition": "Malabsorption - iron (disorder)"]))
+    or (exists (["Procedure": "Posterior gastrojejunostomy (procedure)"]))
+    or (exists (["Condition": "Malnutrition (calorie) (disorder)"]))
+    or (exists (["Condition": "Malignant (primary) neoplasm, unspecified"]))
+    or (exists (["Condition": "Chronic inflammatory disorder (disorder)"]))
     )
     
 define "Iron Overloads": 
-         (exists (["Diagnosis": "Chronic hepatitis (disorder)"])
-          or (exists (["Diagnosis": "Diabetes mellitus (disorder)"]))
-          or (exists (["Diagnosis": "Hyperpigmentation of skin (disorder)"]))
-          or (exists (["Diagnosis": "Arthropathy (disorder)"]))
-          or (exists (["Diagnosis": "Cirrhosis"]))
-          or (exists (["Diagnosis": "Hypogonadism (disorder)"]))
-          or (exists (["Diagnosis": "Hypopituitarism (disorder)"]))
-          or (exists (["Diagnosis": "Disorder of porphyrin metabolism (disorder)"]))
-          or (exists (["Diagnosis": "Heart failure, unspecified"]))
-          or (exists (["Diagnosis": "Sideroblastic anemia (disorder)"]))
-          or (exists (["Diagnosis": "Thalassemia major (disorder)"]))
-          or (exists (["Diagnosis": "Cardiomyopathy (disorder)"]))
-          or (exists (["Diagnosis": "Other specified cardiac dysrhythmias"]))
-          or (exists (["Diagnosis": "Conduction disorder of the heart (disorder)"]))
+         (exists (["Condition": "Chronic hepatitis (disorder)"])
+          or (exists (["Condition": "Diabetes mellitus (disorder)"]))
+          or (exists (["Condition": "Hyperpigmentation of skin (disorder)"]))
+          or (exists (["Condition": "Arthropathy (disorder)"]))
+          or (exists (["Condition": "Cirrhosis"]))
+          or (exists (["Condition": "Hypogonadism (disorder)"]))
+          or (exists (["Condition": "Hypopituitarism (disorder)"]))
+          or (exists (["Condition": "Disorder of porphyrin metabolism (disorder)"]))
+          or (exists (["Condition": "Heart failure, unspecified"]))
+          or (exists (["Condition": "Sideroblastic anemia (disorder)"]))
+          or (exists (["Condition": "Thalassemia major (disorder)"]))
+          or (exists (["Condition": "Cardiomyopathy (disorder)"]))
+          or (exists (["Condition": "Other specified cardiac dysrhythmias"]))
+          or (exists (["Condition": "Conduction disorder of the heart (disorder)"]))
           )
  
 define "Condition 1(Indication)":
-           "Iron Deficiencies" union  (exists ["Laboratory Test, Performed": "Serum ferritin/Total iron binding capacity measurement (procedure)"]) or (exists ["Laboratory Test, Performed": "Transferrin measurement (procedure)"])
-           or "Iron Overloads" union (exists ["Laboratory Test, Performed": "Serum ferritin/Total iron binding capacity measurement (procedure)"]) or (exists ["Laboratory Test, Performed": "Transferrin measurement (procedure)"])         
+           "Iron Deficiencies" union  (exists ["Observation": "Serum ferritin/Total iron binding capacity measurement (procedure)"]) or (exists ["Observation": "Transferrin measurement (procedure)"])
+           or "Iron Overloads" union (exists ["Observation": "Serum ferritin/Total iron binding capacity measurement (procedure)"]) or (exists ["Observation": "Transferrin measurement (procedure)"])         
 
 define "Condition 2(Indication)":
-		(exists (["Laboratory Test, Performed": "Serum ferritin/Total iron binding capacity measurement (procedure)"]) or (exists (["Laboratory Test, Performed": "Transferrin measurement (procedure)"]))
-              and (exists (["Laboratory Test, Performed": "Ascorbic acid measurement (procedure)"]))
-              and (exists (["Laboratory Test, Performed": "Erythropoietin therapy (procedure)"]))
+		(exists (["Observation": "Serum ferritin/Total iron binding capacity measurement (procedure)"]) or (exists (["Observation": "Transferrin measurement (procedure)"]))
+              and (exists (["Observation": "Ascorbic acid measurement (procedure)"]))
+              and (exists (["Observation": "Erythropoietin therapy (procedure)"]))
               )
               
 define "Iron Studies":
-          (exists (["Laboratory Test, Performed": "Serum iron tests (procedure)"])
-          and (exists (["Laboratory Test, Performed": "Ferritin measurement (procedure)"]))
-          and (exists (["Laboratory Test, Performed": "Transferrin measurement (procedure)"]))
+          (exists (["Observation": "Serum iron tests (procedure)"]I
+          where (I.effective) during MeasurementPeriod1)
+          and (exists (["Observation": "Ferritin measurement (procedure)"]))
+          and (exists (["Observation": "Transferrin measurement (procedure)"]))
           )
               
 define "Condition 3(Indication)":
        if("Iron Studies")
        then
-        	(exists (["Procedure, Performed": "Admission for treatment (procedure)"])
-       		and (exists (["Diagnosis": "Combined B12 and folate deficiency anemia (disorder)"]))
-       		and (exists (["Diagnosis": "Nutritional deficiency (finding)"]))
+        	(exists (["Procedure": "Admission for treatment (procedure)"])
+       		and (exists (["Condition": "Combined B12 and folate deficiency anemia (disorder)"]))
+       		and (exists (["Condition": "Nutritional deficiency (finding)"]))
        		)
        else
        		null
                     
 define "Condition 4(Indication)":
-         (exists (["Diagnosis": "Chronic kidney disease (disorder)"]) and (exists (["Procedure, Performed": "Dialysis procedure (procedure)"]))
-         or (exists (["Diagnosis": "Chronic kidney disease (disorder)"])) and not (exists (["Procedure, Performed": "Dialysis procedure (procedure)"]))
-         and (exists (["Laboratory Test, Performed": "Serum ferritin measurement (procedure)"]))
+         (exists (["Condition": "Chronic kidney disease (disorder)"]) and (exists (["Procedure": "Dialysis procedure (procedure)"]))
+         or (exists (["Condition": "Chronic kidney disease (disorder)"])) and not (exists (["Procedure": "Dialysis procedure (procedure)"]))
+         and (exists (["Observation": "Serum ferritin measurement (procedure)"]F
+         where (F.effective) during MeasurementPeriod1))
          )
          
 define "Condition 5(Indication)":
-         (exists (["Diagnosis": "Toxic effect of iron compound (disorder)"])
-         or (exists (["Diagnosis": "Toxic effect of nickel compound (disorder)"]))
-         or (exists (["Diagnosis": "Toxic effect of organic lead compound (disorder)"]))
-         and (exists (["Laboratory Test, Performed": "Serum iron tests (procedure)"]))
+         (exists (["Condition": "Toxic effect of iron compound (disorder)"])
+         or (exists (["Condition": "Toxic effect of nickel compound (disorder)"]))
+         or (exists (["Condition": "Toxic effect of organic lead compound (disorder)"]))
+         and (exists (["Observation": "Serum iron tests (procedure)"]S
+         where (S.effective) during MeasurementPeriod1))
          )
          
 define "Indications":
        "Condition 1(Indication)" or "Condition 2(Indication)" or "Condition 3(Indication)" or "Condition 4(Indication)" or "Condition 5(Indication)"
        
 define "Limitation 1":
-       (exists(["Diagnosis": "Iron deficiency (disorder)"])) or (exists (["Diagnosis": "Iron overload (disorder)"]))
+       (exists(["Condition": "Iron deficiency (disorder)"])) or (exists (["Condition": "Iron overload (disorder)"]))
         and "Iron Studies"
         
 define "Condition 2(Limitations)":
-         if(exists (["Diagnosis": "Insulin treated type 2 diabetes mellitus (disorder)"])
-         	and ( exists (["Laboratory Test, Performed": "Serum ferritin measurement (procedure)"]STM
-         	 where STM.reason = "Hemochromatosis (disorder)" and STM.result ="Normal (qualifier value)")))
+         if(exists (["Condition": "Insulin treated type 2 diabetes mellitus (disorder)"])
+         	and ( exists (["Observation": "Serum ferritin measurement (procedure)"]STM
+         	 where (STM.value) ="Normal (qualifier value)"))
+         	 and (exists (["Condition":"Hemochromatosis (disorder)"])))
           then 
-          	(exists (["Diagnostic Study, Performed" :"Summary report (record artifact)"]))
+          	(exists (["Procedure" :"Documentation procedure (procedure)"]))
           else
-          	(exists (["Diagnosis": "Insulin treated type 2 diabetes mellitus (disorder)"])
-         		and (exists (["Laboratory Test, Performed": "Serum ferritin measurement (procedure)"]STM
-         		 where STM.reason = "Hemochromatosis (disorder)"))
-         	)
+          	(exists (["Condition": "Insulin treated type 2 diabetes mellitus (disorder)"])
+         		and (exists (["Observation": "Serum ferritin measurement (procedure)"]))
+         		  and (exists ["Condition" :"Hemochromatosis (disorder)"]))
+         	
 define "Limitation 3":
-			(exists (["Diagnosis" : "End stage renal disease"])
-			and ( exists (["Laboratory Test, Performed": "Serum ferritin measurement (procedure)"]))
+			(exists (["Condition" : "End stage renal disease"])
+			and ( exists (["Observation": "Serum ferritin measurement (procedure)"]))
 			)
           	
           
 define "Condition 1 for Condition 4(Limitations)":
-          (exists (["Laboratory Test, Performed": "Transferrin measurement (procedure)"]) and not ( exists (["Laboratory Test, Performed": "Total iron binding capacity measurement (procedure)"])))
-          or (exists (["Laboratory Test, Performed": "Total iron binding capacity measurement (procedure)"]) and not (exists (["Laboratory Test, Performed": "Transferrin measurement (procedure)"])))
+          (exists (["Observation": "Transferrin measurement (procedure)"]) and not ( exists (["Observation": "Total iron binding capacity measurement (procedure)"])))
+          or (exists (["Observation": "Total iron binding capacity measurement (procedure)"]) and not (exists (["Observation": "Transferrin measurement (procedure)"])))
 
 define "Iron Disorders":
-           (exists (["Diagnosis": "Iron deficiency (disorder)"])
-           or (exists (["Diagnosis": "Iron overload (disorder)"]) ) )
+           (exists (["Condition": "Iron deficiency (disorder)"])
+           or (exists (["Condition": "Iron overload (disorder)"]) ) )
 
 define "Condition 2 for Condition 4(Limitations)":
-            (exists (["Laboratory Test, Order": "Transferrin measurement (procedure)"]TM
-                 where TM.reason = "Malnutrition (calorie) (disorder)" and not "Iron Disorders"))
+            (exists (["ProcedureRequest": "Transferrin measurement (procedure)"])
+                 and (exists (["Condition": "Malnutrition (calorie) (disorder)"])) and not "Iron Disorders")
             
 define "Condition 4(Limitations)":
          "Condition 1 for Condition 4(Limitations)" or "Condition 2 for Condition 4(Limitations)"
          
 define "Condition for 5(Limitation)":
-          (exists (["Assessment, Performed": "Initial patient assessment (procedure)"]) and (exists (["Laboratory Test, Performed": "Transferrin measurement (procedure)"])))
-          or ( exists (["Assessment, Performed": "Initial patient assessment (procedure)"]) and (exists (["Laboratory Test, Performed": "Ferritin measurement (procedure)"])))
+          (exists (["Observation": "Initial patient assessment (procedure)"]) and (exists (["Observation": "Transferrin measurement (procedure)"])))
+          or ( exists (["Observation": "Initial patient assessment (procedure)"]) and (exists (["Observation": "Ferritin measurement (procedure)"])))
           
 define "Condition for 5.1(Limitation)":
 			if("Iron Overloads" or "Iron Deficiencies")
 			   then 
-				(exists (["Laboratory Test, Performed": "Transferrin measurement (procedure)"]))
+				(exists (["Observation": "Transferrin measurement (procedure)"]))
 			else
 				null
 				
 define "Condition for 5.2(Limitation)":
 			if("Iron Overloads" or "Iron Deficiencies")
 			   then 
-				(exists (["Laboratory Test, Performed": "Ferritin measurement (procedure)"]))
+				(exists (["Observation": "Ferritin measurement (procedure)"]))
 			else
 				null
 define "Condition 5(Limitation)":
 			"Condition for 5(Limitation)" or "Condition for 5.1(Limitation)" or "Condition for 5.2(Limitation)"			
 			  
 define "Condition 6(Limitations)":
-        if(exists (["Diagnosis": "Anemia (disorder)"]) or (exists(["Diagnosis": "collection and application of autologous blood concentrate product"])) 
-        	and (exists (["Laboratory Test, Performed": "Ferritin measurement (procedure)"])))
+        if(exists (["Condition": "Anemia (disorder)"]) or (exists(["Condition": "collection and application of autologous blood concentrate product"])) 
+        	and (exists (["Observation": "Ferritin measurement (procedure)"])))
         then
-         (exists(["Procedure, Performed": "Surgery care (regime/therapy)"])) 
+         (exists(["Procedure": "Surgery care (regime/therapy)"])) 
     	else
     		null
          	
@@ -249,6 +256,5 @@ define "Coverage":
 
 define "Not Covered": 
          "Normal Serum Ferritin Level In Females" or "Normal Serum Ferritin Level In Males"
-
 
 

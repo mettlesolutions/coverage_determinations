@@ -1,7 +1,8 @@
 //Pharmacogenomic Testing for Warfarin Response
-library  ChlamydiaScreening_Common version '2'
+library PharmacogenomicTestingforWarfarinResponse
+using FHIR
 
-using QDM
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -25,42 +26,42 @@ parameter MeasurementPeriod default @2009-08-03T00:00:00.0
 context Patient
 
 define "Cover Condition":
-		(exists (["Substance, Administered" : "Cytochrome p450 CYP2C9 enzyme (substance)"])
-		and (exists (["Procedure, Performed" : "Evaluation of pharmacogenetic result (procedure)"]E
-		where E.relevantPeriod during MeasurementPeriod))
+		(exists (["MedicationAdministration" : "Cytochrome p450 CYP2C9 enzyme (substance)"])
+		and (exists (["Procedure" : "Evaluation of pharmacogenetic result (procedure)"]E
+		where (E.performed) during MeasurementPeriod))
 		)
 define "Condition":
-		(exists (["Medication, Active" :"Warfarin" ])
-		and (exists (["Procedure, Performed" : "Anticoagulant therapy (procedure)"]))
+		(exists (["MedicationStatement" :"Warfarin" ])
+		and (exists (["Procedure" : "Anticoagulant therapy (procedure)"]))
 		)
 define "Condition 2":
-		if(exists (["Procedure, Performed" : "Anticoagulant therapy (procedure)"]))
+		if(exists (["Procedure" : "Anticoagulant therapy (procedure)"]))
 		then
-			(exists (["Medication, Administered": "Warfarin"]W
-			where duration in days of W.relevantPeriod <= 5 ))
+			(exists (["MedicationAdministration": "Warfarin"]W
+			where duration in days of (W.effective) <= 5 ))
 		else 
 			null
 		
 define "Conditions":
-		if("Condition" and not (exists (["Substance, Administered" : "Cytochrome p450 CYP2C9 enzyme (substance)"])) and "Condition 2")
+		if("Condition" and not (exists (["MedicationAdministration" : "Cytochrome p450 CYP2C9 enzyme (substance)"])) and "Condition 2")
 		then
 			"Condition"
 		else
 			null
 			
 define "Inclusions":
-		(exists (["Medication, Active" :"Warfarin" ])
-		and (exists (["Procedure, Performed" : "Anticoagulant therapy (procedure)"]))
-		 and (exists (["Procedure, Performed" : "Warfarin therapy (procedure)"]))
+		(exists (["MedicationStatement" :"Warfarin" ])
+		and (exists (["Procedure" : "Anticoagulant therapy (procedure)"]))
+		 and (exists (["Procedure" : "Warfarin therapy (procedure)"]))
 		 )
 		
 define "Disease":
-		(exists (["Diagnosis" : "Bleeding (finding)"])
-		or (exists (["Diagnosis" : "Deep venous thrombosis (disorder)"]))
-		or (exists (["Diagnosis" : "Venous thrombosis (disorder)"]))
-		or (exists (["Diagnosis":"Dead (finding)"]))
-		and not (exists (["Procedure, Performed" : "Evaluation of pharmacogenetic result (procedure)"]))
-		and (exists (["Procedure, Performed" :  "Warfarin therapy (procedure)"]))
+		(exists (["Condition" : "Bleeding (finding)"])
+		or (exists (["Condition" : "Deep venous thrombosis (disorder)"]))
+		or (exists (["Condition" : "Venous thrombosis (disorder)"]))
+		or (exists (["Condition":"Dead (finding)"]))
+		and not (exists (["Procedure" : "Evaluation of pharmacogenetic result (procedure)"]))
+		and (exists (["Procedure" :  "Warfarin therapy (procedure)"]))
 		)
 
 define "Included":

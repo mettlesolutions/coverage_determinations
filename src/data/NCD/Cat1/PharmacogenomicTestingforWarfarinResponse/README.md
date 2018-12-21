@@ -21,3 +21,6 @@ does not determine coverage to identify CYP2C9 or VKORC1 alleles for other purpo
 
 Not Covered:
 => does not demonstrate that pharmacogenomic testing of CYP2C9 or VKORC1 alleles to predict warfarin 
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=333&ncdver=1&bc=AAAAgAAAAAAA&

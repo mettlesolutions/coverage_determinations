@@ -1,8 +1,8 @@
 //ThePritikinProgram
-library ChlamydiaScreening_Common version '2'
+library ThePritikinProgram
 
-using QDM
-
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -17,17 +17,19 @@ valueset "Implantation of ventricular assist device (procedure)" : '2.16.840.1.1
 valueset "Positron emission tomography (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Lung volume reduction surgery (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 
+parameter MeasurementPeriod default @2010-08-12T00:00:00.0
 context Patient
 
 define "ICRProgram":
-		(exists (["Procedure, Performed":"Insertion of carotid artery stent (procedure)"])
-			or (exists (["Procedure, Performed" :"Implantation of ventricular assist device (procedure)"]))
-			or (exists (["Procedure, Performed" : "Positron emission tomography (procedure)"]))
-			or (exists (["Procedure, Performed" : "Lung volume reduction surgery (procedure)"]))
+		(exists (["Procedure":"Insertion of carotid artery stent (procedure)"])
+			or (exists (["Procedure" :"Implantation of ventricular assist device (procedure)"]))
+			or (exists (["Procedure" : "Positron emission tomography (procedure)"]))
+			or (exists (["Procedure" : "Lung volume reduction surgery (procedure)"]))
 		)
 	
 define "Covered":
-                "ICRProgram" and (exists (["Procedure, Performed" :"Cardiac rehabilitation (regime/therapy)"]))
+                "ICRProgram"  and (exists (["Procedure" :"Cardiac rehabilitation (regime/therapy)"]I
+               where I.performed on or after MeasurementPeriod))
                 
 define "NotCovered":
                 not "ICRProgram"

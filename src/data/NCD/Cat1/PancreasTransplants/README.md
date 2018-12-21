@@ -1,5 +1,4 @@
 # Pancreas Transplants
-https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=107&ncdver=3&bc=AAAAgAAAAAAA&
 
 Covered:
 =>Effective for services performed on or after July 1, 1999, whole organ pancreas transplantation is nationally covered by Medicare when performed simultaneous with or after a kidney transplant. If the pancreas transplant occurs after the kidney transplant, immunosuppressive therapy begins with the date of discharge from the inpatient stay for the pancreas transplant.
@@ -16,3 +15,7 @@ Covered:
 	F)suitable candidate for transplantation.
 Not Covered"
 Transplantation of partial pancreatic tissue or islet cells 
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=107&ncdver=3&bc=AAAAgAAAAAAA&
+

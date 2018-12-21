@@ -11,3 +11,6 @@ The PET scan, whether at rest alone, or rest with stress,
  Ammonia N-13
 =>not addition of single photon emission computed tomography (SPECT)
 =>following a SPECT that was found to be inconclusive. PET scan must have been considered necessary in order to determine what medical or surgical intervention is required to treat the patient.(inconclusive test )
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=292&ncdver=2&bc=AAAAgAAAAAAA&

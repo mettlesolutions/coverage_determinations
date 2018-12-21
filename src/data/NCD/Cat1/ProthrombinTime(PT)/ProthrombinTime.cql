@@ -1,7 +1,8 @@
 //Prothrombin Time (PT)
-library ChlamydiaScreening_Common version '2'
+library ProthrombinTime
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -74,85 +75,88 @@ valueset "Muscle pain (finding" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Hyperpigmentation of skin (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Normal (qualifier value)":'2.16.840.1.113762.1.4.1146.638'
 valueset "Patient condition unchanged (finding)":'2.16.840.1.113762.1.4.1096.114'
+valueset "Documentation procedure (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 
+parameter MeasurementPeriod1 default @2003-01-01T00:00:00.0
 
 context Patient
 
 define "Indications 1":
-		(exists (["Substance, Administered" : "Warfarin"]) 
-		and not (exists (["Substance, Administered" : "heparin"]))
-		and(exists (["Procedure, Performed" : "Prothrombin time (procedure)"]))
+		(exists (["MedicationAdministration" : "Warfarin"]) 
+		and not (exists (["MedicationAdministration" : "heparin"]))
+		and(exists (["Procedure" : "Prothrombin time (procedure)"]P
+		where P.performed during MeasurementPeriod1))
 		)
 
 define "Signs of Abnormal bleeding or thrombosis":
-				(exists (["Symptom":"Bruising symptom (finding)"])
-				and (exists (["Symptom":"Bleeding (finding)"]))
-				and (exists (["Symptom":"Hematoma (disorder)"]))
-				and (exists (["Symptom":"Petechiae (finding)"]))
-				and (exists (["Symptom":"Thrombocytopenic disorder (disorder)"]))
-				and (exists (["Symptom":"Extrinsic coagulation pathway finding (finding)"]))
+				(exists (["Condition":"Bruising symptom (finding)"])
+				and (exists (["Condition":"Bleeding (finding)"]))
+				and (exists (["Condition":"Hematoma (disorder)"]))
+				and (exists (["Condition":"Petechiae (finding)"]))
+				and (exists (["Condition":"Thrombocytopenic disorder (disorder)"]))
+				and (exists (["Condition":"Extrinsic coagulation pathway finding (finding)"]))
 				)
 
 define "Abnormalities":
-		(exists (["Diagnosis" : "Dysfibrinogenemia (disorder)"])
-		or (exists (["Diagnosis" :"Afibrinogenemia (disorder)"]))
-		or (exists (["Diagnosis" : "Chronic Liver Disease" ]))
-		or (exists (["Diagnosis" : "Wilson's disease (disorder)"]))
-		or (exists (["Diagnosis" : "Hemochromatosis (disorder)"]))
-		or (exists (["Diagnosis" : "Disseminated intravascular coagulation (disorder)" ]))
-		or (exists (["Diagnosis" : "Acquired factor II deficiency (disorder)"]))
-		or (exists (["Diagnosis" : "Acquired factor V deficiency disease (disorder)"]))
-		or (exists (["Diagnosis" : "Acquired factor VII deficiency disease (disorder)"]))
-		or (exists (["Diagnosis" : "Acquired factor X deficiency disease (disorder)" ]))
-		or (exists (["Diagnosis" : "Vitamin K deficiency (disorder)"]))
-		or (exists (["Diagnosis" : "Lupus erythematosus (disorder)" ]))
-		or (exists (["Diagnosis" : "History of hypercoagulable state (situation)" ]))
-		or (exists (["Diagnosis" : "Malignant lymphoma(disorder)"]))
-		or (exists (["Diagnosis" : "Monoclonal gammopathy (disorder)" ]))
-		or (exists (["Diagnosis" : "Amyloidosis (disorder)" ]))
-		or (exists (["Diagnosis" : "Chronic leukemia, disease (disorder)"]))
-		or (exists (["Diagnosis" : "Acute leukemia, disease (disorder)"]))
-		or (exists (["Diagnosis" : "Plasma cell neoplasm (disorder)"]))
-		or (exists (["Diagnosis" : "Primary malignant neoplasm (disorder)" ]))
-		or (exists (["Diagnosis" : "Viral hemorrhagic fever (disorder)" ]))
-		or (exists (["Diagnosis" : "Aspirin overdose (disorder)"]))
-		or (exists (["Diagnosis" : "Gastrointestinal fistula (disorder)"]))
-		or (exists (["Diagnosis" : "Malabsorption syndrome (disorder)"]))
-		or (exists (["Diagnosis" : "Ulcerative colitis (disorder)" ]))
-		or (exists (["Diagnosis" : "Perinatal jaundice due to congenital obstruction of bile duct (disorder)"]))
-		or (exists (["Diagnosis" : "Peripheral vascular disease (disorder)"]))
-		or (exists (["Diagnosis" : "Pulmonary embolism (disorder)" ]))
-		or (exists (["Diagnosis" :  "Chronic diarrhea (disorder)"]))
-		or (exists (["Diagnosis" : "Myocardial infarction (disorder)"]))
-		or (exists (["Diagnosis" : "Blood coagulation disorder (disorder)"]))
-		or (exists (["Diagnosis" : "Deficiency of naturally occurring coagulation factor inhibitor (disorder)"]))
-		or (exists (["Diagnosis" : "Transplantation of liver (procedure)"]))
+		(exists (["Condition" : "Dysfibrinogenemia (disorder)"])
+		or (exists (["Condition" :"Afibrinogenemia (disorder)"]))
+		or (exists (["Condition" : "Chronic Liver Disease" ]))
+		or (exists (["Condition" : "Wilson's disease (disorder)"]))
+		or (exists (["Condition" : "Hemochromatosis (disorder)"]))
+		or (exists (["Condition" : "Disseminated intravascular coagulation (disorder)" ]))
+		or (exists (["Condition" : "Acquired factor II deficiency (disorder)"]))
+		or (exists (["Condition" : "Acquired factor V deficiency disease (disorder)"]))
+		or (exists (["Condition" : "Acquired factor VII deficiency disease (disorder)"]))
+		or (exists (["Condition" : "Acquired factor X deficiency disease (disorder)" ]))
+		or (exists (["Condition" : "Vitamin K deficiency (disorder)"]))
+		or (exists (["Condition" : "Lupus erythematosus (disorder)" ]))
+		or (exists (["Condition" : "History of hypercoagulable state (situation)" ]))
+		or (exists (["Condition" : "Malignant lymphoma(disorder)"]))
+		or (exists (["Condition" : "Monoclonal gammopathy (disorder)" ]))
+		or (exists (["Condition" : "Amyloidosis (disorder)" ]))
+		or (exists (["Condition" : "Chronic leukemia, disease (disorder)"]))
+		or (exists (["Condition" : "Acute leukemia, disease (disorder)"]))
+		or (exists (["Condition" : "Plasma cell neoplasm (disorder)"]))
+		or (exists (["Condition" : "Primary malignant neoplasm (disorder)" ]))
+		or (exists (["Condition" : "Viral hemorrhagic fever (disorder)" ]))
+		or (exists (["Condition" : "Aspirin overdose (disorder)"]))
+		or (exists (["Condition" : "Gastrointestinal fistula (disorder)"]))
+		or (exists (["Condition" : "Malabsorption syndrome (disorder)"]))
+		or (exists (["Condition" : "Ulcerative colitis (disorder)" ]))
+		or (exists (["Condition" : "Perinatal jaundice due to congenital obstruction of bile duct (disorder)"]))
+		or (exists (["Condition" : "Peripheral vascular disease (disorder)"]))
+		or (exists (["Condition" : "Pulmonary embolism (disorder)" ]))
+		or (exists (["Condition" :  "Chronic diarrhea (disorder)"]))
+		or (exists (["Condition" : "Myocardial infarction (disorder)"]))
+		or (exists (["Condition" : "Blood coagulation disorder (disorder)"]))
+		or (exists (["Condition" : "Deficiency of naturally occurring coagulation factor inhibitor (disorder)"]))
+		or (exists (["Condition" : "Transplantation of liver (procedure)"]))
 		)
 
 define "Indications 2":
-		(exists (["Diagnosis" : "At risk of deep vein thrombosis (finding)"])
-		or (exists (["Diagnosis" : "At risk of hemorrhage (finding)"]))
-		or (exists (["Diagnosis" :"Bleeding (finding)"]))
+		(exists (["Condition" : "At risk of deep vein thrombosis (finding)"])
+		or (exists (["Condition" : "At risk of hemorrhage (finding)"]))
+		or (exists (["Condition" :"Bleeding (finding)"]))
 		)
 		
 
 define "Limitation 1":
-		(exists (["Diagnosis" : "End-stage renal disease (disorder)"])
-		and (exists (["Laboratory Test, Performed" : "Prothrombin time (procedure)"] PT 
-		where duration in weeks of PT.relevantPeriod >1 )) and not (exists (["Diagnosis" : "Chronic kidney disease (disorder)"]))
-		and (exists (["Diagnostic Study, Performed":"Summary report (record artifact)"]))
+		(exists (["Condition" : "End-stage renal disease (disorder)"])
+		and (exists (["Observation" : "Prothrombin time (procedure)"] PT 
+		where duration in weeks of (PT.effective) >1 )) and not (exists (["Condition" : "Chronic kidney disease (disorder)"]))
+		and (exists (["Procedure":"Documentation procedure (procedure)"]))
 		)
 		
 define "Limitation 2":
-		(exists (["Procedure, Performed": "Warfarin dose unchanged (regime/therapy)"])
-		and (exists (["Procedure, Performed":"Prothrombin time (procedure)"] P 
-		where duration in weeks of P.relevantPeriod < 3 and P.result = "Normal (qualifier value)")) 
-		and not (exists (["Patient Characteristic":"Patient condition unchanged (finding)"])
+		(exists (["Procedure": "Warfarin dose unchanged (regime/therapy)"])
+		and (exists (["Procedure":"Prothrombin time (procedure)"] P 
+		where duration in weeks of (P.performed) < 3 and P.outcome = "Normal (qualifier value)")) 
+		and not (exists (["Patient":"Patient condition unchanged (finding)"])
 		))
 		
 define "Indications":
 		"Indications 1" or "Signs of Abnormal bleeding or thrombosis" or "Abnormalities" or "Indications 2"
-		and (exists (["Procedure, Performed" :  "Prothrombin time (procedure)"]))
+		and (exists (["Procedure" :  "Prothrombin time (procedure)"]))
 		
 define "Limitations":
 		"Limitation 1" and "Limitation 2"
