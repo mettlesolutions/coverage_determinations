@@ -1,7 +1,7 @@
 library CounselingtoPreventTobaccoUse
 
 
-using QDM
+using FHIR version '1.8'//include otherLibrary version 'x.x' called otherLibrary//codesystem codeSystemName : 'OID' version 'x.x'//valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}//code codeName : 'OID' from codeSystemName display 'displayName'//concept conceptName : {codeName1, codeName2, etc} display 'displayName'//parameter parameterName (dataType or default value)codesystem "SNOMEDCT": 'http://snomed.info/sct'codesystem "HCPCS": 'https://hcpcs.codes/'codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -23,23 +23,24 @@ valueset "Inpatient stay (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 
 
 define "Not Covered":
-	if (exists(["Assessment, Performed": "Inpatient stay (finding)"]) and exists(["Diagnosis": "Tobacco use disorder"]))
+	if (exists([Observation: "Inpatient stay (finding)"])
+		and exists([Condition: "Tobacco use disorder"]))
 	then true
 	else false
 
 define "Condition1":
-	exists(["Assessment, Performed": "Tobacco user (finding)"])
-	and (exists(["Diagnosis": "Tobacco use disorder"])
-		and exists(["Assessment, Performed": "Associated symptom (finding)"]))	
+	exists([Observation: "Tobacco user (finding)"])
+	and (exists([Condition: "Tobacco use disorder"])
+		and exists([Observation: "Associated symptom (finding)"]))
 		
 define "Condition2":
-	exists(["Assessment, Performed": "Mentally alert (finding)"])
-	and exists(["Procedure, Performed": "Counseling about tobacco use (procedure)"])
+	exists([Observation: "Mentally alert (finding)"])
+	and exists([Procedure: "Counseling about tobacco use (procedure)"])
 		
 define "Covered":
 	if ("Condition1" and "Condition2") 
-	then (exists(["Encounter, Performed": "Smoking and tobacco use cessation counseling visit; intermediate, greater than 3 minutes up to 10 minutes"])
-		or exists(["Encounter, Performed": "Smoking and tobacco use cessation counseling visit; intensive, greater than 10 minutes"]))
+	then (exists([Encounter: "Smoking and tobacco use cessation counseling visit; intermediate, greater than 3 minutes up to 10 minutes"])
+		or exists([Encounter: "Smoking and tobacco use cessation counseling visit; intensive, greater than 10 minutes"]))
 	else false
 	
 define "Coverage":
