@@ -65,4 +65,4 @@ define "Not Covered":
 		)
 		
 define "Coverage":
-		"Covered" and  "Not Covered" during MeasurementPeriod
+		"Covered" and  "Not Covered"
