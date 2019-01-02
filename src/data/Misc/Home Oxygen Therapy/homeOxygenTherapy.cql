@@ -1,7 +1,7 @@
 //Home Oxygen Therapy
 library HomeOxygenTherapy 
 
-using FHIR
+using FHIR version '1.8'
 include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
@@ -15,9 +15,10 @@ codesystem "ICD10CM": '2.16.840.1.113883.6.90'
 codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
 codesystem "LOINC": '2.16.840.1.113883.6.1'
 codesystem "NUCCPT" : '2.16.840.1.113883.6.101'
+codesystem "ActRelationshipType" : '2.16.840.1.113883.5.1002'
 
 valueset "Home oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Chronic Obstructive Pulmonary Disease": '2.16.840.1.113883.3.464.1003.102.11.1021'
+valueset "Severe chronic obstructive pulmonary disease (disorder)" : '2.16.840.1.113883.3.464.1003.102.12.1007'
 valueset "Interstitial lung disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Cystic fibrosis (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Bronchiectasis (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -30,52 +31,45 @@ valueset "Impaired Cognition": '2.16.840.1.113762.1.4.1046.89'
 valueset "Restlessness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Morning headache (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Blood gas analysis (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Hospitalization": '2.16.840.1.113762.1.4.1164.40'
-valueset "Inpatient stay (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Discharge from Inpatient Facility": '2.16.840.1.113762.1.4.1138.721'
-valueset "Encounter Hospital Outpatient": '2.16.840.1.113883.3.3157.1002.1'
+
 valueset "Outpatient procedure (procedure)" : '2.16.840.1.113883.3.3157.1002.14'
-valueset "Acute disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
 //Alternative treatment
-valueset "Evaluation of arterial blood gas studies (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+
 valueset "Oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oxygen saturation measurement, arterial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oxygen measurement, partial pressure, arterial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Hypoxemia": '2.16.840.1.113762.1.4.1045.81'
 valueset "Insomnia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Cor pulmonale (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "P pulmonale (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //electrocardiogram [EKG]
 valueset "Dependent edema (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Pulmonary artery pressure monitoring (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Pulmonary artery finding (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
 //gated blood pool scan
 //echocardiogram
-valueset "Secondary polycythemia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Finding of hematocrit (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Long-term oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Clinical trial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Cluster headache syndrome (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
+
+
+
 valueset "Unilateral headache (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Inpatient": '2.16.840.1.113883.3.666.5.307'
+
 valueset "Inpatient stay (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Patient's condition stable (finding)": '2.16.840.1.113762.1.4.1096.114'
 valueset "Practitioner certification status (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Exercise tolerance test (procedure)": '2.16.840.1.113762.1.4.1018.240'
+
 valueset "Exercises (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Resting state (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Sleeping out (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Awake (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Pulse oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+
 valueset "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified": '2.16.840.1.114222.4.11.1066'
 //Oxygen services furnished by an airline
 //Stationary oxygen
 //Portable oxygen
 valueset "Oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Accessories, maintenance, and repairs of patient-owned oxygen
-valueset "Liquid oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 //doctor of osteopathy
 //podiatric surgeon
@@ -83,24 +77,17 @@ valueset "Oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Device (physical object)": '2.16.840.1.113762.1.4.1181.3'
 valueset "Does move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Does not move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Gaseous substance (substance)": '2.16.840.1.113762.1.4.1010.2'
-valueset "Arterial oxygen concentration measurement (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 
 valueset "Laboratory reporting, electronic (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Verifying presence of prosthetics (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Seen by orthotics service (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Patient condition assessed (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Home oxygen therapy management (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Date Of Service
 //Duration of condition
 //Seen by practitioner
 valueset "Illness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Clinical examination education (procedure)": '2.16.840.1.113883.11.20.9.34'
 valueset "Patient's condition worsened (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Patient's condition improved (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Conditional prognosis (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //Results of the blood gas study,(Need to find)--> either printed data from the test or written in the notes
-valueset "Home Care": '2.16.840.1.113883.1.11.20275'
 //Nature and extent of functional limitations
 valueset "Therapeutic regimen (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Gathering of past medical history (procedure)": '2.16.840.1.113762.1.4.1096.118'
@@ -118,38 +105,29 @@ valueset "Infusion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //National Provider Identifier
 //Signature Date
 //Is permitted to perform services in accordance with State law
-valueset "Documentation of personal medication record (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Administration of prescribed medications based on arterial blood gas results (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "Advance Care Plan": '2.16.840.1.113762.1.4.1116.468' 
+//valueset "Advance Care Plan": '2.16.840.1.113762.1.4.1116.468' 
 valueset "Assessment for home oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Physician (occupation)": '2.16.840.1.113762.1.4.1096.129'
-valueset "Medical doctor (occupation)": '2.16.840.1.113762.1.4.1166.24'
 valueset "Nurse practitioner (occupation)": '2.16.840.1.113762.1.4.1096.129'
 valueset "Physician assistant (occupation)": '2.16.840.1.113762.1.4.1096.129'
-valueset "Face to Face Encounter": '2.16.840.1.113762.1.4.1047.428'
+
 valueset "In-person encounter (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Renewal of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Referral to clinical nurse specialist (procedure)": '2.16.840.1.113883.3.464.1003.101.12.1046'
-valueset "Nursing evaluation of patient and report (procedure)": '2.16.840.1.113883.3.464.1003.101.12.1061'
 valueset "Seen by clinical nurse specialist (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Prescription by nurse practitioner (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Seen by nurse practitioner (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Seen by physician (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Referred by physician assistant (finding)": '2.16.840.1.113762.1.4.1096.216'
-valueset "Encounter Face to Face": '2.16.840.1.113762.1.4.1111.78'
 valueset "Prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Change of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Evaluation AND/OR management - new patient (procedure)": '2.16.840.1.113883.3.2286'
 valueset "Medicare (Non-managed Care)": '2.16.840.1.114222.4.11.3591'
 valueset "National provider ID": '2.16.840.1.113762.1.4.1099.13'
 valueset "Patient identifier": '2.16.840.1.113762.1.4.1099.13'
-valueset "Provision of medical equipment (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Medical equipment assessment (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Ensuring home equipment available prior to hospital discharge (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Durable medical equipment education, guidance, and counseling (procedure)": '2.16.840.1.113762.1.4.1099.13'
 valueset "Durable medical equipment case management (procedure)": '2.16.840.1.113762.1.4.1099.13'
-valueset "Checking patient identity (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Patient registration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "replaces": '2.16.840.1.113883.11.20.9.62'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
@@ -160,16 +138,16 @@ valueset "Medical service (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Documentation procedure (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Previous treatment repeat (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Treatment completed (situation)": '2.16.840.1.113762.1.4.1047.220'
-valueset "Replacement of device (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Revision of internal fixation device, broken or displaced (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Respiratory flow rate measured (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Hematocrit lab test" : '2.16.840.1.113762.1.4.1045.114'
 valueset "Quantity finding (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Documentation of medication therapy management plan (procedure)"  :'2.16.840.1.113883.3.88.12.80.28'
 valueset "Suppliers; Prosthetic/Orthotic Supplier" : '2.16.840.1.114222.4.11.1066'
 valueset "Patient encounter procedure (procedure)" : '2.16.840.1.113762.1.4.1047.428'
 valueset "Has advance care plan (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Hematocrit determination (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
+
+code "Severe chronic obstructive pulmonary disease (disorder) code" : '313299006' from "SNOMEDCT" display 'Severe chronic obstructive pulmonary disease (disorder)'
 code "Interstitial lung disease (disorder) code": '233703007' from "SNOMEDCT" display 'Interstitial lung disease (disorder)'
 code "Cystic fibrosis (disorder) code" : '190905008' from "SNOMEDCT" display 'Cystic fibrosis (disorder)'
 code "Bronchiectasis (disorder) code" : '12295008' from "SNOMEDCT" display 'Bronchiectasis (disorder)'
@@ -184,7 +162,6 @@ code "Oximetry (procedure) code": '264598005' from "SNOMEDCT" display 'Oximetry 
 code "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified code": '227800000X' from "SNOMEDCT" display 'Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified'
 code "Oxygen therapy (procedure) code": '57485005' from "SNOMEDCT" display 'Oxygen therapy (procedure)'
 code "Oxygen (substance) code": '24099007' from "SNOMEDCT" display 'Oxygen (substance)'
-
 code "Inpatient stay (finding) code": '308540004' from "SNOMEDCT" display 'Inpatient stay (finding)'
 code "Blood gas analysis (procedure) code": '278297009' from "SNOMEDCT" display 'Blood gas analysis (procedure)'
 code "Patient's condition stable (finding) code": '359746009' from "SNOMEDCT" display "Patient's condition stable (finding)"
@@ -209,6 +186,7 @@ code "Awake (finding) code": '248218005' from "SNOMEDCT" display "Awake (finding
 code "Home oxygen therapy (procedure) code": '426990007' from "SNOMEDCT" display "Home oxygen therapy (procedure)"
 code "Unilateral headache (situation) code": '103006007' from "SNOMEDCT" display "Unilateral headache (situation)"
 code "Prescription (procedure) code": '16076005' from "SNOMEDCT" display "Prescription (procedure)"
+code "Resting state (finding) code" : '' from "SNOMEDCT" display "Resting state (finding)"
 code "Evaluation AND/OR management - new patient (procedure) code": '108220007' from "SNOMEDCT" display "Evaluation AND/OR management - new patient (procedure)"
 code "Medicare (Non-managed Care) code": '12' from "SNOMEDCT" display "Medicare (Non-managed Care)"
 code "Change of prescription (procedure) code": '113012008' from "SNOMEDCT" display "Change of prescription (procedure)"
@@ -255,6 +233,104 @@ code "Does not move (finding) code" : '302001007' from "SNOMEDCT" display "Does 
 code "Preparation of medical certificate (procedure) code" : '103695000' from "SNOMEDCT" display "Preparation of medical certificate (procedure)"
 code "Medical service (procedure) code" : '373655009' from "SNOMEDCT" display "Medical service (procedure)"
 code "Outpatient procedure (procedure) code" : '371883000' from "SNOMEDCT" display "Outpatient procedure (procedure)"
+code "Seen by clinical nurse specialist (finding) code" :'305733002' from "SNOMEDCT" display "Seen by clinical nurse specialist (finding)"
+code "Seen by nurse practitioner (finding) code" : '305757002' from "SNOMEDCT" display "Seen by nurse practitioner (finding)"
+code "Referred by physician assistant (finding) code": '2051000124106' from "SNOEMDCT" display "Referred by physician assistant (finding)"
+code "In-person encounter (procedure) code" : '453701000124103' from "SNOMEDCT" display "In-person encounter (procedure)"
+code "replaces code" : 'RPLC' from "ActRelationshipType" display "replaces"
+code "National provider ID code": '45952-9' from "LONIC" display "National provider ID"
+code "Patient identifier code" : '76435-7' from "LONIC" display "Patient identifier"
+
+concept "Severe chronic obstructive pulmonary disease (disorder)" : {"Severe chronic obstructive pulmonary disease (disorder) code"} display 'Severe chronic obstructive pulmonary disease (disorder)'
+concept "Interstitial lung disease (disorder)": {"Interstitial lung disease (disorder) code"} display 'Interstitial lung disease (disorder)'
+concept "Cystic fibrosis (disorder)" : {"Cystic fibrosis (disorder) code"} display 'Cystic fibrosis (disorder)'
+concept "Bronchiectasis (disorder)" : {"Bronchiectasis (disorder) code"} display 'Bronchiectasis (disorder)'
+concept "Malignant tumor of lung (disorder)" : {"Malignant tumor of lung (disorder) code"} display 'Malignant tumor of lung (disorder)'
+concept "Hypoxia (disorder)" : { "Hypoxia (disorder) code"} display 'Hypoxia (disorder)'
+concept "Pulmonary hypertension (disorder)" : {"Pulmonary hypertension (disorder) code"} display 'Pulmonary hypertension (disorder)'
+concept "Erythrocytosis (disorder)" :  {"Erythrocytosis (disorder) code"} display 'Erythrocytosis (disorder)'
+concept "Impaired Cognition" : {"Impaired Cognition code"} display 'Impaired Cognition'
+concept "Restlessness (finding)" : {"Restlessness (finding) code" } display 'Restlessness (finding)'
+concept "Morning headache (finding)" : {"Morning headache (finding) code"} display 'Morning headache (finding)'
+concept "Oximetry (procedure)" : {"Oximetry (procedure) code"} display 'Oximetry (procedure)'
+concept "Oxygen therapy (procedure)" : {"Oxygen therapy (procedure) code"} display 'Oxygen therapy (procedure)'
+concept "Device (physical object)" : {"Device (physical object) code"} display 'Device (physical object)'
+concept "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified code" : {"Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified code"} display 'Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified code'
+concept "Oxygen (substance)" : {"Oxygen (substance) code"} display 'Oxygen (substance)'
+concept "Inpatient stay (finding)" : {"Inpatient stay (finding) code"} display 'Inpatient stay (finding)'
+concept "Outpatient procedure (procedure)" : { "Outpatient procedure (procedure) code"} display 'Outpatient procedure (procedure)'
+concept "Blood gas analysis (procedure)" : { "Blood gas analysis (procedure) code"} display 'Blood gas analysis (procedure)'
+concept "Patient's condition stable (finding)": {"Patient's condition stable (finding) code"} display "Patient's condition stable (finding)"
+concept "Practitioner certification status (finding)" : {"Practitioner certification status (finding) code"} display 'Practitioner certification status (finding)'
+concept "Treatment stopped - alternative therapy undertaken (situation)" : {"Treatment stopped - alternative therapy undertaken (situation) code"} display 'Treatment stopped - alternative therapy undertaken (situation)'
+concept "Oxygen saturation measurement, arterial (procedure)" : {"Oxygen saturation measurement, arterial (procedure) code"} display 'Oxygen saturation measurement, arterial (procedure)'
+concept "Oxygen measurement, partial pressure, arterial (procedure)" : {"Oxygen measurement, partial pressure, arterial (procedure) code"} display 'Oxygen measurement, partial pressure, arterial (procedure)'
+concept "Exercises (regime/therapy)" : {"Exercises (regime/therapy) code"} display 'Exercises (regime/therapy)'
+concept "Resting state (finding)" : {"Resting state (finding) code"} display 'Resting state (finding)'
+concept "Awake (finding)" : {"Awake (finding) code"} display 'Awake (finding)'
+concept "P pulmonale (finding)" : {"P pulmonale (finding) code"} display "P pulmonale (finding)"
+concept "Insomnia (disorder)" : {"Insomnia (disorder) code"} display "Insomnia (disorder)"
+concept "Cor pulmonale (disorder)" : {"Cor pulmonale (disorder) code"} display "Cor pulmonale (disorder)"
+concept "Sleeping out (finding)" : {"Sleeping out (finding) code"} display "Sleeping out (finding)"
+concept "Dependent edema (finding)" : {"Dependent edema (finding) code"} display "Dependent edema (finding)"
+concept "Right heart failure (disorder)" : {"Right heart failure (disorder) code"} display "Right heart failure (disorder)"
+concept "Pulmonary artery pressure monitoring (regime/therapy)" : {"Pulmonary artery pressure monitoring (regime/therapy) code"} display  "Pulmonary artery pressure monitoring (regime/therapy)"
+concept "Echocardiography (procedure)" : {"Echocardiography (procedure) code"} display "Echocardiography (procedure)"
+concept "Hematocrit determination (procedure)" : {"Hematocrit determination (procedure) code"} display "Hematocrit determination (procedure)"
+concept "Home oxygen therapy (procedure)" : {"Home oxygen therapy (procedure) code"} display "Home oxygen therapy (procedure)"
+concept "Unilateral headache (situation)" : {"Unilateral headache (situation) code"} display "Unilateral headache (situation)"
+concept "Prescription (procedure)" : {"Prescription (procedure) code"} display "Prescription (procedure)"
+concept "Evaluation AND/OR management - new patient (procedure)" : {"Evaluation AND/OR management - new patient (procedure) code"} display "Evaluation AND/OR management - new patient (procedure)"
+concept "Patient encounter procedure (procedure)" : {"Patient encounter procedure (procedure) code"} display "Patient encounter procedure (procedure)"
+concept "Seen by physician (finding)" : {"Seen by physician (finding) code"} display "Seen by physician (finding)"
+concept "Seen by clinical nurse specialist (finding)" : {"Seen by clinical nurse specialist (finding) code"} display "Seen by clinical nurse specialist (finding)"
+concept "Seen by nurse practitioner (finding)" : {"Seen by nurse practitioner (finding) code"} display "Seen by nurse practitioner (finding)"
+concept "Referred by physician assistant (finding)" : {"Referred by physician assistant (finding) code"} display "Referred by physician assistant (finding)"
+concept "Renewal of prescription (procedure)" : {"Renewal of prescription (procedure) code"} display "Renewal of prescription (procedure)"
+concept "In-person encounter (procedure)" : {"In-person encounter (procedure) code"} display "In-person encounter (procedure)"
+concept "Medicare (Non-managed Care)" : {"Medicare (Non-managed Care) code"} display "Medicare (Non-managed Care)"
+concept "Change of prescription (procedure)" : {"Change of prescription (procedure) code"} display "Change of prescription (procedure)"
+concept "replaces" : {"replaces"} display "replaces"
+concept "Durable medical equipment case management (procedure)" : {"Durable medical equipment case management (procedure) code"} display "Durable medical equipment case management (procedure)"
+concept "Change recommended (qualifier value)" : {"Change recommended (qualifier value) code"} display "Change recommended (qualifier value)"
+concept "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": {"Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies code"} display "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies"
+concept "Physician (occupation)" :{"Physician (occupation) code"} display "Physician (occupation)"
+concept "Has advance care plan (finding)" : {"Has advance care plan (finding) code"} display "Has advance care plan (finding)"
+concept "Home oxygen therapy management (procedure)" : {"Home oxygen therapy management (procedure)"} display "Home oxygen therapy management (procedure)"
+concept "Assessment for home oxygen therapy (procedure)" : {"Assessment for home oxygen therapy (procedure)"} display "Assessment for home oxygen therapy (procedure)"
+concept "Illness (finding)" : {"Illness (finding)"} display "Illness (finding)"
+concept "Patient's condition worsened (finding)" : {"Patient's condition worsened (finding) code"} display "Patient's condition worsened (finding)"
+concept "Patient's condition improved (finding)" : {"Patient's condition improved (finding) code"} display "Patient's condition improved (finding)"
+concept "Conditional prognosis (finding)" : {"Conditional prognosis (finding) code"} display "Conditional prognosis (finding)"
+concept "Administration of prescribed medications based on arterial blood gas results (procedure)" : {"Administration of prescribed medications based on arterial blood gas results (procedure) code"} display "Administration of prescribed medications based on arterial blood gas results (procedure)"
+concept "Therapeutic regimen (regime/therapy)" : {"Therapeutic regimen (regime/therapy) code"} display "Therapeutic regimen (regime/therapy)"
+concept "Gathering of past medical history (procedure)" : {"Gathering of past medical history (procedure) code"} display "Gathering of past medical history (procedure)"
+concept "National provider ID" : {"National provider ID code"} display "National provider ID"
+concept "Patient identifier" : {"Patient identifier code"} display "Patient identifier"
+concept "Patient registration (procedure)" : {"Patient registration (procedure) code"} display "Patient registration (procedure)"
+concept "Durable medical equipment education, guidance, and counseling (procedure)" : {"Durable medical equipment education, guidance, and counseling (procedure) code"} display "Durable medical equipment education, guidance, and counseling (procedure)"
+concept "Documentation of medication therapy management plan (procedure)" : {"Documentation of medication therapy management plan (procedure) code"} display "Documentation of medication therapy management plan (procedure)"
+concept "Nurse practitioner (occupation)" : {"Nurse practitioner (occupation) code"} display "Nurse practitioner (occupation)"
+concept "Physician assistant (occupation)": {"Physician assistant (occupation) code"} display "Physician assistant (occupation)"
+concept "Referral to clinical nurse specialist (procedure)" : {"Referral to clinical nurse specialist (procedure) code"} display "Referral to clinical nurse specialist (procedure)"
+concept "Laboratory reporting, electronic (procedure)" : {"Laboratory reporting, electronic (procedure) code"} display "Laboratory reporting, electronic (procedure)"
+concept "Durable medical equipment surveillance (regime/therapy)": {"Durable medical equipment surveillance (regime/therapy) code"} display "Durable medical equipment surveillance (regime/therapy)"
+concept "Suppliers; Prosthetic/Orthotic Supplier" : {"Suppliers; Prosthetic/Orthotic Supplier code"} display "Suppliers; Prosthetic/Orthotic Supplier"
+concept "Provision of talking monitored dosage system (procedure)" : {"Provision of talking monitored dosage system (procedure) code"} display "Provision of talking monitored dosage system (procedure)"
+concept "Route of Administration" : {"Route of Administration code"} display "Route of Administration"
+concept "Infusion (procedure)" : {"Infusion (procedure) code"} display "Infusion (procedure)"
+concept "Quantity finding (finding)" : {"Quantity finding (finding) code"} display "Quantity finding (finding)"
+concept "Documentation procedure (procedure)" : {"Documentation procedure (procedure) code"} display "Documentation procedure (procedure)"
+concept "Domestic responsibility rehabilitation (regime/therapy)" : {"Domestic responsibility rehabilitation (regime/therapy) code"} display "Domestic responsibility rehabilitation (regime/therapy)"
+concept "Treatment completed (situation)" : {"Treatment completed (situation) code"} display "Treatment completed (situation)"
+concept "Previous treatment repeat (situation)" : {"Previous treatment repeat (situation) code"} display "Previous treatment repeat (situation)"
+concept "Revision of internal fixation device, broken or displaced (procedure)" : {"Revision of internal fixation device, broken or displaced (procedure) code"} display "Revision of internal fixation device, broken or displaced (procedure)"
+concept "Respiratory flow rate measured (situation)" : {"Respiratory flow rate measured (situation) code"} display "Respiratory flow rate measured (situation)"
+concept "Does move (finding)" : {"Does move (finding) code"} display "Does move (finding)"
+concept "Does not move (finding)" : {"Does not move (finding) code"} display "Does not move (finding)"
+concept "Preparation of medical certificate (procedure)" : {"Preparation of medical certificate (procedure) code"} display "Preparation of medical certificate (procedure)"
+concept "Medical service (procedure)" : {"Medical service (procedure) code"} display "Medical service (procedure)"
+
 parameter "Measurement Period" Interval<DateTime>
 parameter Value default Interval[56,59] 
 parameter Time default Interval[15,180] 
@@ -263,7 +339,7 @@ parameter Days default Interval[61,90]
 context Patient
 
 define "Indications": 
-	( exists (["Condition": "Chronic Obstructive Pulmonary Disease"] )
+	( exists (["Condition": "Severe chronic obstructive pulmonary disease (disorder)"] )
 	or (exists (["Condition": "Interstitial lung disease (disorder)"] ) )
 	or (exists (["Condition": "Cystic fibrosis (disorder)"] ) )
 	or (exists (["Condition": "Bronchiectasis (disorder)"] ) )
