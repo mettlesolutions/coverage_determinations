@@ -2,6 +2,8 @@ library AdultLiverTransplantation
 
 using FHIR
 
+include FHIRHelpers version '1.8' called FHIRHelpers
+
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
