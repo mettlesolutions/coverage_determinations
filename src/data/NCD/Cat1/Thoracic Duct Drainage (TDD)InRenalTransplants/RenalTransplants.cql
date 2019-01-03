@@ -1,7 +1,7 @@
 //Thoracic Duct Drainage (TDD) in Renal Transplants
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+library ThoracicDuctDrainageinRenalTransplants
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -23,14 +23,15 @@ valueset "Renal transplant planned (situation)": '2.16.840.1.113883.3.88.12.3221
 context Patient
 
 define "InPatient is Covered":
-        ( exists (["Procedure, Performed": "Awaiting transplantation of kidney (situation)"])
-        or ( exists (["Procedure, Performed": "Renal transplant planned (situation)"]) )
+        ( exists (["Procedure": "Awaiting transplantation of kidney (situation)"])
+        or ( exists (["Procedure": "Renal transplant planned (situation)"]) )
         )
         
 define "Covered":
-         ( exists (["Diagnosis": "Kidney Transplant Recipient"]) and ( exists (["Procedure, Performed": "Procedure on thoracic duct (procedure)"]) ) )
+         ( exists (["Condition": "Kidney Transplant Recipient"]) and ( exists (["Procedure": "Procedure on thoracic duct (procedure)"]) ) )
           
          
 
-
+define "Coverage":
+		"InPatient is Covered" and "Covered"
 

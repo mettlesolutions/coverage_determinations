@@ -31,11 +31,8 @@ valueset "Impaired Cognition": '2.16.840.1.113762.1.4.1046.89'
 valueset "Restlessness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Morning headache (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Blood gas analysis (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-
 valueset "Outpatient procedure (procedure)" : '2.16.840.1.113883.3.3157.1002.14'
-
 //Alternative treatment
-
 valueset "Oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oxygen saturation measurement, arterial (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Oxygen measurement, partial pressure, arterial (procedure)": '2.16.840.1.113883.3.88.12.80.28'

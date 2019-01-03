@@ -1,8 +1,8 @@
 //TreatmentofActinicKeratosis
 
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+library TreatmentofActinicKeratosis
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -20,19 +20,26 @@ valueset "Dermabrasion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Chemical peeling of skin lesion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Laser surgery (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Photodynamic therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "": ''
+parameter MeasurementPeriod default @2001-11-26T00:00:00.0
 
 context Patient
 
 define "Treatments Of Actinic Keratosis":
-         ( exists (["Procedure, Performed": "Cryosurgery (procedure)"])
-         or ( exists (["Procedure, Performed": "Skin care: topical treatments (regime/therapy)"]) )
-         or ( exists (["Procedure, Performed": "Curettage (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Dermabrasion (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Chemical peeling of skin lesion (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Laser surgery (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Photodynamic therapy (procedure)"]) )
+         ( exists (["Procedure": "Cryosurgery (procedure)"]C
+         where C.performed on or after MeasurementPeriod )
+         or ( exists (["Procedure": "Skin care: topical treatments (regime/therapy)"]C
+         where C.performed on or after MeasurementPeriod) )
+         or ( exists (["Procedure": "Curettage (procedure)"]C
+         where C.performed on or after MeasurementPeriod) )
+         or ( exists (["Procedure": "Dermabrasion (procedure)"]C
+         where C.performed on or after MeasurementPeriod) )
+         or ( exists (["Procedure": "Chemical peeling of skin lesion (procedure)"]C
+         where C.performed on or after MeasurementPeriod) )
+         or ( exists (["Procedure": "Laser surgery (procedure)"]C
+         where C.performed on or after MeasurementPeriod) )
+         or ( exists (["Procedure": "Photodynamic therapy (procedure)"]C
+         where C.performed on or after MeasurementPeriod) )
          ) 
          
 define "Coverage":
-         "Treatments Of Actinic Keratosis"
+         "Treatments Of Actinic Keratosis" 

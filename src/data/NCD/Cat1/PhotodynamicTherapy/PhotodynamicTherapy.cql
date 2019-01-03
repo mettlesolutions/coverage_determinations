@@ -1,7 +1,8 @@
 //PhotodynamicTherapy
-library ChlamydiaScreening_Common version '2'
+library PhotodynamicTherapy
 
-using QDM
+using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -24,30 +25,33 @@ valueset "Nonexudative age-related macular degeneration (disorder)": '2.16.840.1
 valueset "Pathologic Myopia": '2.16.840.1.113883.3.526.2.1587'
 valueset "Ocular histoplasmosis syndrome (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Excision of retinal lesion (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+parameter MeasurementPeriod default @2013-07-16T00:00:00.0
 
 context Patient
 
 define "Ocular photodynamic therapy":
-        ( exists (["Diagnosis": "Eye infection (disorder)"]) and ( exists (["Procedure, Performed": "Photodynamic therapy (procedure)"]) ) )
+        ( exists (["Condition": "Eye infection (disorder)"]) and ( exists (["Procedure": "Photodynamic therapy (procedure)"]P
+        where P.performed during MeasurementPeriod) ) )
         
 define "Condition 1(Covered)":
-         ( exists (["Procedure, Performed": "Photodynamic therapy (procedure)"]) and ( exists (["Medication, Administered": "Verteporfin Injection [Visudyne]"]) ) ) 
+         ( exists (["Procedure": "Photodynamic therapy (procedure)"]T where T.performed during MeasurementPeriod) 
+         and ( exists (["MedicationAdministration": "Verteporfin Injection [Visudyne]"]) ) ) 
          
 define "Condition 2(Covered)":
-          ( exists (["Diagnostic Study, Performed": "Fluorescein angiography of eye (procedure)"]) )
-           and ( exists (["Diagnosis": "Age-related macular degeneration (disorder)"]) and ( exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"]) ))
+          ( exists (["DiagnosticReport": "Fluorescein angiography of eye (procedure)"]) )
+           and ( exists (["Condition": "Age-related macular degeneration (disorder)"]) and ( exists (["Condition": "Classic choroidal neovascular membrane (disorder)"]) ))
 
 define "Condition 1(Not Covered)": 
-        ( exists (["Diagnosis": "Age-related macular degeneration (disorder)"]) and ( exists (["Diagnosis": "Occult choroidal neovascular membrane (disorder)"]) ) and not ( exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"]) ) )       
+        ( exists (["Condition": "Age-related macular degeneration (disorder)"]) and ( exists (["Condition": "Occult choroidal neovascular membrane (disorder)"]) ) and not ( exists (["Condition": "Classic choroidal neovascular membrane (disorder)"]) ) )       
  
 define "Condition 2(Not Covered)":
-        ( exists (["Diagnosis": "Classic choroidal neovascular membrane (disorder)"])
-        or ( exists (["Diagnosis": "Atrophic retina (disorder)"]) )
-        or ( exists (["Diagnosis": "Nonexudative age-related macular degeneration (disorder)"]) ) )     
+        ( exists (["Condition": "Classic choroidal neovascular membrane (disorder)"])
+        or ( exists (["Condition": "Atrophic retina (disorder)"]) )
+        or ( exists (["Condition": "Nonexudative age-related macular degeneration (disorder)"]) ) )     
         
 define "Condition 3(Covered)":
-          ( exists (["Diagnosis": "Pathologic Myopia"])
-          or exists (["Diagnosis": "Ocular histoplasmosis syndrome (disorder)"]) )
+          ( exists (["Condition": "Pathologic Myopia"])
+          or exists (["Condition": "Ocular histoplasmosis syndrome (disorder)"]) )
           
 define "Covered":
          "Condition 1(Covered)" or "Condition 2(Covered)" or "Condition 3(Covered)"

@@ -1,7 +1,8 @@
 //UseOfVisualTestsPriorToAndGeneralAnesthesiaDuringCataractSurgery
-library ChlamydiaScreening_Common version '2'
+library UseOfVisualTestsPriorToAndGeneralAnesthesiaDuringCataractSurgery
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -28,37 +29,44 @@ valueset "Nuclear sclerotic cataract (disorder)": '2.16.840.1.113883.3.88.12.322
 valueset "Summary report (record artifact)": '2.16.840.1.113762.1.4.1116.529'
 //ophthalmologists
 
+parameter MeasurementPeriod default @1992-08-31T00:00:00.0
+
 context Patient
 
 define "Scan Methods":
-           ( exists (["Diagnostic Study, Performed": "Ophthalmic echography, A-mode (procedure)"])
-           or ( exists (["Diagnostic Study, Performed": "Orbital B scan (procedure)"]) ) )
+           ( exists (["DiagnosticReport": "Ophthalmic echography, A-mode (procedure)"] O
+           where (O.effective) during MeasurementPeriod)
+           or ( exists (["DiagnosticReport": "Orbital B scan (procedure)"]B
+           where (B.effective) during MeasurementPeriod) ) )
 
 define "Condition 1(Pre-Surgery Evaluations)":
-          ( exists (["Procedure, Performed": "Cataract extraction and insertion of intraocular lens (procedure)"])
-          and  ( exists (["Procedure, Performed": "Preoperative procedure (procedure)"]) ) )
+          ( exists (["Procedure": "Cataract extraction and insertion of intraocular lens (procedure)"])
+          and  ( exists (["Procedure": "Preoperative procedure (procedure)"]) ) )
           
 define "Condition 2(Pre-Surgery Evaluations)":
-           if exists (["Diagnosis": "Nuclear sclerotic cataract (disorder)"])
-             then ( exists (["Diagnostic Study, Performed": "Ophthalmic echography, A-mode (procedure)"]) )
+           if exists (["Condition": "Nuclear sclerotic cataract (disorder)"])
+             then ( exists (["DiagnosticReport": "Ophthalmic echography, A-mode (procedure)"]) )
            else null
           
 define "Condition 3(Pre-Surgery Evaluations)":
             
-           if exists (["Diagnosis": "Posterior capsular opacification (disorder)"]) then ( exists (["Procedure, Performed": "Orbital B scan (procedure)"]) )
+           if exists (["Condition": "Posterior capsular opacification (disorder)"]) then ( exists (["Procedure": "Orbital B scan (procedure)"]) )
            else null    
           
 define "Condition 4(Pre-Surgery Evaluations)":
-            if  ( exists (["Diagnosis": "Cataract (disorder)"]) )
-              then ( exists (["Assessment, Performed": "Comprehensive eye examination (procedure)"]) and "Scan Methods" ) 
+            if  ( exists (["Condition": "Cataract (disorder)"]) )
+              then ( exists (["Observation": "Comprehensive eye examination (procedure)"]) and "Scan Methods" ) 
             else
-              ( exists (["Encounter, Performed": "Summary report (record artifact)"]) )
+              ( exists (["Encounter": "Summary report (record artifact)"]) )
                          
                
 define "Condition 1(General Anesthesia)":
-           ( exists (["Medication, Administered": "General anesthesia (procedure)"
-           included in ["Procedure, Performed": "Cataract surgery (procedure)"]]) )
+           ( exists (["MedicationAdministration": "General anesthesia (procedure)"
+           included in ["Procedure": "Cataract surgery (procedure)"]]) )
            
 define "Covered":
          "Condition 1(Pre-Surgery Evaluations)" or "Condition 2(Pre-Surgery Evaluations)" or "Condition 3(Pre-Surgery Evaluations)" or "Condition 1(General Anesthesia)"                    
  
+ 
+define "Coverage":
+		"Covered"

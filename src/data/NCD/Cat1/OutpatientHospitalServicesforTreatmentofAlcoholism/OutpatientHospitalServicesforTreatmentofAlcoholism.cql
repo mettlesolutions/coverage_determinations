@@ -1,8 +1,9 @@
 //OutpatientHospitalServicesforTreatmentofAlcoholism
 
-library ChlamydiaScreening_Common version '2'
+library OutpatientHospitalServicesforTreatmentofAlcoholism
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -21,12 +22,12 @@ valueset "Hospital admission (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Procedure For Coverage":
-         ( exists (["Procedure, Performed": "Therapeutic procedure (procedure)"])
-          or ( exists (["Procedure, Performed": "Diagnostic procedure (procedure)"]) )
+         ( exists (["Procedure": "Therapeutic procedure (procedure)"])
+          or ( exists (["Procedure": "Diagnostic procedure (procedure)"]) )
           )
 
 define "Coverage":
-        ( exists (["Diagnosis": "Alcoholism (disorder)"])  and ( exists (["Procedure, Performed": "Hospital admission (procedure)"]) )) and "Procedure For Coverage"
+        (exists (["Condition": "Alcoholism (disorder)"])  and ( exists (["Procedure": "Hospital admission (procedure)"]) )) and "Procedure For Coverage"
         
          
          

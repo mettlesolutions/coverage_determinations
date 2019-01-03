@@ -1,8 +1,9 @@
 //TumorAntigenbyImmunoassay-CA19-9
 
-library ChlamydiaScreening_Common version '2'
+library TumorAntigenbyImmunoassay
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -19,35 +20,23 @@ valueset "Residual tumor present (finding)": '2.16.840.1.113883.3.88.12.3221.7.4
 valueset "Carcinoma of pancreas (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Primary malignant neoplasm of biliary tract (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Unexplained weight loss (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Fever (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Fatigue (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Chronic hoarseness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Indigestion (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Irregular bowel habits (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "Pain (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Chronic disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //Post Surgical Therapy
+//Symptoms or signs of malignancy
 valueset "Tumor marker measurement (procedure)": '2.16.840.1.113883.3.88.12.80.28'
+parameter MeasurementPeriod default @2001-01-01T00:00:00.0
 
 context Patient
 
-define "Symptoms Of Malignancy":
-         ( exists (["Diagnosis": "Unexplained weight loss (finding)"])
-         or ( exists (["Symptom": "Fever (finding)"]) )
-         or ( exists (["Symptom": "Fatigue (finding)"]) )
-         or ( exists (["Symptom": "Chronic hoarseness (finding)"]) )
-         or ( exists (["Symptom": "Indigestion (finding)"]) )
-         or ( exists (["Symptom": "Irregular bowel habits (finding)"]) )
-         or ( exists (["Symptom": "Pain (finding)"]) )
-          )
 define "Indications":
-        ( exists (["Diagnosis": "Multiple malignancy (disorder)"]) and ( exists (["Procedure, Performed": "Tumor marker monitoring (regime/therapy)"]) ) )
-        or ( exists (["Diagnosis": "Carcinoma of pancreas (disorder)"]) and ( exists (["Diagnosis": "Primary malignant neoplasm of biliary tract (disorder)"]) ) 
-        and ( exists (["Laboratory Test, Performed": "Tumor marker measurement (procedure)"]) ) )
-        or ( exists (["Diagnosis": "Chronic disease (disorder)"]) )
+        ( exists (["Condition": "Multiple malignancy (disorder)"]) and ( exists (["Procedure": "Tumor marker monitoring (regime/therapy)"]T
+        where T.performed during MeasurementPeriod) ) )
+        or ( exists (["Condition": "Carcinoma of pancreas (disorder)"]) and ( exists (["Condition": "Primary malignant neoplasm of biliary tract (disorder)"]) ) 
+        and ( exists (["Observation": "Tumor marker measurement (procedure)"]) ) )
+        or ( exists (["Condition": "Chronic disease (disorder)"]) )
         
-define "Not Covered":
-         "Symptoms Of Malignancy"
+
 
 define "Coverage":
-          "Indications"
+          "Indications" 
+          
