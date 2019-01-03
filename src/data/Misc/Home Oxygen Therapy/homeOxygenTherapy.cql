@@ -42,25 +42,18 @@ valueset "P pulmonale (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 //electrocardiogram [EKG]
 valueset "Dependent edema (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Pulmonary artery pressure monitoring (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
-
 //gated blood pool scan
 //echocardiogram
-
-
-
 valueset "Unilateral headache (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
-
 valueset "Inpatient stay (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Patient's condition stable (finding)": '2.16.840.1.113762.1.4.1096.114'
 valueset "Practitioner certification status (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Treatment stopped - alternative therapy undertaken (situation)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Echocardiography (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-
 valueset "Exercises (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Resting state (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Sleeping out (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Awake (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-
 valueset "Respiratory, Developmental, Rehabilitative and Restorative Service Providers; Respiratory Therapist, Certified": '2.16.840.1.114222.4.11.1066'
 //Oxygen services furnished by an airline
 //Stationary oxygen
@@ -74,7 +67,6 @@ valueset "Oxygen (substance)": '2.16.840.1.113762.1.4.1010.2'
 valueset "Device (physical object)": '2.16.840.1.113762.1.4.1181.3'
 valueset "Does move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Does not move (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
-
 valueset "Laboratory reporting, electronic (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Home oxygen therapy management (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Date Of Service
@@ -108,7 +100,6 @@ valueset "Assessment for home oxygen therapy (procedure)": '2.16.840.1.113883.3.
 valueset "Physician (occupation)": '2.16.840.1.113762.1.4.1096.129'
 valueset "Nurse practitioner (occupation)": '2.16.840.1.113762.1.4.1096.129'
 valueset "Physician assistant (occupation)": '2.16.840.1.113762.1.4.1096.129'
-
 valueset "In-person encounter (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Renewal of prescription (procedure)": '2.16.840.1.113883.3.88.12.80.28'
