@@ -53,7 +53,11 @@ code "Peripheral vascular disease, unspecified code":'I73.9' from "ICD10CM" disp
 code "Necrotizing fasciitis code" : 'M72.6' from "ICD10CM" display 'Necrotizing fasciitis'
 code "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code" :'T57.3X2A' from "ICD10CM" display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
 code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter code": 'T80.0XXA' from "ICD10CM" display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+<<<<<<< HEAD
 
+=======
+code "Inflammatory conditions of jaws code":'' from "ICD10CM" display 'Inflammatory conditions of jaws'
+>>>>>>> e8febc9e30b26c94a08bb69c2b0d2d426173a7bc
 
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
 concept "Osteomyelitis, unspecified ": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
@@ -69,7 +73,11 @@ concept "Gas gangrene " : {"Gas gangrene code"} display 'Gas gangrene'
 concept "Peripheral vascular disease, unspecified " : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
 concept "Necrotizing fasciitis " : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
 concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter " : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
+<<<<<<< HEAD
 concept "Inflammatory conditions of jaws": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
+=======
+concept "Inflammatory conditions of jaws ": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
+>>>>>>> e8febc9e30b26c94a08bb69c2b0d2d426173a7bc
 concept "Wegener's granulomatosis without renal involvement ":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
 concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter ":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 
