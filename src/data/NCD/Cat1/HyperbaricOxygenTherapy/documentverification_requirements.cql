@@ -1,4 +1,3 @@
-//Hyperbaric Oxygen Therapy
 library HyperbaricOxygenTherapy
 
 using FHIR
@@ -11,6 +10,7 @@ using FHIR
 //parameter parameterName (dataType or default value)
 
 codesystem "ICD10CM" : '2.16.840.1.113883.6.90'
+codesystem "CPT" : ''
 
 valueset "Osteomyelitis, unspecified" : '2.16.840.1.113883.3.3157.1835'
 valueset "Radiation sickness, unspecified, initial encounter":'2.16.840.1.113883.3.3157.1411'
@@ -34,7 +34,7 @@ valueset "Toxic effect of hydrogen cyanide, intentional self-harm, initial encou
 //Hyperbaric oxygen therapy (procedure)
 code "Physician attendance and supervision of hyperbaric oxygen therapy, per session code" :'99183' from  "CPT" display 'Hyperbaric oxygen therapy (procedure'
 //Wagner syndrome (disorder)
-code "Wegener's granulomatosis without renal involvement code" : 'M31.30' from "ICD10CM" display "Wegener's granulomatosis without renal involvement"
+code "Wegener's granulomatosis without renal involvement code" : 'M31.30' from "ICD10CM" display 'Wegeners granulomatosis without renal involvement'
 //Osteoradionecrosis (disorder)
 code "Inflammatory conditions of jaws code":'M27.2' from "ICD10CM" display 'Inflammatory conditions of jaws'
 
@@ -47,30 +47,31 @@ code "Type 1 diabetes mellitus with other skin ulcer code" : 'E10.622' from "ICD
 code "Crushing injury of unspecified hand, initial encounter code" :'S67.20XA' from "ICD10CM" display 'Crushing injury of unspecified hand, initial encounter'
 code "Complete traumatic amputation at level between left hip and knee, initial encounter code" : 'S78.112A' from "ICD10CM" display 'Complete traumatic amputation at level between left hip and knee, initial encounter'
 code "Caisson disease [decompression sickness], initial encounter code":'T70.3XXA' from "ICD10CM" display 'Caisson disease [decompression sickness], initial encounter'
-code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter	code" : 'T80.0XXA' from "ICD10CM" 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter	code" : 'T80.0XXA' from "ICD10CM" display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
 code "Gas gangrene code": 'A48.0' from "ICD10CM" display 'Gas gangrene'
 code "Peripheral vascular disease, unspecified code":'I73.9' from "ICD10CM" display 'Peripheral vascular disease, unspecified'
 code "Necrotizing fasciitis code" : 'M72.6' from "ICD10CM" display 'Necrotizing fasciitis'
 code "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code" :'T57.3X2A' from "ICD10CM" display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
+code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter code": 'T80.0XXA' from "ICD10CM" display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+code "Inflammatory conditions of jaws code":'' from "ICD10CM" display 'Inflammatory conditions of jaws'
 
-
-concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
-concept "Osteomyelitis, unspecified": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
-concept "Radiation sickness, unspecified, initial encounter" :{"Radiation sickness, unspecified, initial encounter code"} display 'Radiation sickness, unspecified, initial encounter'
-concept "Actinomycosis, unspecified" : {"Actinomycosis, unspecified code"} display 'Actinomycosis, unspecified'
-concept "Type 1 diabetes mellitus with other skin ulcer" : {"Type 1 diabetes mellitus with other skin ulcer code"} display 'Type 1 diabetes mellitus with other skin ulcer'
-concept "Type 2 diabetes mellitus with other skin ulcer" : {"Type 2 diabetes mellitus with other skin ulcer code"} display 'Type 2 diabetes mellitus with other skin ulcer'
-concept "Crushing injury of unspecified hand, initial encounter":{"Crushing injury of unspecified hand, initial encounter code"} display 'Crushing injury of unspecified hand, initial encounter'
-concept "Complete traumatic amputation at level between left hip and knee, initial encounter":{"Complete traumatic amputation at level between left hip and knee, initial encounter code"} display 'Complete traumatic amputation at level between left hip and knee, initial encounter'
-concept "Caisson disease [decompression sickness], initial encounter" : {"Caisson disease [decompression sickness], initial encounter code"} display 'Caisson disease [decompression sickness], initial encounter'
-concept "Air embolism following infusion, transfusion and therapeutic injection, initial encounter" : {"Air embolism following infusion, transfusion and therapeutic injection, initial encounter code"} display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
-concept "Gas gangrene" : {"Gas gangrene code"} display 'Gas gangrene'
-concept "Peripheral vascular disease, unspecified" : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
-concept "Necrotizing fasciitis" : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
-concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code" : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
-concept "Inflammatory conditions of jaws code": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
-concept "Wegener's granulomatosis without renal involvement":{"Wegener's granulomatosis without renal involvement code"} display "Wegener's granulomatosis without renal involvement code"
-concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
+concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
+concept "Osteomyelitis, unspecified ": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
+concept "Radiation sickness, unspecified, initial encounter " :{"Radiation sickness, unspecified, initial encounter code"} display 'Radiation sickness, unspecified, initial encounter'
+concept "Actinomycosis, unspecified " : {"Actinomycosis, unspecified code"} display 'Actinomycosis, unspecified'
+concept "Type 1 diabetes mellitus with other skin ulcer " : {"Type 1 diabetes mellitus with other skin ulcer code"} display 'Type 1 diabetes mellitus with other skin ulcer'
+concept "Type 2 diabetes mellitus with other skin ulcer " : {"Type 2 diabetes mellitus with other skin ulcer code"} display 'Type 2 diabetes mellitus with other skin ulcer'
+concept "Crushing injury of unspecified hand, initial encounter ":{"Crushing injury of unspecified hand, initial encounter code"} display 'Crushing injury of unspecified hand, initial encounter'
+concept "Complete traumatic amputation at level between left hip and knee, initial encounter ":{"Complete traumatic amputation at level between left hip and knee, initial encounter code"} display 'Complete traumatic amputation at level between left hip and knee, initial encounter'
+concept "Caisson disease [decompression sickness], initial encounter " : {"Caisson disease [decompression sickness], initial encounter code"} display 'Caisson disease [decompression sickness], initial encounter'
+concept "Air embolism following infusion, transfusion and therapeutic injection, initial encounter " : {"Air embolism following infusion, transfusion and therapeutic injection, initial encounter code"} display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+concept "Gas gangrene " : {"Gas gangrene code"} display 'Gas gangrene'
+concept "Peripheral vascular disease, unspecified " : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
+concept "Necrotizing fasciitis " : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
+concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter " : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
+concept "Inflammatory conditions of jaws ": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
+concept "Wegener's granulomatosis without renal involvement ":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
+concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter ":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 
 define "Condition1":
     {"Condition": "Osteomyelitis, unspecified"}
@@ -128,7 +129,7 @@ define "Condition17":
 define "Requirements":
     {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},"Condition5",{'or'},"Condition6",
 {'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
-"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition17"
+"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition17"}
 
 define "Prior Authorisation":
 	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
