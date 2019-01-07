@@ -1,7 +1,8 @@
-//VertebralArterySurgery
-library ChlamydiaScreening_Common version '2'
+library VertebralArterySurgery
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,7 +11,10 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Dizziness (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Vertebral artery obstruction (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -45,53 +49,53 @@ valueset "Excision of osteophyte (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Anatomical variation
 
 define "Symptoms Of Vertebral Artery Obstruction":
-         ( exists(["Symptom": "Dizziness (finding)"])
-          or ( exists(["Symptom": "Vertigo (finding)"] ) )
-          or ( exists(["Symptom": "Numbness (finding)"] ) )
-          or ( exists(["Symptom": "Nausea and vomiting (disorder)"] ) )
-          or ( exists(["Symptom": "Slurred speech (finding)"]) )
-          or ( exists(["Symptom": "Loss of consciousness (finding)"]) )
-          or ( exists(["Symptom": "Weakness present (finding)"]) )
-          or ( exists(["Symptom": "Unable to balance (finding)"]) )
-          or ( exists(["Symptom": "Difficulty swallowing (finding)"]) )
+         ( exists([Condition: "Dizziness (finding)"])
+          or ( exists([Condition: "Vertigo (finding)"] ) )
+          or ( exists([Condition: "Numbness (finding)"] ) )
+          or ( exists([Condition: "Nausea and vomiting (disorder)"] ) )
+          or ( exists([Condition: "Slurred speech (finding)"]) )
+          or ( exists([Condition: "Loss of consciousness (finding)"]) )
+          or ( exists([Condition: "Weakness present (finding)"]) )
+          or ( exists([Condition: "Unable to balance (finding)"]) )
+          or ( exists([Condition: "Difficulty swallowing (finding)"]) )
          ) 
           
 define "Diseases":
-           ( exists(["Diagnosis": "Degenerative brain disorder (disorder)"]) 
-           or ( exists(["Diagnosis": "Orthostatic hypotension (disorder)"] ) )
-           or ( exists(["Diagnosis": "Acoustic neuroma (disorder)"] ) )
-           or ( exists(["Diagnosis": "Labyrinthitis (disorder)"] ) )
-           or ( exists(["Diagnosis": "Diabetes mellitus (disorder)"] ) )
-           or ( exists(["Diagnosis": "Hypoglycemia (disorder)"] ) )
+           ( exists([Condition: "Degenerative brain disorder (disorder)"])
+           or ( exists([Condition: "Orthostatic hypotension (disorder)"] ) )
+           or ( exists([Condition: "Acoustic neuroma (disorder)"] ) )
+           or ( exists([Condition: "Labyrinthitis (disorder)"] ) )
+           or ( exists([Condition: "Diabetes mellitus (disorder)"] ) )
+           or ( exists([Condition: "Hypoglycemia (disorder)"] ) )
             )       
 define "Surgical Procedures":
-           ( exists(["Procedure, Performed": "Endarterectomy of vertebral artery (procedure)"])
-           or ( exists(["Procedure, Performed": "Bypass of vertebral artery (procedure)"]) )
-           or ( exists (["Procedure, Performed": "Endarterectomy of subclavian artery (procedure)"]) )
-           or ( exists (["Procedure, Performed": "Excision of osteophyte (procedure)"]) )
+           ( exists([Procedure: "Endarterectomy of vertebral artery (procedure)"])
+           or ( exists([Procedure: "Bypass of vertebral artery (procedure)"]) )
+           or ( exists ([Procedure: "Endarterectomy of subclavian artery (procedure)"]) )
+           or ( exists ([Procedure: "Excision of osteophyte (procedure)"]) )
            )
            
 define "Obstructions":
-          ( exists(["Diagnosis": "Intravascular obstruction (morphologic abnormality)"])
-          or ( exists(["Diagnosis": "Osteophyte of bone (disorder)"] ) )
-          or ( exists(["Diagnosis": "Malignant neoplasm of subcutaneous fibrous tissue (disorder)"] ) )
+          ( exists([Condition: "Intravascular obstruction (morphologic abnormality)"])
+          or ( exists([Condition: "Osteophyte of bone (disorder)"] ) )
+          or ( exists([Condition: "Malignant neoplasm of subcutaneous fibrous tissue (disorder)"] ) )
           )
           
 define "Controversial Obstructions":
-         ( exists(["Diagnosis": "Arterial tortuosity syndrome (disorder)"])
-         or ( exists(["Diagnosis": "Kinking of transplanted artery (disorder)"] ) )
-         or ( exists(["Diagnosis": "Malignant neoplasm of subcutaneous fibrous tissue (disorder)"] ) )
+         ( exists([Condition: "Arterial tortuosity syndrome (disorder)"])
+         or ( exists([Condition: "Kinking of transplanted artery (disorder)"] ) )
+         or ( exists([Condition: "Malignant neoplasm of subcutaneous fibrous tissue (disorder)"] ) )
          )
          
 define "Condition 1(Indications and Limitations)":
           "Symptoms Of Vertebral Artery Obstruction" and "Surgical Procedures"
-           or ( exists(["Diagnostic Study, Performed": "Plain radiography (procedure)"]) and ( exists (["Diagnosis": "Vertebral artery obstruction (disorder)"]) ) and "Surgical Procedures" )       
+           or ( exists([DiagnosticReport: "Plain radiography (procedure)"]) and ( exists ([Condition: "Vertebral artery obstruction (disorder)"]) ) and "Surgical Procedures" )
           
 define "Condition 2(Indications and Limitations)":
-          ( exists (["Diagnosis": "Subclavian steal syndrome (disorder)"]) and ( exists (["Diagnostic Study, Performed": "Diagnostic radiography, serial films (procedure)"] ) ) )      
+          ( exists ([Condition: "Subclavian steal syndrome (disorder)"]) and ( exists ([DiagnosticReport: "Diagnostic radiography, serial films (procedure)"] ) ) )
                      
 define "Condition 3(Indications and Limitations)":
-        (exists(["Diagnosis": "Vertebral artery obstruction (disorder)"]) )
+        (exists([Condition: "Vertebral artery obstruction (disorder)"]) )
         and "Diseases" and "Surgical Procedures"
         
 define "Condition 4(Indications and Limitations)": 
@@ -106,7 +110,4 @@ define "Not Covered":
 define "Coverage":
       ("Condition 1(Indications and Limitations)" or "Condition 4(Indications and Limitations)") and not "Not Covered"
         
-
-
-                   
 

@@ -1,8 +1,8 @@
-//UrineCulture,Bacterial
+library UrineCultureBacterial
 
-library ChlamydiaScreening_Common version '2'
+using FHIR
 
-using QDM
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,9 +10,11 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "ICD10CM": '2.16.840.1.113883.3.526.2.183'
-codesystem "LOINC": '2.16.840.1.113883.6.1'
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Abnormal urinalysis (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Acute urinary tract infection (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -69,71 +71,71 @@ valueset "Prenatal visit (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 context Patient
 
 define "Abnormal Urinalysis":
-          ( exists (["Diagnosis": "Hematuria"])
-          or ( exists (["Diagnosis": "Pyuria (finding)"]) )
-          or ( exists (["Diagnosis": "Bacteriuria (finding)"]) ) 
-          or ( exists (["Laboratory Test, Performed": "Leukocyte Esterase"]LE
-              where LE.result = "Positive") )
-          or ( exists (["Diagnosis": "Gram positive sepsis (disorder)"]) )
-          or ( exists (["Laboratory Test, Performed": "Urine bacteriuria test (procedure)"]U
-              where U.result = "Positive") )
+          ( exists ([Condition: "Hematuria"])
+          or ( exists ([Condition: "Pyuria (finding)"]) )
+          or ( exists ([Condition: "Bacteriuria (finding)"]) )
+          or ( exists ([Observation: "Leukocyte Esterase"]LE
+              where LE.value = "Positive") )
+          or ( exists ([Condition: "Gram positive sepsis (disorder)"]) )
+          or ( exists ([Observation: "Urine bacteriuria test (procedure)"]U
+              where U.value = "Positive") )
           )
-          
+
 define "Condition 1(Indications)":
-             if exists (["Procedure, Performed": "Urine culture (procedure)"])
+             if exists ([Procedure: "Urine culture (procedure)"])
              then "Abnormal Urinalysis"
-             else null
-             
+             else false
+
 define "Symptoms Of Lower Urinary Tract Infection":
-          ( exists (["Symptom": "Urge incontinence of urine (finding)"])
-          or ( exists (["Symptom": "Finding of frequency of urination (finding)"]) )
-          or ( exists (["Symptom": "Nocturia (finding)"]) )
-          or ( exists (["Symptom": "Dysuria (finding)"]) )
-          or ( exists (["Symptom": "Urinary incontinence (finding)"]) ) )
-          
+          ( exists ([Condition: "Urge incontinence of urine (finding)"])
+          or ( exists ([Condition: "Finding of frequency of urination (finding)"]) )
+          or ( exists ([Condition: "Nocturia (finding)"]) )
+          or ( exists ([Condition: "Dysuria (finding)"]) )
+          or ( exists ([Condition: "Urinary incontinence (finding)"]) ) )
+
 define "Symptoms and Pain Of Upper Urinary Tract Infection":
-         "Symptoms Of Lower Urinary Tract Infection" or  ( exists (["Symptom": "Fever (finding)"])
-           or ( exists (["Symptom": "Chills (ICD10CM)"]) )
-           or ( exists (["Symptom": "Lethargy (finding)"]) )
-           or ( exists (["Diagnosis": "Acute pelvic pain (finding)"]) )
-           or ( exists (["Diagnosis": "Abdominal pain (finding)"]) )
+         "Symptoms Of Lower Urinary Tract Infection" or  ( exists ([Condition: "Fever (finding)"])
+           or ( exists ([Condition: "Chills (ICD10CM)"]) )
+           or ( exists ([Condition: "Lethargy (finding)"]) )
+           or ( exists ([Condition: "Acute pelvic pain (finding)"]) )
+           or ( exists ([Condition: "Abdominal pain (finding)"]) )
             )
-            
+
 define "Symptoms Of Genitourinary Tract":
-           ( exists (["Symptom": "Prostatitis (disorder)"]) 
-           or ( exists (["Symptom": "Urethritis (disorder)"]) )
-           or ( exists (["Symptom": "Vaginitis (disorder)"]) )
-           or ( exists (["Symptom": "Acute cervicitis (disorder)"]) )
+           ( exists ([Condition: "Prostatitis (disorder)"])
+           or ( exists ([Condition: "Urethritis (disorder)"]) )
+           or ( exists ([Condition: "Vaginitis (disorder)"]) )
+           or ( exists ([Condition: "Acute cervicitis (disorder)"]) )
            )
-             
+
 define "Condition 2(Indications)":
           "Symptoms Of Lower Urinary Tract Infection" or "Symptoms and Pain Of Upper Urinary Tract Infection" or "Symptoms Of Genitourinary Tract"
-          
-/*define "Symptoms Of Sepsis": 
-            ( exists (["Symptom": "Tachycardia, unspecified"])
-            or ( exists (["Symptom": "Fever greater than 100.4 Fahrenheit (finding)"]) )
-            or ( exists (["Symptom": "Tachypnea"]) ) )*/
-            
+
+/*define "Symptoms Of Sepsis":
+            ( exists ([Condition: "Tachycardia, unspecified"])
+            or ( exists ([Condition: "Fever greater than 100.4 Fahrenheit (finding)"]) )
+            or ( exists ([Condition: "Tachypnea"]) ) )*/
+
 define "Urosepsis":
-         ( exists (["Diagnosis": "Acute urinary tract infection (disorder)"])
-         and ( exists (["Diagnosis": "Sepsis, unspecified organism"]) ) )
-          
+         ( exists ([Condition: "Acute urinary tract infection (disorder)"])
+         and ( exists ([Condition: "Sepsis, unspecified organism"]) ) )
+
 define "Condition 3(Indications)":
-           "Urosepsis" or ( exists (["Diagnosis": "Fever, unspecified"]) )// or "Symptoms Of Sepsis"
-           
+           "Urosepsis" or ( exists ([Condition: "Fever, unspecified"]) )// or "Symptoms Of Sepsis"
+
 define "Condition 6(Indications)":
-        if   ( exists (["Procedure, Performed": "Immunosuppressive therapy (procedure)"])
-           and (["Diagnosis": "Occult blood in stools (finding)"] included in ["Procedure, Performed": "Kidney Transplant Recipient"] ) ) 
-         then ( exists (["Procedure, Performed": "Urine culture (procedure)"]) )
-         
-        else null 
+        if   ( exists ([Procedure: "Immunosuppressive therapy (procedure)"])
+           and ([Condition: "Occult blood in stools (finding)"] included in [Procedure: "Kidney Transplant Recipient"] ) )
+         then ( exists ([Procedure: "Urine culture (procedure)"]) )
+
+        else false
         
 define "Indications":
           "Condition 1(Indications)" or "Condition 2(Indications)" or "Condition 3(Indications)" or "Condition 6(Indications)"
         
 define "Not Covered":
-            ( exists (["Procedure, Performed": "Prenatal visit (regime/therapy)"])
-            and ( exists (["Laboratory Test, Performed": "Asymptomatic bacteriuria screening (procedure)"]) ) )
+            ( exists ([Procedure: "Prenatal visit (regime/therapy)"])
+            and ( exists ([Observation: "Asymptomatic bacteriuria screening (procedure)"]) ) )
             
 define "Coverage":
          "Indications" and not "Not Covered"          

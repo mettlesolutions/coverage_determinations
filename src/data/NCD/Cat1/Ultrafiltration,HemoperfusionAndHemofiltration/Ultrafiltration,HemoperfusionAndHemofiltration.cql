@@ -1,9 +1,8 @@
-//Ultrafiltration,HemoperfusionAndHemofiltration
+library UltrafiltrationHemoperfusionAndHemofiltration
 
+using FHIR
 
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,8 +10,11 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "ICD10CM": '2.16.840.1.113883.3.526.2.183'
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Ultrafiltration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //Predialysis ultrafiltration
@@ -32,25 +34,24 @@ valueset "Physician (occupation)": '2.16.840.1.113762.1.4.1096.129'
 context Patient
 
 define "Covered 1(Ultrafiltration)":
-           ( exists (["Diagnosis": "Peripheral edema (disorder)"])  and ( exists (["Procedure, Performed": "Ultrafiltration (procedure)"]) ) )
+           ( exists ([Condition: "Peripheral edema (disorder)"])  and ( exists ([Procedure: "Ultrafiltration (procedure)"]) ) )
 define "Condition for Covered 2(Hemoperfusion)":
-          ( exists (["Diagnosis": "Drug overdose (disorder)"]) and ( exists (["Diagnosis": "Kidney Failure"]) ) )
-          or ( exists (["Diagnosis": "Drug overdose (disorder)"]) and not ( exists (["Diagnosis": "Kidney Failure"]) ) )
+          ( exists ([Condition: "Drug overdose (disorder)"]) and ( exists ([Condition: "Kidney Failure"]) ) )
+          or ( exists ([Condition: "Drug overdose (disorder)"]) and not ( exists ([Condition: "Kidney Failure"]) ) )
           
 define "Covered 2(Hemoperfusion)":
-          "Condition for Covered 2(Hemoperfusion)" and ( exists (["Procedure, Performed": "Hemoperfusion (procedure)"]H
-          where H.authorDatetime= "Physician (occupation)") )
+          "Condition for Covered 2(Hemoperfusion)" and ( exists ([Procedure: "Hemoperfusion (procedure)"])
+          and exists ([Practitioner: "Physician (occupation)"]))
 
 define "Not Covered":
-         ( exists (["Diagnosis": "Iron overload (disorder)"]) ) and ( exists (["Procedure, Performed": "Hemoperfusion (procedure)"]) and ( exists (["Medication, Administered": "Deferoxamine"]) ) )
+         ( exists ([Condition: "Iron overload (disorder)"]) ) and ( exists ([Procedure: "Hemoperfusion (procedure)"]) and ( exists ([MedicationAdministration: "Deferoxamine"]) ) )
  
 define "Condition for Covered 3(Hemofiltration)":
-         ( exists (["Diagnosis": "End Stage Renal Disease"]) ) and not ( exists (["Procedure, Performed": "Peritoneal Dialysis"]) and ( exists (["Procedure, Performed": "Hemodialysis"]) ) )       
+         ( exists ([Condition: "End Stage Renal Disease"]) ) and not ( exists ([Procedure: "Peritoneal Dialysis"]) and ( exists ([Procedure: "Hemodialysis"]) ) )
 
 define "Covered 3(Hemofiltration)":
-          "Condition for Covered 3(Hemofiltration)" and ( exists (["Procedure, Performed": "Hemofiltration (procedure)"]) )
+          "Condition for Covered 3(Hemofiltration)" and ( exists ([Procedure: "Hemofiltration (procedure)"]) )
    
 define "Coverage":
          "Covered 1(Ultrafiltration)" or "Covered 2(Hemoperfusion)" or "Covered 3(Hemofiltration)"
               
-          

@@ -1,9 +1,8 @@
-//PneumaticCompressionDevices
+library PneumaticCompressionDevices
 
+using FHIR
 
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,8 +10,11 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "ICD10CM": '2.16.840.1.113883.3.526.2.183'
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Lymphedema (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Ulcer of limb due to chronic venous insufficiency (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -38,34 +40,36 @@ valueset "Pain in leg, unspecified": '2.16.840.1.113762.1.4.1116.315'
 context Patient
 
 define "Symptoms Of chronic venous insufficiency":
-          ( exists (["Symptom": "Localized edema (finding)"])
-          or ( exists (["Symptom": "Pain in leg, unspecified"]) ) )
+          ( exists ([Condition: "Localized edema (finding)"])
+          or ( exists ([Condition: "Pain in leg, unspecified"]) ) )
 
 define "Symptoms Of Lymphedema":
-          ( exists (["Symptom": "Swelling of limb (finding)"])
-          or ( exists (["Symptom": "Sensation of heaviness in limbs (finding)"]) )
-          or ( exists (["Symptom": "Aching pain (finding)"]) ) 
-          or ( exists (["Symptom": "Fibrosis of the skin (disorder)"]) ) )
+          ( exists ([Condition: "Swelling of limb (finding)"])
+          or ( exists ([Condition: "Sensation of heaviness in limbs (finding)"]) )
+          or ( exists ([Condition: "Aching pain (finding)"]) )
+          or ( exists ([Condition: "Fibrosis of the skin (disorder)"]) ) )
 
 define "Condition 1(Lymphedema)":
-          ( exists (["Diagnosis": "Lymphedema (disorder)"])
-          and ( exists (["Procedure, Performed": "Application of intermittent pneumatic compression device (procedure)"]AI
-          where duration in days of AI.relevantPeriod = 28 and AI.authorDatetime= "Physician (occupation)") ) )
-          
+          ( exists ([Condition: "Lymphedema (disorder)"])
+          and ( exists ([Procedure: "Application of intermittent pneumatic compression device (procedure)"]AI
+          where duration in days of AI.performed = 28) )
+          and exists([Practitioner: "Physician (occupation)"]) )
+
 define "Lymphedema Coverage":
           "Condition 1(Lymphedema)"
-          
+
 define "Condition for Chronic Venous Insufficiency":
-          ( exists (["Procedure, Performed": "Conservative therapy (regime/therapy)"]CT
-          where duration in months of CT.relevantPeriod > 6 and CT.authorDatetime = "Physician (occupation)") )
-         
+          ( exists ([Procedure: "Conservative therapy (regime/therapy)"]CT
+          where duration in months of CT.performed > 6)
+          and exists([Practitioner: "Physician (occupation)"]) )
+
 define "Condition 1(Chronic Venous Insufficiency With Venous Stasis Ulcers)":
-           if "Condition for Chronic Venous Insufficiency"  
-           then ["Device, Applied": "Application of intermittent pneumatic compression device (procedure)"]
-           else null
+           if "Condition for Chronic Venous Insufficiency"
+           then exists([Procedure: "Application of intermittent pneumatic compression device (procedure)"])
+           else false
            
 define "General":
-        ( exists (["Diagnosis": "Prognosis uncertain (finding)"]) 
+        ( exists ([Condition: "Prognosis uncertain (finding)"])
         and "Symptoms Of chronic venous insufficiency" and "Symptoms Of Lymphedema" )
            
 define "Coverage":

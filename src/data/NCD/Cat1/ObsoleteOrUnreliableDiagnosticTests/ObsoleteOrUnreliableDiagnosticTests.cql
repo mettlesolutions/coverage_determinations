@@ -1,7 +1,8 @@
-//ObsoleteOrUnreliableDiagnosticTests
-library ChlamydiaScreening_Common version '2'
+library ObsoleteOrUnreliableDiagnosticTests
 
-using QDM
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -9,8 +10,11 @@ using QDM
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
-codesystem "SNOMEDCT": '2.16.840.1.113883.3.88.12.80.28'
-codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Amylase isoenzyme (substance)": '2.16.840.1.113762.1.4.1010.9'
 //electrophoretic
@@ -57,36 +61,36 @@ context Patient
 
 
 define "Services For Diagnostic Test":
-         ( exists (["Substance, Administered": "Amylase isoenzyme (substance)"])
-         or ( exists (["Substance, Administered": "Zinc sulfate (substance)"]) )
-         or ( exists (["Procedure, Performed": "Serum chromium level (procedure)"]) )
-         or ( exists (["Diagnosis": "Cat-scratch disease"]) )
-         or ( exists (["Diagnosis": "Lymphogranuloma venereum (disorder)"]) )
-         or ( exists (["Procedure, Performed": "Circulation time, one test (procedure)"]) )
-         or ( exists (["Laboratory Test, Performed": "Congo red test (procedure)"]) )
-         or ( exists (["Laboratory Test, Performed": "Adrenocorticotropic hormone measurement (procedure)"]) )
-         or ( exists (["Diagnosis": "Actinomycosis, unspecified"]) )
-         or ( exists (["Procedure, Performed": "Brucellosis skin test (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Psittacosis antibody level (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Pepsins measurement (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Capillary fragility test (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Colloidal gold test (procedure)"]) )
+         ( exists ([MedicationAdministration: "Amylase isoenzyme (substance)"])
+         or ( exists ([MedicationAdministration: "Zinc sulfate (substance)"]) )
+         or ( exists ([Procedure: "Serum chromium level (procedure)"]) )
+         or ( exists ([Condition: "Cat-scratch disease"]) )
+         or ( exists ([Condition: "Lymphogranuloma venereum (disorder)"]) )
+         or ( exists ([Procedure: "Circulation time, one test (procedure)"]) )
+         or ( exists ([Observation: "Congo red test (procedure)"]) )
+         or ( exists ([Observation: "Adrenocorticotropic hormone measurement (procedure)"]) )
+         or ( exists ([Condition: "Actinomycosis, unspecified"]) )
+         or ( exists ([Procedure: "Brucellosis skin test (procedure)"]) )
+         or ( exists ([Procedure: "Psittacosis antibody level (procedure)"]) )
+         or ( exists ([Procedure: "Pepsins measurement (procedure)"]) )
+         or ( exists ([Procedure: "Capillary fragility test (procedure)"]) )
+         or ( exists ([Procedure: "Colloidal gold test (procedure)"]) )
          )
-         
-define "Diagnostic Test": 
-         ["Procedure, Performed": "Services For Diagnostic Test"]S
-         where S.authorDatetime = "Physician (occupation)"
+
+define "Diagnostic Test":
+         exists([Procedure: "Services For Diagnostic Test"])
+         and exists([Practitioner: "Physician (occupation)"])
 
 
 define "Phonocardiographic Diagnostic Test":
-          ( exists (["Diagnostic Study, Performed": "Phonocardiogram with electrocardiogram lead (procedure)"])
-          or ( exists (["Diagnostic Study, Performed": "Phonocardiogram with artery and/or vein tracing (procedure)"]) )
-          or ( exists (["Diagnostic Study, Performed": "Phonocardiogram with apex cardiogram (procedure)"]) ) 
-          or ( exists (["Diagnostic Study, Performed": "Intracardiac phonocardiogram (procedure)"]) ) )
+          ( exists ([DiagnosticReport: "Phonocardiogram with electrocardiogram lead (procedure)"])
+          or ( exists ([DiagnosticReport: "Phonocardiogram with artery and/or vein tracing (procedure)"]) )
+          or ( exists ([DiagnosticReport: "Phonocardiogram with apex cardiogram (procedure)"]) )
+          or ( exists ([DiagnosticReport: "Intracardiac phonocardiogram (procedure)"]) ) )
           
 define "Vectorcardiogram Diagnostic Test":
-         ( exists (["Diagnostic Study, Performed": "Electrocardiogram with vectorcardiogram (procedure)"]) 
-         or ( exists (["Diagnostic Study, Performed": "Vectorcardiogram (procedure)"]) ) )
+         ( exists ([DiagnosticReport: "Electrocardiogram with vectorcardiogram (procedure)"])
+         or ( exists ([DiagnosticReport: "Vectorcardiogram (procedure)"]) ) )
 
 define "Not Covered":
           "Phonocardiographic Diagnostic Test" or "Vectorcardiogram Diagnostic Test"
