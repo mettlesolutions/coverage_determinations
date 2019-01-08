@@ -1,9 +1,7 @@
 //Hyperbaric Oxygen Therapy
 library HyperbaricOxygenTherapy
 
-using FHIR
-
-include FHIRHelpers version '1.8' called FHIRHelpers
+using FHIR version '1.8'
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -63,7 +61,7 @@ code "Under Skin Substitute Grafts code":'15273' from "CPT" display 'Under Skin 
 code "Pressure ulcer of unspecified site code" :'L89.9'from "ICD10CM" display 'Pressure ulcer of unspecified site'
 
 code "Caisson disease [decompression sickness], initial encounter code":'T70.3XXA' from "ICD10CM" display 'Caisson disease [decompression sickness], initial encounter'
-code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter	code" : 'T80.0XXA' from "ICD10CM" 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter	code" : 'T80.0XXA' from "ICD10CM" display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
 code "Gas gangrene code": 'A48.0' from "ICD10CM" display 'Gas gangrene'
 code "Peripheral vascular disease, unspecified code":'I73.9' from "ICD10CM" display 'Peripheral vascular disease, unspecified'
 code "Crushing injury of unspecified hand, initial encounter code" :'S67.20XA' from "ICD10CM" display 'Crushing injury of unspecified hand, initial encounter'
