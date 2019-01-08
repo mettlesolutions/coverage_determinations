@@ -1,3 +1,4 @@
+//Hyperbaric Oxygen Therapy
 library HyperbaricOxygenTherapy
 
 using FHIR
@@ -10,7 +11,7 @@ using FHIR
 //parameter parameterName (dataType or default value)
 
 codesystem "ICD10CM" : '2.16.840.1.113883.6.90'
-codesystem "CPT" : ''
+codesystem "CPT" : '2.16.840.1.113883.6.12'
 
 valueset "Osteomyelitis, unspecified" : '2.16.840.1.113883.3.3157.1835'
 valueset "Radiation sickness, unspecified, initial encounter":'2.16.840.1.113883.3.3157.1411'
@@ -28,7 +29,6 @@ valueset "Toxic effect of carbon monoxide from unspecified source, accidental (u
 valueset "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter" : '2.16.840.1.113883.17.4077.2.2077'
 
 //General treatment (procedure)
-//Skin graft cutting/preparation (procedure)
 
 
 //Hyperbaric oxygen therapy (procedure)
@@ -37,7 +37,6 @@ code "Physician attendance and supervision of hyperbaric oxygen therapy, per ses
 code "Wegener's granulomatosis without renal involvement code" : 'M31.30' from "ICD10CM" display 'Wegeners granulomatosis without renal involvement'
 //Osteoradionecrosis (disorder)
 code "Inflammatory conditions of jaws code":'M27.2' from "ICD10CM" display 'Inflammatory conditions of jaws'
-
 code "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code" : 'T58.91XA' from "ICD10CM" display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 code "Osteomyelitis, unspecified code" : 'M86.9' from "ICD10CM" display 'Osteomyelitis, unspecified'
 code "Radiation sickness, unspecified, initial encounter code" : 'T66.XXXA' from "ICD10CM" display 'Radiation sickness, unspecified, initial encounter'
@@ -53,6 +52,7 @@ code "Peripheral vascular disease, unspecified code":'I73.9' from "ICD10CM" disp
 code "Necrotizing fasciitis code" : 'M72.6' from "ICD10CM" display 'Necrotizing fasciitis'
 code "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code" :'T57.3X2A' from "ICD10CM" display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
 code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter code": 'T80.0XXA' from "ICD10CM" display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+code "Under Skin Substitute Grafts code":'15273' from "CPT" display 'Under Skin Substitute Grafts'
 
 
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
@@ -69,13 +69,10 @@ concept "Gas gangrene " : {"Gas gangrene code"} display 'Gas gangrene'
 concept "Peripheral vascular disease, unspecified " : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
 concept "Necrotizing fasciitis " : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
 concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter " : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
-
 concept "Inflammatory conditions of jaws": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
-
-concept "Inflammatory conditions of jaws ": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
-
 concept "Wegener's granulomatosis without renal involvement ":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
 concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter ":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
+concept "Under Skin Substitute Grafts" : {"Under Skin Substitute Grafts code"} display 'Under Skin Substitute Grafts'
 
 define "Condition1":
     {"Condition": "Osteomyelitis, unspecified"}
@@ -124,16 +121,17 @@ define "Condition14":
 define "Condition15":
     {"Condition":"Peripheral vascular disease, unspecified" }
 
-/*define "Condition16":
-    {"Procedure": "Skin graft cutting/preparation (procedure) "}*/
+define "Condition16":
+    {"Procedure": "Under Skin Substitute Grafts"}
 
 define "Condition17":
     {"Condition": "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter"}
 
 define "Requirements":
     {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},"Condition5",{'or'},"Condition6",
-{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
-"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition17"}
+	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
+	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition16",{'or'},"Condition17"}
 
-define "Prior Authorisation":
+define "PriorAuthorisation":
 	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
+
