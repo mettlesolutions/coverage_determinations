@@ -13,7 +13,7 @@ using FHIR
 codesystem "ICD10CM" : '2.16.840.1.113883.6.90'
 codesystem "CPT" : '2.16.840.1.113883.6.12'
 
-valueset "Osteomyelitis, unspecified" : '2.16.840.1.113883.3.3157.1835'
+/*valueset "Osteomyelitis, unspecified" : '2.16.840.1.113883.3.3157.1835'
 valueset "Radiation sickness, unspecified, initial encounter":'2.16.840.1.113883.3.3157.1411'
 valueset "Actinomycosis, unspecified" :'2.16.840.1.113883.17.4077.2.2074'
 valueset "Type 2 diabetes mellitus with other skin ulcer":'2.16.840.1.113762.1.4.1138.739'
@@ -26,7 +26,7 @@ valueset "Gas gangrene":'2.16.840.1.113883.17.4077.2.2074'
 valueset "Necrotizing fasciitis" : '2.16.840.1.113883.17.4077.2.2074'
 valueset "Peripheral vascular disease, unspecified" : '2.16.840.1.113883.3.600.858'
 valueset "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter" : '2.16.840.1.113762.1.4.1146.289'
-valueset "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter" : '2.16.840.1.113883.17.4077.2.2077'
+valueset "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter" : '2.16.840.1.113883.17.4077.2.2077'*/
 
 //General treatment (procedure)
 
@@ -56,22 +56,22 @@ code "Under Skin Substitute Grafts code":'15273' from "CPT" display 'Under Skin 
 
 
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
-concept "Osteomyelitis, unspecified ": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
-concept "Radiation sickness, unspecified, initial encounter " :{"Radiation sickness, unspecified, initial encounter code"} display 'Radiation sickness, unspecified, initial encounter'
-concept "Actinomycosis, unspecified " : {"Actinomycosis, unspecified code"} display 'Actinomycosis, unspecified'
-concept "Type 1 diabetes mellitus with other skin ulcer " : {"Type 1 diabetes mellitus with other skin ulcer code"} display 'Type 1 diabetes mellitus with other skin ulcer'
-concept "Type 2 diabetes mellitus with other skin ulcer " : {"Type 2 diabetes mellitus with other skin ulcer code"} display 'Type 2 diabetes mellitus with other skin ulcer'
-concept "Crushing injury of unspecified hand, initial encounter ":{"Crushing injury of unspecified hand, initial encounter code"} display 'Crushing injury of unspecified hand, initial encounter'
-concept "Complete traumatic amputation at level between left hip and knee, initial encounter ":{"Complete traumatic amputation at level between left hip and knee, initial encounter code"} display 'Complete traumatic amputation at level between left hip and knee, initial encounter'
-concept "Caisson disease [decompression sickness], initial encounter " : {"Caisson disease [decompression sickness], initial encounter code"} display 'Caisson disease [decompression sickness], initial encounter'
-concept "Air embolism following infusion, transfusion and therapeutic injection, initial encounter " : {"Air embolism following infusion, transfusion and therapeutic injection, initial encounter code"} display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
-concept "Gas gangrene " : {"Gas gangrene code"} display 'Gas gangrene'
-concept "Peripheral vascular disease, unspecified " : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
-concept "Necrotizing fasciitis " : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
-concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter " : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
+concept "Osteomyelitis, unspecified": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
+concept "Radiation sickness, unspecified, initial encounter" :{"Radiation sickness, unspecified, initial encounter code"} display 'Radiation sickness, unspecified, initial encounter'
+concept "Actinomycosis, unspecified" : {"Actinomycosis, unspecified code"} display 'Actinomycosis, unspecified'
+concept "Type 1 diabetes mellitus with other skin ulcer" : {"Type 1 diabetes mellitus with other skin ulcer code"} display 'Type 1 diabetes mellitus with other skin ulcer'
+concept "Type 2 diabetes mellitus with other skin ulcer" : {"Type 2 diabetes mellitus with other skin ulcer code"} display 'Type 2 diabetes mellitus with other skin ulcer'
+concept "Crushing injury of unspecified hand, initial encounter":{"Crushing injury of unspecified hand, initial encounter code"} display 'Crushing injury of unspecified hand, initial encounter'
+concept "Complete traumatic amputation at level between left hip and knee, initial encounter":{"Complete traumatic amputation at level between left hip and knee, initial encounter code"} display 'Complete traumatic amputation at level between left hip and knee, initial encounter'
+concept "Caisson disease [decompression sickness], initial encounter" : {"Caisson disease [decompression sickness], initial encounter code"} display 'Caisson disease [decompression sickness], initial encounter'
+concept "Air embolism following infusion, transfusion and therapeutic injection, initial encounter" : {"Air embolism following infusion, transfusion and therapeutic injection, initial encounter code"} display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
+concept "Gas gangrene" : {"Gas gangrene code"} display 'Gas gangrene'
+concept "Peripheral vascular disease, unspecified" : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
+concept "Necrotizing fasciitis" : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
+concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter" : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
 concept "Inflammatory conditions of jaws": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
-concept "Wegener's granulomatosis without renal involvement ":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
-concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter ":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
+concept "Wegener's granulomatosis without renal involvement":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
+concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 concept "Under Skin Substitute Grafts" : {"Under Skin Substitute Grafts code"} display 'Under Skin Substitute Grafts'
 
 define "Condition1":
