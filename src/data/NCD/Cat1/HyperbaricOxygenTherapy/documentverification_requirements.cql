@@ -69,11 +69,11 @@ concept "Gas gangrene " : {"Gas gangrene code"} display 'Gas gangrene'
 concept "Peripheral vascular disease, unspecified " : {"Peripheral vascular disease, unspecified code"} display 'Peripheral vascular disease, unspecified'
 concept "Necrotizing fasciitis " : {"Necrotizing fasciitis code"} display 'Necrotizing fasciitis'
 concept "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter " : {"Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code"}  display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
-<<<<<<< HEAD
+
 concept "Inflammatory conditions of jaws": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
-=======
+
 concept "Inflammatory conditions of jaws ": {"Inflammatory conditions of jaws code"} display 'Inflammatory conditions of jaws'
->>>>>>> e8febc9e30b26c94a08bb69c2b0d2d426173a7bc
+
 concept "Wegener's granulomatosis without renal involvement ":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
 concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter ":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 
