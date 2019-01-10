@@ -1,7 +1,8 @@
-//EndothelialCellPhotography
-library ChlamydiaScreening_Common version '2'
+library EndothelialCellPhotography
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,8 +11,12 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Corneal specular microscopy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Endothelial corneal dystrophy": '2.16.840.1.113883.3.526.2.1566'
@@ -33,26 +38,26 @@ valueset "": ''
 context Patient
 
 define "Excluded refractive Procedures":
-              ( exists (["Procedure, Performed": "Radial keratotomy (procedure)"])
-              or ( exists (["Procedure, Performed": "Keratoplasty (procedure)"]) ) )
+              ( exists ([Procedure: "Radial keratotomy (procedure)"])
+              or ( exists ([Procedure: "Keratoplasty (procedure)"]) ) )
 
 define "Indications and Limitations":
-        ( exists ( if ( exists (["Procedure, Performed": "Ocular photography for medical evaluation and documentation, slit lamp photography (procedure)"]) )
-          then ["Diagnosis": "Endothelial corneal dystrophy"] 
+        ( exists ( if ( exists ([Procedure: "Ocular photography for medical evaluation and documentation, slit lamp photography (procedure)"]) )
+          then [Condition: "Endothelial corneal dystrophy"]
           else null ) )
           
-          or ( exists ( if ( exists (["Procedure, Performed": "Ocular photography for medical evaluation and documentation, slit lamp photography (procedure)"]) )
-          then ["Diagnosis": "Corneal Edema"] 
+          or ( exists ( if ( exists ([Procedure: "Ocular photography for medical evaluation and documentation, slit lamp photography (procedure)"]) )
+          then [Condition: "Corneal Edema"]
           else null ) )
           
-          or (exists (["Procedure, Performed": "Secondary lens implant (procedure)"]) )
+          or (exists ([Procedure: "Secondary lens implant (procedure)"]) )
           
-          or ( exists (["Diagnosis": "Corneal endothelium finding (finding)"])
-               and ( exists (["Procedure, Performed": "Aspiration of cataract by phacoemulsification (procedure)"]) or ( exists (["Procedure, Performed": "Refractive surgery (procedure)"]) ) )
+          or ( exists ([Condition: "Corneal endothelium finding (finding)"])
+               and ( exists ([Procedure: "Aspiration of cataract by phacoemulsification (procedure)"]) or ( exists ([Procedure: "Refractive surgery (procedure)"]) ) )
                  and not "Excluded refractive Procedures" )
                  
-          or ( exists (["Diagnosis": "Posterior polymorphous corneal dystrophy (disorder)"])
-              or ( exists (["Diagnosis": "Iridocorneal endothelial syndrome (disorder)"]) ) )
+          or ( exists ([Condition: "Posterior polymorphous corneal dystrophy (disorder)"])
+              or ( exists ([Condition: "Iridocorneal endothelial syndrome (disorder)"]) ) )
               
 define "Coverage":
           "Indications and Limitations"

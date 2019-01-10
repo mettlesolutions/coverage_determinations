@@ -1,7 +1,8 @@
-//GranulocyteTransfusion
-library ChlamydiaScreening_Common version '2'
+library GranulocyteTransfusion
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,8 +11,12 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Transfusion of granulocytes (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Chronic benign granulocytopenia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -23,11 +28,11 @@ valueset "Failed attempted procedure (situation)": '2.16.840.1.113883.3.88.12.32
 context Patient
 
 define "Covered":
-         ( exists (["Diagnosis": "Chronic benign granulocytopenia (disorder)"]) and ( exists (["Diagnosis": "Gram-negative sepsis, unspecified"]) ) )
-          or if ( exists (["Diagnosis": "Febrile granulocytopenia (disorder)"]) and ( exists (["Diagnosis": "Gram-negative sepsis, unspecified"]) ) )
-              then  (exists (["Procedure, Performed": "Antibiotic therapy (procedure)"]A
+         ( exists ([Condition: "Chronic benign granulocytopenia (disorder)"]) and ( exists ([Condition: "Gram-negative sepsis, unspecified"]) ) )
+          or if ( exists ([Condition: "Febrile granulocytopenia (disorder)"]) and ( exists ([Condition: "Gram-negative sepsis, unspecified"]) ) )
+              then  (exists ([Procedure: "Antibiotic therapy (procedure)"]A
           where A.status="Failed attempted procedure (situation)") )
-          else null
+          else false
        
 define "Coverage":
-         "Covered" and ( exists (["Procedure, Performed": "Transfusion of granulocytes (procedure)"]) )
+         "Covered" and ( exists ([Procedure: "Transfusion of granulocytes (procedure)"]) )

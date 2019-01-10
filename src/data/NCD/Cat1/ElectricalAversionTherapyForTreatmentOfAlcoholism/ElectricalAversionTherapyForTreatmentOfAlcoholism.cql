@@ -1,7 +1,8 @@
-//ElectricalAversionTherapyForTreatmentOfAlcoholism
-library ChlamydiaScreening_Common version '2'
+library ElectricalAversionTherapyForTreatmentOfAlcoholism
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,7 +11,10 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 
 valueset "Alcoholism (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Aversion therapy - alcoholism (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
@@ -18,8 +22,8 @@ valueset "Aversion therapy - alcoholism (regime/therapy)": '2.16.840.1.113883.3.
 context Patient
 
 define "Not Covered":
-         ( exists (["Diagnosis": "Alcoholism (disorder)"])
-          and ( exists (["Procedure, Performed": "Aversion therapy - alcoholism (regime/therapy)"]) ) )
+         ( exists ([Condition: "Alcoholism (disorder)"])
+          and ( exists ([Procedure: "Aversion therapy - alcoholism (regime/therapy)"]) ) )
          
 define "Coverage":
          not "Not Covered"

@@ -1,7 +1,8 @@
-//Glycated Hemoglobin/Glycated Protein
-library ChlamydiaScreening_Common version '2'
+library GlycatedHemoglobinGlycatedProtein
 
-using QDM
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,7 +11,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT" : '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
+
 valueset "Hemoglobin A1c measurement (procedure)" : '2.16.840.1.113883.3.88.12.80.28'
 valueset "Hyperglycemia (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Hemolytic anemia (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -28,42 +35,42 @@ parameter "MeasurementPeriod" Interval<DateTime>
 context Patient
 
 define "Indication 1" : 
-		(exists (["Diagnosis" :"Hemoglobin A1C - diabetic control finding (finding)"])
-		and (exists (["Diagnosis" :"Hyperglycemia (disorder)"]))
-		or (exists (["Diagnosis" : "Hypoglycemia, unspecified"]))
-		and (exists (["Procedure, Performed" : "Hemoglobin A1c measurement (procedure)"]))
+		(exists ([Condition :"Hemoglobin A1C - diabetic control finding (finding)"])
+		and (exists ([Condition :"Hyperglycemia (disorder)"]))
+		or (exists ([Condition : "Hypoglycemia, unspecified"]))
+		and (exists ([Procedure : "Hemoglobin A1c measurement (procedure)"]))
 		)
 		
 define "Indication 2":
-		(exists (["Diagnosis" :"Hemolytic anemia (disorder)"])
-		or (exists (["Diagnosis" :"Hemoglobinopathy (disorder)"]))
-		and (exists (["Procedure, Performed" : "Glycated protein measurement (procedure)"]))
+		(exists ([Condition :"Hemolytic anemia (disorder)"])
+		or (exists ([Condition :"Hemoglobinopathy (disorder)"]))
+		and (exists ([Procedure : "Glycated protein measurement (procedure)"]))
 		)
 define "Indications":
 		"Indication 1" and "Indication 2"
 		
 define "Limitation 1":
-		(exists (["Diagnosis" : "Hemoglobin A1C - diabetic control finding (finding)"])
-		and (exists (["Procedure, Performed" : "Hemoglobin A1c measurement (procedure)"]))
+		(exists ([Condition : "Hemoglobin A1C - diabetic control finding (finding)"])
+		and (exists ([Procedure : "Hemoglobin A1c measurement (procedure)"]))
 		)
 		
 define "Limitation 2":
-		(exists (["Diagnosis": "Gestational diabetes mellitus (disorder)"])
-		and (exists (["Procedure, Performed" : "Hemoglobin A1c measurement (procedure)"]))
+		(exists ([Condition: "Gestational diabetes mellitus (disorder)"])
+		and (exists ([Procedure : "Hemoglobin A1c measurement (procedure)"]))
 		)
 define "Limitation 3":
-		(exists (["Diagnosis": "Type I diabetes mellitus uncontrolled (finding)" ])
-		or (exists (["Diagnosis": "Type II diabetes mellitus uncontrolled (finding)" ]))
-		 and (exists (["Procedure, Performed" : "Hemoglobin A1c measurement (procedure)"]))
+		(exists ([Condition: "Type I diabetes mellitus uncontrolled (finding)" ])
+		or (exists ([Condition: "Type II diabetes mellitus uncontrolled (finding)" ]))
+		 and (exists ([Procedure : "Hemoglobin A1c measurement (procedure)"]))
 		)
 		
 define "Start Date Fructosamine":
-	["Procedure, Performed": "Fructosamine measurement (procedure)"] F
-	  where F.relevantPeriod in "MeasurementPeriod"
-	  
+	[Procedure: "Fructosamine measurement (procedure)"] F
+	  where F.performed in "MeasurementPeriod"
+
  define "Start Date Hemoglobin":
-           ["Procedure, Performed": "Hemoglobin A1c measurement (procedure)"] B
-	  where B.relevantPeriod in "MeasurementPeriod"  
+           [Procedure: "Hemoglobin A1c measurement (procedure)"] B
+	  where B.performed in "MeasurementPeriod"
 		
 
 define "Condition":

@@ -15,6 +15,8 @@ codesystem "SNOMEDCT": 'http://snomed.info/sct'
 codesystem "HCPCS": 'https://hcpcs.codes/'
 codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
 codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Intravenous therapy (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Insulins [Chemical/Ingredient]": '2.16.840.1.113762.1.4.1010.1'

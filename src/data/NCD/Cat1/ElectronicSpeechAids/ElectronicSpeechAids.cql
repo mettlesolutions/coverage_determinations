@@ -1,7 +1,8 @@
-//ElectronicSpeechAids
-library ChlamydiaScreening_Common version '2'
+library ElectronicSpeechAids
 
-using QDM version '5.3'
+using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -10,19 +11,24 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Construction of artificial larynx (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Laryngectomy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Disorder of the larynx (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
-valueset "": ''
 
 context Patient
 
 define "Covered":
-        if ( exists (["Procedure, Performed": "Laryngectomy (procedure)"]) or ( exists (["Diagnosis": "Disorder of the larynx (disorder)"]) ) )
-         then ["Procedure, Performed": "Construction of artificial larynx (procedure)"]
-        else null
+        if ( exists ([Procedure: "Laryngectomy (procedure)"])
+        or ( exists ([Condition: "Disorder of the larynx (disorder)"]) ) )
+         then exists([Procedure: "Construction of artificial larynx (procedure)"])
+        else false
         
 define "Coverage":
            "Covered"

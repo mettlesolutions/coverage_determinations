@@ -1,10 +1,8 @@
-//Ethylenediamine-Tetra-Acetic (EDTA) Chelation Therapy for Treatment of Atherosclerosis
+library EthylenediamineTetraAceticChelationTherapyforTreatmentofAtherosclerosis
 
+using FHIR
 
-
-library ChlamydiaScreening_Common version '2'
-
-using QDM version '5.3'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -13,8 +11,12 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Calcinosis (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Coronary arteriosclerosis (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -24,9 +26,9 @@ valueset "Atherosclerosis (morphologic abnormality)": '2.16.840.1.113883.3.88.12
 context Patient
 
 define "Not Covered":
-           ( exists (["Diagnosis": "Calcinosis (disorder)"])
-           or ( exists (["Diagnosis": "Coronary arteriosclerosis (disorder)"]) )
-           or ( exists (["Diagnosis": "Atherosclerosis (morphologic abnormality)"]) ) )
+           ( exists ([Condition: "Calcinosis (disorder)"])
+           or ( exists ([Condition: "Coronary arteriosclerosis (disorder)"]) )
+           or ( exists ([Condition: "Atherosclerosis (morphologic abnormality)"]) ) )
 
 define "Coverage":
           not "Not Covered"

@@ -1,9 +1,8 @@
-//ExternalCounterpulsation(ECP)TherapyForSevereAngina
+library ExternalCounterpulsationECPTherapyForSevereAngina
 
-library ChlamydiaScreening_Common version '2'
+using FHIR
 
-using QDM version '5.3'
-
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -12,7 +11,12 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Angina, class III (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Angina, class IV (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -31,26 +35,27 @@ default Interval[@1999-11-01T00:00:00.0, null)
 context Patient
 
 define "Enhanced external counterpulsation Referred":
-            ( exists (["Procedure, Performed": "Enhanced external counterpulsation (procedure)"]) 
-            and ( exists (["Provider Characteristic": "Physician (occupation)"]) )
-            and ( exists (["Encounter, Performed": "Referral by cardiologist (procedure)"])
-            or ( exists (["Encounter, Performed": "Referral by cardiothoracic surgeon (procedure)"]) ) ))
+            ( exists ([Procedure: "Enhanced external counterpulsation (procedure)"])
+            and ( exists ([Practitioner: "Physician (occupation)"]) )
+            and ( exists ([Encounter: "Referral by cardiologist (procedure)"])
+            or ( exists ([Encounter: "Referral by cardiothoracic surgeon (procedure)"]) ) ))
 
 define "Procedures Failed":
-          ( exists (["Procedure, Performed": "Percutaneous transluminal coronary angioplasty (procedure)"]P
-          where P.result = "Treatment Failure") 
-          or ( exists (["Procedure, Performed": "Coronary artery bypass grafting (procedure)"]C
-          where C.result = "Treatment Failure") ) )
+          ( exists ([Procedure: "Percutaneous transluminal coronary angioplasty (procedure)"]P
+          where P.outcome = "Treatment Failure")
+          or ( exists ([Procedure: "Coronary artery bypass grafting (procedure)"]C
+          where C.outcome = "Treatment Failure") ) )
 
 define "Condition 1":
-          ( exists (["Diagnosis": "Angina, class III (disorder)"])
-          or ( exists (["Diagnosis": "Angina, class IV (disorder)"]) ) )
+          ( exists ([Condition: "Angina, class III (disorder)"])
+          or ( exists ([Condition: "Angina, class IV (disorder)"]) ) )
           and "Procedures Failed"
           and "Enhanced external counterpulsation Referred"
-          
+
 define "Full Course Of Therapy":
-          if (Count (["Procedure, Performed": "Enhanced external counterpulsation (procedure)"]E
-              where E.components = 1 or E.components = 2 and duration in hours of E.relevantPeriod = 1) = 35 and ( exists (["Provider Characteristic": "Physician (occupation)"]) ) )
+          if (Count ([Procedure: "Enhanced external counterpulsation (procedure)"]E
+              where E.component = 1 or E.component = 2 and duration in hours of E.performed = 1) = 35
+              and ( exists ([Practitioner: "Physician (occupation)"]) ) )
            then true
           else false
           

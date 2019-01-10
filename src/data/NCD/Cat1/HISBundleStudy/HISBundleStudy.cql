@@ -1,8 +1,8 @@
-//HISBundleStudy
+library HISBundleStudy
 
-library ChlamydiaScreening_Common version '2'
+using FHIR
 
-using QDM
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,7 +11,13 @@ using QDM
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT" : '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
+
 
 valueset "Arrhythmia": '2.16.840.1.113883.3.526.2.181'
 valueset "Bundle of His recording (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -28,30 +34,30 @@ parameter "MeasurementPeriod" Interval<DateTime>
 context Patient
 
 define "Condition 1(Covered)":
-          ( exists (["Diagnosis": "Arrhythmia"])
-          or ( exists (["Diagnosis": "Intermittent second degree atrioventricular block (disorder)"]) or ( exists (["Diagnosis": "Atrioventricular block, complete"]) ) and ( exists (["Procedure, Performed": "Implantation of cardiac pacemaker (procedure)"]) ) ) )
-          or ( exists (["Diagnosis": "Intermittent second degree atrioventricular block (disorder)"]) and ( exists (["Diagnosis": "Myocardial infarction (disorder)"]) ) )
+          ( exists ([Condition: "Arrhythmia"])
+          or ( exists ([Condition: "Intermittent second degree atrioventricular block (disorder)"]) or ( exists ([Condition: "Atrioventricular block, complete"]) ) and ( exists ([Procedure: "Implantation of cardiac pacemaker (procedure)"]) ) ) )
+          or ( exists ([Condition: "Intermittent second degree atrioventricular block (disorder)"]) and ( exists ([Condition: "Myocardial infarction (disorder)"]) ) )
            
 define "Start Date Of Cardiac Catheterization":
-	["Procedure, Performed": "Cardiac catheterization (procedure)"]C
-	  where C.relevantPeriod in "MeasurementPeriod"
+	[Procedure: "Cardiac catheterization (procedure)"]C
+	  where C.performed in "MeasurementPeriod"
 
 define "Start Date Of HIS Bundle Study":
-           ["Procedure, Performed": "Bundle of His recording (procedure)"]B
-	  where B.relevantPeriod in "MeasurementPeriod"       
-	   
+           [Procedure: "Bundle of His recording (procedure)"]B
+	  where B.performed in "MeasurementPeriod"
+
 define "Condition 2(Covered)":
            if "Start Date Of Cardiac Catheterization" = "Start Date Of HIS Bundle Study"
            then Count("Cardiac catheterization (procedure)") = 1
            else null
 
 define "Condition for covered":
-         ["Procedure, Performed": "Insertion of intravenous endocardial electrode (procedure)"]           
+         exists([Procedure: "Insertion of intravenous endocardial electrode (procedure)"])
 
 define "Condition 3(Covered)":
-          if ( exists (["Procedure, Performed": "Bundle of His recording (procedure)"]) and ( exists (["Procedure, Performed": "Insertion of intravenous endocardial electrode (procedure)"]) ) )
+          if ( exists ([Procedure: "Bundle of His recording (procedure)"]) and ( exists ([Procedure: "Insertion of intravenous endocardial electrode (procedure)"]) ) )
           then "Condition for covered"
-          else null
+          else false
           
 define "Coverage":
          "Condition 1(Covered)" or "Condition 2(Covered)" or "Condition 3(Covered)"

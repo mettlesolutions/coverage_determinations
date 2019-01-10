@@ -1,8 +1,8 @@
-//Electroencephalographic Monitoring During Surgical Procedures Involving the Cerebral Vasculature
-
 library ElectroencephalographicMonitoringDuringSurgicalProceduresInvolvingtheCerebralVasculature
 
 using FHIR
+
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,8 +11,12 @@ using FHIR
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "NUCCPT" : '2.16.840.1.113883.6.101'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 //gross cerebral blood flow
 valueset "Under general anesthesia (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -30,22 +34,22 @@ valueset '"Technologists, Technicians & Other Technical Service Providers"; "Tec
 context Patient
 
 define "Condition 1":
-		(exists (["Condition" :"Under general anesthesia (finding)"])
-		and (exists (["Procedure" : "Electroencephalographic procedure (procedure)"]))
+		(exists ([Condition :"Under general anesthesia (finding)"])
+		and (exists ([Procedure: "Electroencephalographic procedure (procedure)"]))
 		)
-		
+
 define "Condition 2" :
-		(exists (["Procedure" : "Intracranial/cerebral perfusion pressure monitoring (regime/therapy)"])
-		and (exists (["Procedure" : "Electroencephalographic procedure (procedure)"]))
-		and (exists (["Observation" : "Electroencephalographic procedure (procedure)"]))
-		or (exists (["Observation" : '"Technologists, Technicians & Other Technical Service Providers"; "Technician, Other", EEG']))
+		(exists ([Procedure: "Intracranial/cerebral perfusion pressure monitoring (regime/therapy)"])
+		and (exists ([Procedure: "Electroencephalographic procedure (procedure)"]))
+		and (exists ([Procedure : "Electroencephalographic procedure (procedure)"]))
+		or (exists ([Observation : '"Technologists, Technicians & Other Technical Service Providers"; "Technician, Other", EEG']))
 		)
 define "Condition 3":
-		(exists (["Procedure" : "Carotid endarterectomy (procedure)"])
-		and (exists (["Procedure" : "Neurologic Procedure S"]))
-		and (exists (["Procedure":"Repair of aneurysm (procedure)"]))
-		and (exists (["Procedure" : "Induced hypotension (procedure)" ]))
-		and (exists (["Procedure" : "Electroencephalographic procedure (procedure)"]))
+		(exists ([Procedure: "Carotid endarterectomy (procedure)"])
+		and (exists ([Procedure: "Neurologic Procedure S"]))
+		and (exists ([Procedure:"Repair of aneurysm (procedure)"]))
+		and (exists ([Procedure: "Induced hypotension (procedure)" ]))
+		and (exists ([Procedure: "Electroencephalographic procedure (procedure)"]))
 		)
 		
 define "Coverage":
