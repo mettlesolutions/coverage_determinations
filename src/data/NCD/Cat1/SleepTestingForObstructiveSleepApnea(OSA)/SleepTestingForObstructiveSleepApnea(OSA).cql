@@ -1,8 +1,8 @@
 //SleepTestingForObstructiveSleepApnea(OSA)
 
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+library SleepTestingForObstructiveSleepApnea
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -26,58 +26,62 @@ valueset "Determination of resistance to airflow (procedure)": '2.16.840.1.11388
 valueset "Oximetry (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //peripheral arterial tone
 //actigraphy
-valueset "": ''
+
 
 parameter "MeasurementPeriod" Interval<DateTime>
 parameter "Channels" Integer
+parameter MeasurementPeriod1 default @2010-08-10T00:00:00.0
 
 context Patient
 
 define "Electroencephalogram":
-           if exists (["Procedure, Performed": "Electroencephalogram (procedure)"])
+           if exists (["Procedure": "Electroencephalogram (procedure)"]E where E.performed on or after MeasurementPeriod1)
             then Channels=Channels +1
            else null
            
 define "Electro-oculogram examination":  
-          if ( exists (["Procedure, Performed": "Electro-oculogram examination (procedure)"]) )
+          if ( exists (["Procedure": "Electro-oculogram examination (procedure)"]E  where E.performed on or after MeasurementPeriod1) )
             then Channels = Channels+1
           else null
           
 define "Electromyography":
-          if ( exists (["Procedure, Performed": "Electromyography (procedure)"]) )
+          if ( exists (["Procedure": "Electromyography (procedure)"]E where E.performed on or  after MeasurementPeriod1 ))
              then Channels = Channels+1
           else null
           
 define "Electrocardiography":
-           if ( exists (["Procedure, Performed": "Electrocardiographic procedure (procedure)"]) )
+           if ( exists (["Procedure": "Electrocardiographic procedure (procedure)"]E  where E.performed on or after MeasurementPeriod1) )
                then Channels = Channels+1
            else null
            
 define "Oxygen saturation measurement, arterial":
-             if ( exists (["Procedure, Performed": "Oxygen saturation measurement, arterial (procedure)"]) )
+             if ( exists (["Procedure": "Oxygen saturation measurement, arterial (procedure)"]E  where E.performed on or after MeasurementPeriod1) )
                  then Channels = Channels+1
              else null
                  
 define "Type I(PSG)(Covered)":
-        ( exists (["Diagnosis": "Obstructive sleep apnea syndrome (disorder)"]) 
-          and ( exists (["Procedure, Performed": "Sleep studies (procedure)"]) ) )
+        ( exists (["Condition": "Obstructive sleep apnea syndrome (disorder)"]) 
+          and ( exists (["Procedure": "Sleep studies (procedure)"]S where S.performed on or after MeasurementPeriod1) ) )
           
-define "Type II(PSG)(Covered)":
-             ( exists (["Diagnosis": "Obstructive sleep apnea syndrome (disorder)"]) 
-             and ( exists (["Procedure, Performed": "Sleep studies (procedure)"]) ) )
-             or ( exists (["Diagnosis": "Obstructive sleep apnea syndrome (disorder)"]) 
-             and not( exists (["Procedure, Performed": "Sleep studies (procedure)"]) ) )
+define "Type II(PSG)(Covered) or Type III(PSG)":
+             ( exists (["Condition": "Obstructive sleep apnea syndrome (disorder)"]) 
+             and ( exists (["Procedure": "Sleep studies (procedure)"]S  where S.performed on or after MeasurementPeriod1) ) )
+             or ( exists (["Condition": "Obstructive sleep apnea syndrome (disorder)"]) 
+             and not( exists (["Procedure": "Sleep studies (procedure)"]S  where S.performed on or after MeasurementPeriod1) ) )
              
 define "Type IV Sleeping Test": 
-           if (Channels >=3 and "Type II(PSG)(Covered)")
+           if (Channels >=3 and "Type II(PSG)(Covered) or Type III(PSG)")
               then true
            else null
            
 define "Condition 4(Covered)":
-           "Type IV Sleeping Test" and ( exists (["Procedure, Performed": "Oximetry (procedure)"]) )
+           "Type IV Sleeping Test" and ( exists (["Procedure": "Oximetry (procedure)"]O  where O.performed on or after MeasurementPeriod1) )
            
 define "Covered":
-          "Type I(PSG)(Covered)" or "Type II(PSG)(Covered)" or "Type IV Sleeping Test" or "Condition 4(Covered)"
+          "Type I(PSG)(Covered)" or "Type II(PSG)(Covered) or Type III(PSG)" or "Type IV Sleeping Test" or "Condition 4(Covered)"
+          
+define "Not Covered":
+	not "Covered"
           
 define "Coverage":
            "Covered"

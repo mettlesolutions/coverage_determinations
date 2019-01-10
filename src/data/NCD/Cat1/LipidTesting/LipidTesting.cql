@@ -1,7 +1,8 @@
 //Lipid Testing
-library ChlamydiaScreening_Common version '2'
+library LipidTesting
 
-using QDM
+using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -65,86 +66,89 @@ valueset "Tobacco user (finding)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Family history of disorder (situation)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Deficiency of alkaline phosphatase (disorder)" : '2.16.840.1.113883.3.88.12.3221.7.4'
 
-
+parameter Range default Interval[240,null)
+parameter Range1 default Interval[35, null)
+parameter Range3 default Interval[200,240]
 context Patient
 
 define "Condition":
-		(exists (["Diagnosis" : "Coronary arteriosclerosis (disorder)"])
-		and (exists (["Procedure, Performed" : "Lipid panel (procedure)"]))
+		(exists (["Condition" : "Coronary arteriosclerosis (disorder)"])
+		and (exists (["Procedure" : "Lipid panel (procedure)"]))
 		)
 define "Condition 1":
-		(exists (["Diagnosis" :"Coronary arteriosclerosis (disorder)"])
-		or (exists (["Diagnosis" :"Dyslipidemia (disorder)"]))
-		or (exists (["Diagnosis" : "Nephrotic syndrome (disorder)"]))
-		or (exists (["Diagnosis" :"Pancreatitis (disorder)"]))
-		or (exists (["Diagnosis" : "Disorder of liver (disorder)"]))
-		or (exists (["Diagnosis" : "Hypoglycemia (disorder)"]))
-		or (exists (["Diagnosis" :"Hyperthyroidism (disorder)"]))
-		or (exists (["Diagnosis" :"Diabetes mellitus (disorder)"]))
-		or (exists (["Diagnosis" : "Intestinal malabsorption (disorder)"]))
-		or (exists (["Diagnosis" : "Chronic kidney disease (disorder)"]))
-		or (exists (["Diagnosis" : "Skin lesion (disorder)"]))
+		(exists (["Condition" :"Coronary arteriosclerosis (disorder)"])
+		or (exists (["Condition" :"Dyslipidemia (disorder)"]))
+		or (exists (["Condition" : "Nephrotic syndrome (disorder)"]))
+		or (exists (["Condition" :"Pancreatitis (disorder)"]))
+		or (exists (["Condition" : "Disorder of liver (disorder)"]))
+		or (exists (["Condition" : "Hypoglycemia (disorder)"]))
+		or (exists (["Condition" :"Hyperthyroidism (disorder)"]))
+		or (exists (["Condition" :"Diabetes mellitus (disorder)"]))
+		or (exists (["Condition" : "Intestinal malabsorption (disorder)"]))
+		or (exists (["Condition" : "Chronic kidney disease (disorder)"]))
+		or (exists (["Condition" : "Skin lesion (disorder)"]))
 		)
 define "Condition 2":
-		(exists (["Diagnosis":"Heart disease (disorder)"])
-		and (exists (["Procedure, Performed" : "Screening procedure (procedure)"]))
-		and (exists (["Procedure, Performed" : "High density lipoprotein/total cholesterol ratio measurement (procedure)"]T
-		where T.result = "High (qualifier value)" or T.result > 240 'mg/dL' ))
-		or  (exists (["Procedure, Performed" : "Borderline high measurement finding (finding)"] B
-		where B.result = "High (qualifier value)" or B.result between 200 and 240  ))
-		or (exists (["Diagnosis" :"At risk of coronary heart disease (finding)	"]))
-		or  (exists (["Procedure, Performed" : "High density lipoprotein cholesterol measurement (procedure)"] H
-		where H.result < 35 'mg/dL'))
+		(exists (["Condition":"Heart disease (disorder)"])
+		and (exists (["Procedure" : "Screening procedure (procedure)"]))
+		and (exists (["Procedure" : "High density lipoprotein/total cholesterol ratio measurement (procedure)"]T
+		where T.outcome = "High (qualifier value)" or T.outcome = Range in'mg/dL' ))
+		or  (exists (["Procedure" : "Borderline high measurement finding (finding)"] B
+		where B.outcome = "High (qualifier value)" or B.outcome =  Range3 in 'mg/dL'  ))
+		or (exists (["Condition" :"At risk of coronary heart disease (finding)	"]))
+		or  (exists (["Procedure" : "High density lipoprotein cholesterol measurement (procedure)"] H
+		where H.outcome = Range1 in'mg/dL'))
 		)
+		
 define "Condition 3.1":
-		(exists (["Diagnosis" : "Increased lipoprotein (finding)"])
-		and (exists (["Procedure, Performed" : "Dietary regime (regime/therapy)"]))
-		or (exists (["Procedure, Performed" :"Drug therapy (procedure)"]))
-		or (exists (["Substance, Administered" : "Total Cholesterol"]))
-		or (exists (["Substance, Administered" : "High Density Lipoprotein (HDL)"]))
-		or (exists (["Substance, Administered" : "Low density lipoprotein cholesterol (substance)"]))
+		(exists (["Condition" : "Increased lipoprotein (finding)"])
+		and (exists (["Procedure" : "Dietary regime (regime/therapy)"]))
+		or (exists (["Procedure" :"Drug therapy (procedure)"]))
+		or (exists (["MedicationAdministration" : "Total Cholesterol"]))
+		or (exists (["MedicationAdministration" : "High Density Lipoprotein (HDL)"]))
+		or (exists (["MedicationAdministration" : "Low density lipoprotein cholesterol (substance)"]))
 		)
 define "Condition 3.2":
-		(exists (["Substance, Administered" : "Triglycerides"])
-		or (exists (["Medication, Administered" :"Thiazide diuretic (substance)	"]))
-		or (exists (["Medication, Administered" : "Estrogens"]))
-		or (exists (["Medication, Administered":"Glucocorticoid (substance)"]))
-		or (exists (["Medication, Administered":"Tamoxifen"]))
+		(exists (["MedicationAdministration" : "Triglycerides"])
+		or (exists (["MedicationAdministration" :"Thiazide diuretic (substance)	"]))
+		or (exists (["MedicationAdministration" : "Estrogens"]))
+		or (exists (["MedicationAdministration":"Glucocorticoid (substance)"]))
+		or (exists (["MedicationAdministration":"Tamoxifen"]))
 		)
 define "Condition 3":
 		"Condition 3.1" and "Condition 3.2"
 
 define "Condition 4.1":
-		(exists (["Procedure, Performed" : "Dietary regime (regime/therapy)"])
-		or (exists (["Procedure, Performed" :"Drug therapy (procedure)"]))
-		and (exists (["Procedure, Performed" : "Borderline high measurement finding (finding)"]))
-		or (exists (["Procedure, Performed":"Low density lipoprotein cholesterol measurement (procedure)"]))
-		and (exists (["Procedure, Performed": "Lipid panel (procedure)"] L
-		where duration in years of L.relevantPeriod = 1))
+		(exists (["Procedure" : "Dietary regime (regime/therapy)"])
+		or (exists (["Procedure" :"Drug therapy (procedure)"]))
+		and (exists (["Procedure" : "Borderline high measurement finding (finding)"]))
+		or (exists (["Procedure":"Low density lipoprotein cholesterol measurement (procedure)"]))
+		and (exists (["Procedure": "Lipid panel (procedure)"] L
+		where duration in years of L.performed = 1))
 		)
 define "Condition 4.2":
-		(exists (["Procedure, Performed": "Lipid panel (procedure)"] P
-		where duration in years of P.relevantPeriod = 1)
-		and (exists (["Procedure, Performed" : "Serum total cholesterol measurement (procedure)"]))
-		or (exists (["Procedure, Performed" : "Low density lipoprotein cholesterol measurement (procedure)"]))
-		and not (exists (["Diagnosis": "Hypertriglyceridemia (disorder)"]))
+		(exists (["Procedure": "Lipid panel (procedure)"] P
+		where duration in years of P.performed = 1)
+		and (exists (["Procedure" : "Serum total cholesterol measurement (procedure)"]))
+		or (exists (["Procedure" : "Low density lipoprotein cholesterol measurement (procedure)"]))
+		and not (exists (["Condition": "Hypertriglyceridemia (disorder)"]))
 		)
 define "Condition 4":
 		"Condition 4.1" and "Condition 4.2"
 
 define "Condition 5.1":
-		(exists (["Procedure, Performed" :"Low density lipoprotein cholesterol measurement (procedure)"]L
-		where duration in years of L.relevantPeriod = 1 and L.components = 6)
-		and (exists (["Procedure, Performed" : "Dietary regime (regime/therapy)"]))
-		or (exists (["Procedure, Performed" :"Drug therapy (procedure)"]))
+		(exists (["Procedure" :"Low density lipoprotein cholesterol measurement (procedure)"]L
+		where duration in years of L.performed = 1 and Count(["Procedure" :"Low density lipoprotein cholesterol measurement (procedure)"]) = 6)
+		and (exists (["Procedure" : "Dietary regime (regime/therapy)"]))
+		or (exists (["Procedure" :"Drug therapy (procedure)"]))
 		)
 define "Condition 5.2":
-		(exists (["Procedure, Performed" : "Total cholesterol measurement (procedure)"])
-		or (exists (["Procedure, Performed" : "High density lipoprotein cholesterol measurement (procedure)"]))
-		or (exists (["Procedure, Performed" : "Low density lipoprotein cholesterol measurement (procedure)"]))
-		or (exists (["Substance, Administered" : "Triglycerides"]))
-		and  (exists (["Procedure, Performed" : "Dietary regime (regime/therapy)"]))
-		or (exists (["Procedure, Performed" :"Drug therapy (procedure)"]))
+		(exists (["Procedure" : "Total cholesterol measurement (procedure)"])
+		or (exists (["Procedure" : "High density lipoprotein cholesterol measurement (procedure)"]))
+		or (exists (["Procedure" : "Low density lipoprotein cholesterol measurement (procedure)"]))
+		or (exists (["MedicationAdministration" : "Triglycerides"]))
+		and  (exists (["Procedure" : "Dietary regime (regime/therapy)"]))
+		or (exists (["Procedure" :"Drug therapy (procedure)"]))
 		)
 
 define "Covered":
@@ -153,52 +157,52 @@ define "Covered":
 define "Condition 5.3":
 		if(Covered)
 		then
-			(exists (["Procedure, Performed" : "Total cholesterol measurement (procedure)"]C
-			where duration in years of C.relevantPeriod = 1 and C.components = 3))
-			or (exists (["Procedure, Performed" : "Low density lipoprotein cholesterol measurement (procedure)"]D
-			where duration in years of D.relevantPeriod = 1 and D.components = 3))
+			(exists (["Procedure" : "Total cholesterol measurement (procedure)"]C
+			where duration in years of C.performed = 1 and Count(["Procedure" : "Total cholesterol measurement (procedure)"]) = 3))
+			or (exists (["Procedure" : "Low density lipoprotein cholesterol measurement (procedure)"]D
+			where duration in years of D.performed = 1 and Count(["Procedure" : "Low density lipoprotein cholesterol measurement (procedure)"]) = 3))
 		else 
 			null
 		
 
 define "Condition 6":
-		(exists (["Diagnosis": "Disorder of lipid metabolism (disorder)"])
-		and (exists (["Procedure, Performed":"Lipoprotein electrophoresis (procedure)"]))
+		(exists (["Condition": "Disorder of lipid metabolism (disorder)"])
+		and (exists (["Procedure":"Lipoprotein electrophoresis (procedure)"]))
 		)
 
 define "Indications":
 		"Condition 5.3" and "Condition 6"
 		
 define "Limitation 1":
-		(exists (["Diagnosis":"Psoriasis (disorder)"]P
+		(exists (["Condition":"Psoriasis (disorder)"]P
 		where P.severity = "Severe (severity modifier) (qualifier value)")
-		and (exists (["Substance, Administered":"Etretinate (substance)"]))
-		and (exists (["Substance, Administered":"Retinoid (substance)"]))
-		and (exists (["Diagnosis" : "Hyperlipidemia (disorder)" ]))
-		and (exists (["Diagnosis" : "Psoriatic arthritis (disorder)"]))
-		and (exists (["Diagnosis" : "Generalized pustular psoriasis (disorder)"]))
-		and (exists (["Procedure, Performed" :"Lipid panel (procedure)"]))
-		and (exists (["Procedure, Performed":"Liver function tests - general (procedure)"]))
+		and (exists (["MedicationAdministration":"Etretinate (substance)"]))
+		and (exists (["MedicationAdministration":"Retinoid (substance)"]))
+		and (exists (["Condition" : "Hyperlipidemia (disorder)" ]))
+		and (exists (["Condition" : "Psoriatic arthritis (disorder)"]))
+		and (exists (["Condition" : "Generalized pustular psoriasis (disorder)"]))
+		and (exists (["Procedure" :"Lipid panel (procedure)"]))
+		and (exists (["Procedure":"Liver function tests - general (procedure)"]))
 		)
 define "Limitation 2":
-		(exists (["Procedure, Performed":"Fasting lipid profile (procedure)"]))
+		(exists (["Procedure":"Fasting lipid profile (procedure)"]))
 
 define "Limitation 3":
-		(exists (["Diagnosis" : "Asymptomatic (finding)"])
-		and (exists (["Family History" : "Family history of disorder (situation)"]))
-		and (exists (["Diagnosis" :"Tobacco user (finding)"]))
-		and (exists (["Procedure, Performed":"Fasting lipid profile (procedure)"]))
+		(exists (["Condition" : "Asymptomatic (finding)"])
+		and (exists (["FamilyMemberHistory" : "Family history of disorder (situation)"]))
+		and (exists (["Condition" :"Tobacco user (finding)"]))
+		and (exists (["Procedure":"Fasting lipid profile (procedure)"]))
 		)
 		
 define "Limitation 4":
-	   	not (exists (["Procedure, Recommended" : "Dietary regime (regime/therapy)"])
-		or not (exists (["Procedure, Recommended" :"Drug therapy (procedure)"]))
-		and (exists (["Procedure, Performed" : "Lipid panel (procedure)"]))
+	   	not (exists (["ProcedureRequest" : "Dietary regime (regime/therapy)"])
+		or not (exists (["ProcedureRequest" :"Drug therapy (procedure)"]))
+		and (exists (["Procedure" : "Lipid panel (procedure)"]))
 		)
 define "Limitation 5":
-		(exists (["Diagnosis" :"Deficiency of alkaline phosphatase (disorder)"])
-		and (exists (["Procedure, Performed" : "Lipid panel (procedure)"]P
-		where duration in years of P.relevantPeriod = 1 and P.components =2))
+		(exists (["Condition" :"Deficiency of alkaline phosphatase (disorder)"])
+		and (exists (["Procedure" : "Lipid panel (procedure)"]P
+		where duration in years of P.performed = 1 and Count(["Procedure" : "Lipid panel (procedure)"]) =2))
 		)
 		
 define "Limitations":

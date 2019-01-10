@@ -1,7 +1,8 @@
 //PositronEmissionTomography(FDG)ForOncologicConditions
-library ChlamydiaScreening_Common version '2'
+library PositronEmissionTomographyForOncologicConditions
 
-using QDM
+using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -40,41 +41,45 @@ valueset "Breast Cancer": '2.16.840.1.113883.3.526.2.97'
 valueset "High risk for cervical cancer (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Chemotherapy": '2.16.840.1.113883.3.526.2.483'
 
-context Patient
+parameter MeasurementPeriod default @2014-03-07T00:00:00.0
 
+context Patient
 define "FDG PET Scan For Cancer":
-           ( exists (["Diagnosis": "Malignant neoplasm of colon (disorder)"])
-           or ( exists (["Diagnosis": "Disorder of esophagus (disorder)"]) ) 
-           or ( exists (["Diagnosis": "Malignant lymphoma (disorder)"]) )
-           or ( exists (["Diagnosis": "Non-small cell lung cancer (disorder)"]) )
-           or ( exists (["Diagnosis": "Malignant tumor of ovary (disorder)"]) ) 
-           or ( exists (["Diagnosis": "Malignant neoplasm of brain (disorder)"]) )
-           or ( exists (["Diagnosis": "Small cell carcinoma of lung (disorder)"]) )
-           or ( exists (["Diagnosis": "Sarcoma of soft tissue (disorder)"]) ) 
-           or ( exists (["Diagnosis": "Malignant Neoplasm of Pancreas"]) ) 
-           or ( exists (["Diagnosis": "Malignant tumor of testis (disorder)"]) )
-           or ( exists (["Diagnosis": "Malignant neoplasm of thyroid gland"]) )
-           or ( exists (["Diagnosis": "Solid tumor configuration (finding)"]) )
-           or ( exists (["Diagnosis": "Multiple myeloma (disorder)"]) ) )
+           ( exists (["Condition": "Malignant neoplasm of colon (disorder)"])
+           or ( exists (["Condition": "Disorder of esophagus (disorder)"]) ) 
+           or ( exists (["Condition": "Malignant lymphoma (disorder)"]) )
+           or ( exists (["Condition": "Non-small cell lung cancer (disorder)"]) )
+           or ( exists (["Condition": "Malignant tumor of ovary (disorder)"]) ) 
+           or ( exists (["Condition": "Malignant neoplasm of brain (disorder)"]) )
+           or ( exists (["Condition": "Small cell carcinoma of lung (disorder)"]) )
+           or ( exists (["Condition": "Sarcoma of soft tissue (disorder)"]) ) 
+           or ( exists (["Condition": "Malignant Neoplasm of Pancreas"]) ) 
+           or ( exists (["Condition": "Malignant tumor of testis (disorder)"]) )
+           or ( exists (["Condition": "Malignant neoplasm of thyroid gland"]) )
+           or ( exists (["Condition": "Solid tumor configuration (finding)"]) )
+           or ( exists (["Condition": "Multiple myeloma (disorder)"]) ) )
  
 define "Covered 1": 
-          "FDG PET Scan For Cancer" and ( exists (["Diagnostic Study, Performed": "Positron emission tomography fluorodeoxyglucose imaging of whole body (procedure)"]) )
+          "FDG PET Scan For Cancer" and ( exists (["DiagnosticReport": "Positron emission tomography fluorodeoxyglucose imaging of whole body (procedure)"]P
+          where (P.effective) during MeasurementPeriod) )
 
 define "Condition 1(Limitations)":
-         ( exists (["Diagnosis": "Carcinoma of male breast (disorder)"]) or ( exists (["Diagnosis": "Malignant neoplasm of female breast (disorder)"]) ) )
-         and ( exists (["Diagnosis": "Distant metastasis present (finding)"]) )
-         and ( exists (["Diagnostic Study, Performed": "Positron emission tomography fluorodeoxyglucose imaging of whole body (procedure)"]) )
+         ( exists (["Condition": "Carcinoma of male breast (disorder)"]) or ( exists (["Condition": "Malignant neoplasm of female breast (disorder)"]) ) )
+         and ( exists (["Condition": "Distant metastasis present (finding)"]) )
+         and ( exists (["DiagnosticReport": "Positron emission tomography fluorodeoxyglucose imaging of whole body (procedure)"]P
+          where (P.effective) during MeasurementPeriod) )
 
 define "Condition 2(Limitations)":
-           ( exists (["Diagnosis": "Malignant melanoma (disorder)"])
-           and not ( exists (["Diagnosis": "Excision of regional lymph nodes (procedure)"]) ) 
-           and (exists (["Diagnostic Study, Performed": "Positron emission tomography fluorodeoxyglucose imaging of whole body (procedure)"]) ) )
+           ( exists (["Condition": "Malignant melanoma (disorder)"])
+           and not ( exists (["Condition": "Excision of regional lymph nodes (procedure)"]) ) 
+           and (exists (["DiagnosticReport": "Positron emission tomography fluorodeoxyglucose imaging of whole body (procedure)"]P
+            where (P.effective) during MeasurementPeriod) ) )
            
 define "Initial Anti-Tumor Treatment and FDG PET imaging Non Covered":
-            ( exists (["Diagnosis": "Adenocarcinoma of prostate (disorder)"])
-            or ( exists (["Diagnosis": "Breast Cancer"]) ) 
-            or ( exists (["Diagnosis": "Malignant melanoma (disorder)"]) and ( exists (["Procedure, Performed": "Excision of regional lymph nodes (procedure)"]) ) )
-            or ( exists (["Diagnosis": "High risk for cervical cancer (finding)"]) ) )  
+            ( exists (["Condition": "Adenocarcinoma of prostate (disorder)"])
+            or ( exists (["Condition": "Breast Cancer"]) ) 
+            or ( exists (["Condition": "Malignant melanoma (disorder)"]) and ( exists (["Procedure": "Excision of regional lymph nodes (procedure)"]) ) )
+            or ( exists (["Condition": "High risk for cervical cancer (finding)"]) ) )  
             
 define "Not Covered":
               "Initial Anti-Tumor Treatment and FDG PET imaging Non Covered"

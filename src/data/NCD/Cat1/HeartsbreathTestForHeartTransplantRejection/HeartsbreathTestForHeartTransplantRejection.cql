@@ -1,10 +1,8 @@
 //HeartsbreathTestForHeartTransplantRejection
 
+library HeartsbreathTestForHeartTransplantRejection
 
-
-library ChlamydiaScreening_Common version '2'
-
-using QDM version '5.3'
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'

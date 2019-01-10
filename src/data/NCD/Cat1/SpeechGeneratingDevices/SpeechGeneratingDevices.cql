@@ -20,10 +20,15 @@ valueset "Durable medical equipment surveillance (regime/therapy)": '2.16.840.1.
 valueset "Specific speech impairment (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Speech therapy (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 
+parameter MeasurementPeriod default @2015-09-21T00:00:00.0
+
 context Patient
 
 define "Not Covered":
           ( exists ([Condition: "Specific speech impairment (finding)"])
-          and ( exists ([Procedure: "Speech therapy (regime/therapy)"])  and  ( exists ([Procedure: "Durable medical equipment surveillance (regime/therapy)"]) )
+          and ( exists ([Procedure: "Speech therapy (regime/therapy)"]S where S.performed during MeasurementPeriod)  and  ( exists ([Procedure: "Durable medical equipment surveillance (regime/therapy)"]) )
           ) )
+          
+define "Coverage":
+		not "Not Covered"
           

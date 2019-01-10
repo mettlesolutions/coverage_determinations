@@ -1,3 +1,4 @@
+//Speech Generating Devices
 Not Covered:
 If Speech therapy procedure is performed with Durable medical equipment for speech impairment then it is not covered.
 
