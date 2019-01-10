@@ -1,8 +1,8 @@
-//OxygenTreatmentOfInnerEar-CarbonTherapy
+library OxygenTreatmentOfInnerEarCarbonTherapy
 
-library ChlamydiaScreening_Common version '2'
+using FHIR
 
-using QDM version '5.3'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,7 +11,13 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "RXNORM": '2.16.840.1.113762.1.4.1010.2'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
+
 
 valueset "Oxygen 95 %": '2.16.840.1.113762.1.4.1010.2'
 valueset "Carbon Dioxide 5 %": '2.16.840.1.113762.1.4.1010.2'
@@ -23,9 +29,9 @@ valueset "": ''
 context Patient
 
 define "Not Covered":
-          if ( exists (["Diagnosis": "Endolymphatic hydrops (disorder)"]) and ( exists (["Diagnosis": "Hearing loss (disorder)"]) ) )
-           then ( exists (["Substance, Administered": "Oxygen 95 %"]) and ( exists (["Substance, Administered": "Carbon Dioxide 5 %"]) ) )
-          else null  
+          if ( exists ([Condition: "Endolymphatic hydrops (disorder)"]) and ( exists ([Condition: "Hearing loss (disorder)"]) ) )
+           then ( exists ([MedicationAdministration: "Oxygen 95 %"]) and ( exists ([MedicationAdministration: "Carbon Dioxide 5 %"]) ) )
+          else false
           
 define "Coverage":
               not "Not Covered"   

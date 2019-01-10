@@ -1,10 +1,8 @@
-//Pediatric Liver Transplantation
-library ChlamydiaScreening_Common version '2'
+library PediatricLiverTransplantation
 
-using QDM version '5.3'
+using FHIR
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
-codesystem "ICD9CM": '2.16.840.1.113883.6.103'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -12,6 +10,13 @@ codesystem "ICD9CM": '2.16.840.1.113883.6.103'
 //code codeName : 'OID' from codeSystemName display 'displayName'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
+
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
+codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 
 valueset "Transplantation of liver (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Congenital biliary atresia (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -30,16 +35,16 @@ define "In Demographic":
 
 define "Indications":
 	"In Demographic" and 
-	( exists (["Diagnosis": "Biliary atresia"])
-        or ( exists (["Diagnosis": "Congenital biliary atresia (disorder)"]) )
-        or ( exists (["Diagnosis": "End stage liver disease (disorder)"]) )
-        or ( exists (["Procedure, Performed": "Transplantation of liver (procedure)"]) )
+	( exists ([Condition: "Biliary atresia"])
+        or ( exists ([Condition: "Congenital biliary atresia (disorder)"]) )
+        or ( exists ([Condition: "End stage liver disease (disorder)"]) )
+        or ( exists ([Procedure: "Transplantation of liver (procedure)"]) )
         )
           
 define "Limitations":
 	"In Demographic" and         
-       ( exists (["Diagnosis": "Viremia (finding)"])
-        or ( exists (["Diagnosis": "Malignant tumor of extrahepatic bile duct (disorder)"]) )
+       ( exists ([Condition: "Viremia (finding)"])
+        or ( exists ([Condition: "Malignant tumor of extrahepatic bile duct (disorder)"]) )
         )
                 
 define "Coverage":

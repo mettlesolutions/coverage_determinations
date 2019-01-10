@@ -1,8 +1,8 @@
-//HomeBloodGlucoseMonitors
+library HomeBloodGlucoseMonitors
 
-library ChlamydiaScreening_Common version '2'
+using FHIR
 
-using QDM version '5.3'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,8 +11,12 @@ using QDM version '5.3'
 //concept conceptName : {codeName1, codeName2, etc} display 'displayName'
 //parameter parameterName (dataType or default value)
 
-codesystem "SNOMEDCT": '2.16.840.1.113883.6.96'
+codesystem "SNOMEDCT": 'http://snomed.info/sct'
+codesystem "HCPCS": 'https://hcpcs.codes/'
+codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
+codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
 codesystem "ICD10CM": '2.16.840.1.113883.6.90'
+codesystem "NUCCPT":''
 codesystem "RoleCode": '2.16.840.1.113883.5.111'
 
 valueset "Blood glucose monitoring (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
@@ -37,26 +41,26 @@ context Patient
 
             
 define "Patient Experience":
-             ( exists (["Patient Care Experience": "Blood glucose monitoring (regime/therapy)"]) 
-                 or ( exists (["Encounter, Performed": "parent"]) and ( exists (["Procedure, Performed": "Blood glucose monitoring (regime/therapy)"]) ) ) )
-                 
+             ( exists ([Procedure: "Blood glucose monitoring (regime/therapy)"])
+                 or ( exists ([Encounter: "parent"]) and ( exists ([Procedure: "Blood glucose monitoring (regime/therapy)"]) ) ) )
+
 define "Home blood glucose monitors Conditions":
-            ( exists (["Diagnosis": "Diabetes"])
-            and ( exists (["Procedure, Performed": "Documentation procedure (procedure)"]) ) and "Patient Experience" 
-            and ( exists (["Procedure, Performed": "Blood glucose monitoring (regime/therapy)"]) and ( exists (["Encounter, Performed": "Home care of patient (regime/therapy)"]) ) ) )
-            
+            ( exists ([Condition: "Diabetes"])
+            and ( exists ([Procedure: "Documentation procedure (procedure)"]) ) and "Patient Experience"
+            and ( exists ([Procedure: "Blood glucose monitoring (regime/therapy)"]) and ( exists ([Procedure: "Home care of patient (regime/therapy)"]) ) ) )
+
 define "Covered 1":
-            ( exists (["Diagnosis": "Visual impairment (disorder)"])
-            and ( exists(["Procedure, Performed": "Blood glucose monitoring (regime/therapy)" includes ["Procedure, Performed": "Provision for visual and hearing impairment (procedure)"]]) ) )
-            
-define "Condition for special blood glucose monitoring system": 
-             if ( exists (["Diagnosis": "Visual impairment (disorder)"]V
+            ( exists ([Condition: "Visual impairment (disorder)"])
+            and ( exists([Procedure: "Blood glucose monitoring (regime/therapy)" includes [Procedure: "Provision for visual and hearing impairment (procedure)"]]) ) )
+
+define "Condition for special blood glucose monitoring system":
+             if ( exists ([Condition: "Visual impairment (disorder)"]V
               where V.severity = "High") )
-              then ( exists (["Procedure, Performed": "Blood glucose monitoring (regime/therapy)"]) and ( exists (["Provider Characteristic": "Physician (occupation)"]) ) )
+              then ( exists ([Procedure: "Blood glucose monitoring (regime/therapy)"]) and ( exists ([Practitioner: "Physician (occupation)"]) ) )
              else false
               
 define "special blood glucose monitoring system":
-           "Home blood glucose monitors Conditions" and ( exists (["Procedure, Performed": "Preparation of medical certificate (procedure)"]) and "Condition for special blood glucose monitoring system" )
+           "Home blood glucose monitors Conditions" and ( exists ([Procedure: "Preparation of medical certificate (procedure)"]) and "Condition for special blood glucose monitoring system" )
             
 define "Covered":
           "Home blood glucose monitors Conditions" or "Covered 1"
