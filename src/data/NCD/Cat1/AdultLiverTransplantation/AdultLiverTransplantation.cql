@@ -19,17 +19,17 @@ codesystem "ICD10CM": ''
 codesystem "ICD10PCS": ''
 
 //valueset "Transplantation of liver (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-//valueset "Metastasis from malignant tumor of liver (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
-//valueset "Cholangiocarcinoma of biliary tract (disorder)":'2.16.840.1.113883.3.526.3.1010'
-//valueset "Secondary neuroendocrine tumor of liver":'2.16.840.1.113883.3.526.3.1010'
-//valueset "Carcinoma in situ of extrahepatic bile ducts (disorder)":'2.16.840.1.113883.3.88.12.3221.7.4'
+//valueset "Secondary malignant neoplasm of liver and intrahepatic bile duct":'2.16.840.1.113883.3.88.12.3221.7.4'
+//valueset "Carcinoma in situ of liver, gallbladder and bile ducts":'2.16.840.1.113883.3.526.3.1010'
+//valueset "Other malignant neuroendocrine tumors":'2.16.840.1.113883.3.526.3.1010'
+//valueset "Malignant neoplasm of extrahepatic bile duct":'2.16.840.1.113883.3.88.12.3221.7.4'
 //valueset "Tumor surgically unresectable (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
-//valueset "Hemangioendothelioma of liver (disorder)":'2.16.840.1.113762.1.4.1029.63'
-//valueset "Acute Hepatitis B Virus Infection (Disorders) (ICD10CM)": '2.16.840.1.113762.1.4.1146.131'
+//valueset "Hemangioma unspecified site":'2.16.840.1.113762.1.4.1029.63'
+//valueset "Acute hepatitis B (ICD10CM)": '2.16.840.1.113762.1.4.1146.131'
 //valueset "Instructions for Follow Up After Discharge":'2.16.840.1.113883.3.117.1.7.1.378'
 //valueset "Immunosuppressive therapy for transplant (procedure)":'2.16.840.1.113883.3.88.12.3221.7.4'
 //valueset "Postoperative follow-up visit (procedure)":'2.16.840.1.113883.3.88.12.3221.7.4'
-//valueset "Aftercare for liver transplant done (situation)":'2.16.840.1.113883.3.88.12.3221.7.4'
+//valueset "Encounter for aftercare following liver transplant":'2.16.840.1.113883.3.88.12.3221.7.4'
 //valueset "Immunosuppressive Drugs for Urology Care":'2.16.840.1.113762.1.4.1151.32'
 //valueset "Sandimmune Drug":'2.16.840.1.113762.1.4.1010.7'
 //valueset "Imuran Drug":'2.16.840.1.113762.1.4.1010.7'
@@ -41,19 +41,20 @@ codesystem "ICD10PCS": ''
 //valueset "Cyclophosphamide Drug":'2.16.840.1.113762.1.4.1010.7'
 //valueset "Prednisone Drug":'2.16.840.1.113762.1.4.1010.7'
 
-code "Diabetic foot examination (regime/therapy) code": '401191002' from "SNOMEDCT" display 'Diabetic foot examination (regime/therapy)'
-code "End Stage Liver Disease code": '20181121' from "ICD10CM" display 'End Stage Liver Disease'
-code "Chronic pain due to malignancy (finding) code": '10181000119102'  from "SNOMEDCT" display 'Chronic pain due to malignancy (finding)'
+//code "Diabetic foot examination (regime/therapy) code": '401191002' from "SNOMEDCT" display 'Diabetic foot examination (regime/therapy)'
+code "Hepatic failure, unspecified without coma code": 'K72.90' from "ICD10CM" display 'Hepatic failure, unspecified without coma'
+//code "Acute hepatitis B code": 'B16'  from "ICD10CM" display 'Acute hepatitis B'
+code "Neoplasm related pain (acute) (chronic) code": 'G89.3'  from "ICD10CM" display 'Neoplasm related pain (acute) (chronic)'
 code "Transplantation of Liver, Allogeneic, Open Approach code": '0FY00Z0' from "ICD10PCS" display 'Transplantation of Liver, Allogeneic, Open Approach'
 code "Transplantation of Liver, Syngeneic, Open Approach code": '0FY00Z1' from "ICD10PCS" display 'Transplantation of Liver, Syngeneic, Open Approach'
 code "Transplantation of Liver, Zooplastic, Open Approach code": '0FY00Z2' from "ICD10PCS" display 'Transplantation of liver (procedure)'
-code "Secondary neuroendocrine tumor of liver code": '209.72' from "ICD9CM" display 'Secondary neuroendocrine tumor of liver'
-code "Metastasis from malignant tumor of liver (disorder) code": '315000005' from "SNOMEDCT" display 'Metastasis from malignant tumor of liver (disorder)'
-code "Carcinoma in situ of extrahepatic bile ducts (disorder) code": '92589000' from "SNOMEDCT" display 'Carcinoma in situ of extrahepatic bile ducts (disorder)'
-code "Cholangiocarcinoma of biliary tract (disorder) code": '312104005' from "SNOMEDCT" display 'Cholangiocarcinoma of biliary tract (disorder)'
-code "Tumor surgically unresectable (finding) code": '711361003' from "SNOMEDCT" display 'Tumor surgically unresectable (finding)'
-code "Hemangioendothelioma of liver (disorder) code": '427744002' from "SNOMEDCT" display 'Hemangioendothelioma of liver (disorder)'
-code "Aftercare for liver transplant done (situation) code": '96601000119101' from "SNOMEDCT" display 'Aftercare for liver transplant done (situation)'
+code "Other malignant neuroendocrine tumors code": 'C7A.8' from "ICD10CM" display 'Other malignant neuroendocrine tumors'
+code "Secondary malignant neoplasm of liver and intrahepatic bile duct code": 'C78.7' from "ICD10CM" display 'Secondary malignant neoplasm of liver and intrahepatic bile duct'
+code "Malignant neoplasm of extrahepatic bile duct code": 'C24.0' from "ICD10CM" display 'Malignant neoplasm of extrahepatic bile duct'
+code "Carcinoma in situ of liver, gallbladder and bile ducts code": 'D01.5' from "ICD10CM" display 'Carcinoma in situ of liver, gallbladder and bile ducts'
+//code "Tumor surgically unresectable (finding) code": '711361003' from "SNOMEDCT" display 'Tumor surgically unresectable (finding)'
+code "Hemangioma unspecified site code": 'D18.00' from "ICD10CM" display 'Hemangioma unspecified site'
+code "Encounter for aftercare following liver transplant code": 'Z48.23' from "ICD10CM" display 'Encounter for aftercare following liver transplant'
 code "Sandimmune code":'202816' from "RXNORM" display 'Sandimmune'
 code "Imuran code":'202559' from "RXNORM" display 'Imuran'
 code "ATGAM code":'1204' from "RXNORM" display 'ATGAM'
@@ -63,20 +64,23 @@ code "mycophenolate mofetil code":'68149' from "RXNORM" display 'mycophenolate m
 code "Daclizumab code":'190353' from "RXNORM" display 'Daclizumab'
 code "Cyclophosphamide code":'3002' from "RXNORM" display 'Cyclophosphamide'
 code "Prednisone code":'8640' from "RXNORM" display 'Prednisone'
+code "Other long term (current) drug therapy code": 'Z79.899' from "ICD10CM" display 'Other long term (current) drug therapy'
 
-concept "Diabetic foot examination (regime/therapy)": {"Diabetic foot examination (regime/therapy) code"} display 'Diabetic foot examination (regime/therapy)'
-concept "End Stage Liver Disease": {"End Stage Liver Disease code"} display 'End Stage Liver Disease'
-concept "Chronic pain due to malignancy (finding)": {"Chronic pain due to malignancy (finding) code"} display 'Chronic pain due to malignancy (finding)'
+concept "Other long term (current) drug therapy": {"Other long term (current) drug therapy code"} display 'Other long term (current) drug therapy'
+//concept "Diabetic foot examination (regime/therapy)": {"Diabetic foot examination (regime/therapy) code"} display 'Diabetic foot examination (regime/therapy)'
+concept "Hepatic failure, unspecified without coma": {"Hepatic failure, unspecified without coma code"} display 'Hepatic failure, unspecified without coma'
+//concept "Acute hepatitis B": {"Acute hepatitis B code"} display 'Acute hepatitis B'
+concept "Neoplasm related pain (acute) (chronic)": {"Neoplasm related pain (acute) (chronic) code"} display 'Neoplasm related pain (acute) (chronic)'
 concept "Transplantation of Liver, Allogeneic, Open Approach": {"Transplantation of Liver, Allogeneic, Open Approach code"} display 'Transplantation of Liver, Allogeneic, Open Approach'
 concept "Transplantation of Liver, Syngeneic, Open Approach": {"Transplantation of Liver, Syngeneic, Open Approach code"} display 'Transplantation of Liver, Syngeneic, Open Approach'
 concept "Transplantation of Liver, Zooplastic, Open Approach": {"Transplantation of Liver, Zooplastic, Open Approach code"} display 'Transplantation of Liver, Zooplastic, Open Approach'
-concept "Secondary neuroendocrine tumor of liver": {"Secondary neuroendocrine tumor of liver code"} display 'Secondary neuroendocrine tumor of liver'
-concept "Metastasis from malignant tumor of liver (disorder)": {"Metastasis from malignant tumor of liver (disorder) code"} display 'Metastasis from malignant tumor of liver (disorder)'
-concept "Carcinoma in situ of extrahepatic bile ducts (disorder)": {"Carcinoma in situ of extrahepatic bile ducts (disorder) code"} display 'Carcinoma in situ of extrahepatic bile ducts (disorder)'
-concept "Cholangiocarcinoma of biliary tract (disorder)": {"Cholangiocarcinoma of biliary tract (disorder) code"} display 'Cholangiocarcinoma of biliary tract (disorder)'
-concept "Tumor surgically unresectable (finding)": {"Tumor surgically unresectable (finding) code"}display 'Tumor surgically unresectable (finding)'
-concept "Hemangioendothelioma of liver (disorder)": {"Hemangioendothelioma of liver (disorder) code"} display 'Hemangioendothelioma of liver (disorder)'
-concept "Aftercare for liver transplant done (situation)": {"Aftercare for liver transplant done (situation) code"} display 'Aftercare for liver transplant done (situation)'
+concept "Other malignant neuroendocrine tumors": {"Other malignant neuroendocrine tumors code"} display 'Other malignant neuroendocrine tumors'
+concept "Secondary malignant neoplasm of liver and intrahepatic bile duct": {"Secondary malignant neoplasm of liver and intrahepatic bile duct code"} display 'Secondary malignant neoplasm of liver and intrahepatic bile duct'
+concept "Malignant neoplasm of extrahepatic bile duct": {"Malignant neoplasm of extrahepatic bile duct code"} display 'Malignant neoplasm of extrahepatic bile duct'
+//concept "Carcinoma in situ of liver, gallbladder and bile ducts": {"Carcinoma in situ of liver, gallbladder and bile ducts code"} display 'Carcinoma in situ of liver, gallbladder and bile ducts'
+//concept "Tumor surgically unresectable (finding)": {"Tumor surgically unresectable (finding) code"}display 'Tumor surgically unresectable (finding)'
+concept "Hemangioma unspecified site": {"Hemangioma unspecified site code"} display 'Hemangioma unspecified site'
+concept "Encounter for aftercare following liver transplant": {"Encounter for aftercare following liver transplant code"} display 'Encounter for aftercare following liver transplant'
 concept "Sandimmune": {"Sandimmune code"} display 'Sandimmune'
 concept "Imuran": {"Imuran code"} display 'Imuran'
 concept "ATGAM": {"ATGAM code"} display 'ATGAM'
@@ -92,26 +96,25 @@ context Patient
 
 
 define "Livertransplant":
-	exists([Condition: "End Stage Liver Disease"])
+	exists([Condition: "Hepatic failure, unspecified without coma"])
 //	and exists([Procedure: "Transplantation of liver (procedure)"])
-	and not exists([Condition: "Chronic pain due to malignancy (finding)"])
+	and not exists([Condition: "Neoplasm related pain (acute) (chronic)"])
 	
 			
 define "neuroendocrinetumor":
-	exists([Condition:"End Stage Liver Disease"])
-	and exists([Condition:"Secondary neuroendocrine tumor of liver"])
-	and exists([Condition:"Metastasis from malignant tumor of liver (disorder)"])
+	exists([Condition:"Hepatic failure, unspecified without coma"])
+	and exists([Condition:"Other malignant neuroendocrine tumors"])
+	and exists([Condition:"Secondary malignant neoplasm of liver and intrahepatic bile duct"])
 //	and exists([Procedure:"Transplantation of liver (procedure)"])
 
 define "Cholangiocarcinoma":
-	exists([Condition: "End Stage Liver Disease"])
-	and exists([Condition: "Carcinoma in situ of extrahepatic bile ducts (disorder)"])
-	and exists([Condition: "Cholangiocarcinoma of biliary tract (disorder)"])
-	and exists([Condition: "Tumor surgically unresectable (finding)"])
+	exists([Condition: "Hepatic failure, unspecified without coma"])
+	and exists([Condition: "Malignant neoplasm of extrahepatic bile duct"])
+//	and exists([Condition: "Tumor surgically unresectable (finding)"])
 //	and exists([Procedure: "Transplantation of liver (procedure)"])
 	
 define "Hemangioendothelioma":
-	exists([Condition: "Hemangioendothelioma of liver (disorder)"])
+	exists([Condition: "Hemangioma unspecified site"])
 
 define "Malignancies":
 	Cholangiocarcinoma
@@ -119,19 +122,29 @@ define "Malignancies":
 	or Hemangioendothelioma
 		
 define "Covered":
-    if (exists([Procedure: "Transplantation of Liver, Allogeneic, Open Approach"])
-        or exists([Procedure: "Transplantation of Liver, Syngeneic, Open Approach"])
-        or exists([Procedure: "Transplantation of Liver, Zooplastic, Open Approach"]))
-	then (Livertransplant or Malignancies or Followup or ImmunosuppressiveDrugs)
+    if ((exists([Procedure: "Transplantation of Liver, Allogeneic, Open Approach"])
+            or exists([Procedure: "Transplantation of Liver, Syngeneic, Open Approach"])
+            or exists([Procedure: "Transplantation of Liver, Zooplastic, Open Approach"]))
+	    and (Livertransplant or Malignancies or Followup or ImmunosuppressiveDrugs))
+	then true
 	else false
 	
 define "Followup":
 	exists(
-		[ClinicalImpression: "Aftercare for liver transplant done (situation)"]
+		[ClinicalImpression: "Encounter for aftercare following liver transplant"]
 	)
 	
 define "ImmunosuppressiveDrugs":
-	exists([MedicationAdministration: "Sandimmune"])
+    exists([Procedure: "Other long term (current) drug therapy"])
+	//exists([MedicationAdministration: "Sandimmune"])
+//	or exists([MedicationAdministration: "Imuran"])
+//	or exists([MedicationAdministration: "ATGAM"])
+//	or exists([MedicationAdministration: "Muromonab-CD3"])
+//	or exists([MedicationAdministration: "Prograf"])
+//	or exists([MedicationAdministration: "mycophenolate mofetil"])
+//	or exists([MedicationAdministration: "Daclizumab"])
+//	or exists([MedicationAdministration: "Cyclophosphamide"])
+//	or exists([MedicationAdministration: "Prednisone"])
 
 	
 define "Coverage":
