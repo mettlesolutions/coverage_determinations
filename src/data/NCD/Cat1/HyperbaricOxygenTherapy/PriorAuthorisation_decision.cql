@@ -2,6 +2,7 @@
 library HyperbaricOxygenTherapy
 
 using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -11,6 +12,8 @@ using FHIR version '1.8'
 //parameter parameterName (dataType or default value)
 codesystem "ICD10CM" : '2.16.840.1.113883.6.90'
 codesystem "CPT" : '2.16.840.1.113883.6.12'
+
+code "Physician attendance and supervision of hyperbaric oxygen therapy, per session code" :'99183' from  "CPT" display 'Hyperbaric oxygen therapy (procedure'
 
 code "Osteomyelitis, unspecified code" : 'M86.9' from "ICD10CM" display 'Osteomyelitis, unspecified'
 code "Inflammatory conditions of jaws code":'M27.2' from "ICD10CM" display 'Inflammatory conditions of jaws'
@@ -39,7 +42,8 @@ concept "Cutaneous abscess of left foot":{"Cutaneous abscess of left foot code"}
 concept "Abscess of tendon sheath, unspecified site" : {"Abscess of tendon sheath, unspecified site code"} display 'Abscess of tendon sheath, unspecified site'
 concept "Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter" : {"Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter code"} display 'Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter'
 concept "Wound Care" : {"Wound Care code"} display 'Wound Care'
-
+concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
+parameter MeasurementPeriod Interval<DateTime>
 context Patient
 
 define "WagnerGradeIII":
@@ -64,7 +68,14 @@ define "Condition":
 		or "DiabeticConditions")
 		
 define "PriorAuthorisationAffirmed":
-		"Condition"
+		if(exists (["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]P where P.performed during MeasurementPeriod)and
+		Count(["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]) < 40)
+		then
+				
+			"Condition"
+		else
+		       false
+		       
 		
 		
 		
