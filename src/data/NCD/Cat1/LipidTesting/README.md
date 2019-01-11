@@ -30,3 +30,7 @@ Indications
 => no dietary or pharmacological therapy is advised, monitoring is not necessary.
 
 =>non-specific chronic abnormalities of the liver (for example, elevations of transaminase, alkaline phosphatase, abnormal imaging studies, etc.), a lipid panel would generally not be indicated more than twice per year.
+
+
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=102&ncdver=2&bc=AAAAgAAAAAAA&

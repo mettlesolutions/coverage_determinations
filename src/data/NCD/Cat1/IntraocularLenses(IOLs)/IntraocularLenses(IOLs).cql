@@ -1,7 +1,8 @@
 //IntraocularLenses(IOLs)
-library ChlamydiaScreening_Common version '2'
+library IntraocularLenses
 
-using QDM version '5.3'
+using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -23,14 +24,14 @@ valueset "": ''
 context Patient
 
 define "Implantation Services":
-            ( exists (["Procedure, Performed": "Referral to surgical service (procedure)"])
-            or ( exists (["Procedure, Performed": "Medical service (procedure)"]) )
-            or ( exists(["Procedure, Performed": "Medical service (procedure)"]) ) )
-            and ( exists (["Diagnostic Study, Performed": "Ophthalmic echography, A-mode (procedure)"]) )
+            ( exists (["Procedure": "Referral to surgical service (procedure)"])
+            or ( exists (["Procedure": "Medical service (procedure)"]) )
+            or ( exists(["Procedure": "Medical service (procedure)"]) ) )
+            and ( exists (["DiagnosticReport": "Ophthalmic echography, A-mode (procedure)"]) )
             
 define "Covered":
-           ( exists (["Procedure, Performed": "Cataract extraction and insertion of intraocular lens (procedure)"])
-           or ( exists (["Procedure, Performed": "Procedure on lens (procedure)"]) ) 
+           ( exists (["Procedure": "Cataract extraction and insertion of intraocular lens (procedure)"])
+           or ( exists (["Procedure": "Procedure on lens (procedure)"]) ) 
            or "Implantation Services")
            
 define "Coverage":

@@ -1,10 +1,9 @@
 //HomeProthrombinTime-InternationalNormalizedRatio(PT-INR)MonitoringForAnticoagulationManagement
 
+library HomeProthrombinTimeInternationalNormalizedRatioMonitoringForAnticoagulationManagement
 
-library ChlamydiaScreening_Common version '2'
-
-using QDM version '5.3'
-
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -45,29 +44,29 @@ null
 context Patient
 
 define "Devices Covered":
-          ( exists (["Procedure, Performed": "Monitoring of international normalized ratio (regime/therapy)"]M
-          where M.relevantPeriod during MeasurementPeriod) 
-          or ( exists (["Procedure, Performed": "Prothrombin time (procedure)"]P
-          where P.relevantPeriod during MeasurementPeriod) ) )
+          ( exists (["Procedure": "Monitoring of international normalized ratio (regime/therapy)"]M
+          where M.performed on or after MeasurementPeriod) 
+          or ( exists (["Procedure": "Prothrombin time (procedure)"]P
+          where P.performed on or after MeasurementPeriod) ) )
 
 define "Condition 1":
-             ( exists (["Procedure, Performed": "Mechanical heart valve replacement (procedure)"])
-             or ( exists (["Diagnosis": "Chronic atrial fibrillation (disorder)"]) )
-             or ( exists (["Diagnosis": "Venous Thromboembolism ICD10CM"]) and ( exists (["Medication, Administered": "Warfarin"]) ) )
+             ( exists (["Procedure": "Mechanical heart valve replacement (procedure)"])
+             or ( exists (["Condition": "Chronic atrial fibrillation (disorder)"]) )
+             or ( exists (["Condition": "Venous Thromboembolism ICD10CM"]) and ( exists (["MedicationAdministration": "Warfarin"]) ) )
               )
               and "Devices Covered"
               
 define "Requirements to cover":
-         if ( exists (["Procedure, Performed": "Anticoagulant Therapy"]A
-           where duration in months of A.relevantPeriod > 3) )
+         if ( exists (["Procedure": "Anticoagulant Therapy"]A
+           where duration in months of A.performed > 3) )
           then "Devices Covered"
          else null
-         and ( exists (["Encounter, Performed": "Face-to-Face Interaction"]) and ( exists (["Procedure, Performed": "Anticoagulant Therapy"]) ) )
-         and ( exists (["Procedure, Performed": "Anticoagulant Therapy"]) and "Devices Covered" and ( exists (["Encounter, Performed": "Home Care"]) ) )  
-         and ( exists (["Encounter, Performed": "self"]) and ( exists (["Procedure, Performed": "Monitoring of international normalized ratio (regime/therapy)"]MO
-          where duration in weeks of MO.relevantPeriod = 1 and MO.components = 1)  ) )
-          or ( exists (["Encounter, Performed": "self"]) and ( exists (["Procedure, Performed": "Monitoring of international normalized ratio (regime/therapy)"]MO
-          where duration in weeks of MO.relevantPeriod = 1 and MO.components = 1)  ) )    
+         and ( exists (["Encounter": "Face-to-Face Interaction"]) and ( exists (["Procedure": "Anticoagulant Therapy"]) ) )
+         and ( exists (["Procedure": "Anticoagulant Therapy"]) and "Devices Covered" and ( exists (["Encounter": "Home Care"]) ) )  
+         and ( exists (["Encounter": "self"]) and ( exists (["Procedure": "Monitoring of international normalized ratio (regime/therapy)"]MO
+          where duration in weeks of MO.performed = 1 and Count(["Procedure": "Monitoring of international normalized ratio (regime/therapy)"]) = 1)  ) )
+          or ( exists (["Encounter": "self"]) and ( exists (["Procedure": "Monitoring of international normalized ratio (regime/therapy)"]MO
+          where duration in weeks of MO.performed = 1 and Count(["Procedure": "Monitoring of international normalized ratio (regime/therapy)"]) = 1)  ) )    
 
 define "Coverage":
           "Condition 1" or "Requirements to cover"

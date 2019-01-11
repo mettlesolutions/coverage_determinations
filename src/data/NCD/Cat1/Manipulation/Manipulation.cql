@@ -1,7 +1,8 @@
 //Manipulation
-library ChlamydiaScreening_Common version '2'
+library Manipulation
 
-using QDM
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -19,20 +20,20 @@ valueset "Asthma": '2.16.840.1.113883.3.526.2.60'
 valueset "Osteopathic Treatment of Rib Cage using Other Method": '2.16.840.1.113762.1.4.1032.36'
 valueset "Revisional fusion of occipitocervical junction (procedure)": '2.16.840.1.113883.3.88.12.80.28' 
 valueset "Manipulation of temporomandibular joint (procedure)": '2.16.840.1.113883.3.88.12.80.28'
-valueset "": ''
+
 
 context Patient
 
 define "Manipulation of the Rib Cage":
-         if ( exists (["Diagnosis": "Bronchitis (disorder)"])
-                 or ( exists (["Diagnosis": "Emphysema"]) )
-                 or ( exists (["Diagnosis": "Asthma"]) ) )
-            then ( exists (["Procedure, Performed": "Osteopathic Treatment of Rib Cage using Other Method"]) )
+         if ( exists (["Condition": "Bronchitis (disorder)"])
+                 or ( exists (["Condition": "Emphysema"]) )
+                 or ( exists (["Condition": "Asthma"]) ) )
+            then ( exists (["Procedure": "Osteopathic Treatment of Rib Cage using Other Method"]) )
          else null
                  
 define "Manipulation of the Head":
-              ( exists (["Procedure, Performed": "Revisional fusion of occipitocervical junction (procedure)"])
-              or ( exists (["Procedure, Performed": "Manipulation of temporomandibular joint (procedure)"]) ) )
+              ( exists (["Procedure": "Revisional fusion of occipitocervical junction (procedure)"])
+              or ( exists (["Procedure": "Manipulation of temporomandibular joint (procedure)"]) ) )
               
 define "Indications and Limitations":
           "Manipulation of the Rib Cage" or "Manipulation of the Head"

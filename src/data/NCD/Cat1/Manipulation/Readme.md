@@ -6,3 +6,5 @@ Manual manipulation of the rib cage contributes to the treatment of respiratory 
 B. Manipulation of the Head
 
 Manipulation of the occipitocervical or temporomandibular regions of the head when indicated for conditions affecting those portions of the head and neck is a covered service.
+
+https://www.cms.gov/medicare-coverage-database/details/ncd-details.aspx?NCDId=3&ncdver=1&bc=AAAAgAAAAAAA&

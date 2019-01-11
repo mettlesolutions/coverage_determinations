@@ -1,8 +1,9 @@
 //ImplantationOfAnti-GastroesophagealRefluxDevice
 
-library ChlamydiaScreening_Common version '2'
+library ImplantationOfAntiGastroesophagealRefluxDevice
 
-using QDM
+using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -31,26 +32,26 @@ valueset "Low Risk" : '2.16.840.1.113883.3.117.1.7.1.400'
 context Patient
 
 define "Condition 1(Indications and Limitations)":
-         if  ( exists (["Procedure, Performed": "Percutaneous valvuloplasty (procedure)"]P
-         where P.result = "Contraindicated (qualifier value)") )
-          then ( exists (["Device, Applied": "Other mechanical complication of esophageal anti-reflux device, initial encounter"] ) )
+         if  ( exists (["Procedure": "Percutaneous valvuloplasty (procedure)"]P
+         where (P.outcome) = "Contraindicated (qualifier value)") )
+          then ( exists (["Procedure": "Other mechanical complication of esophageal anti-reflux device, initial encounter"] ) )
          else null
          
 define "Poor Surgical Risk":
-           ( exists (["Procedure, Performed": "Risk identification (procedure)"]R
-           where R.result = "Low Risk") )
+           ( exists (["Procedure": "Risk identification (procedure)"]R
+           where (R.outcome) = "Low Risk") )
          
 define "Condition for Condition 2(Indications and Limitations)":
-          ( exists (["Diagnosis": "Systemic sclerosis (disorder)"])
-          or ( exists (["Diagnosis": "Disorder of esophagus (disorder)"]) )
-          or ("Poor Surgical Risk" and  (exists (["Procedure, Performed": "Percutaneous valvuloplasty (procedure)"]) ) )
-          or ( exists (["Procedure, Performed": "Percutaneous valvuloplasty (procedure)"]V
-          where V.result="Treatment Failure") ) )
+          ( exists (["Condition": "Systemic sclerosis (disorder)"])
+          or ( exists (["Condition": "Disorder of esophagus (disorder)"]) )
+          or ("Poor Surgical Risk" and  (exists (["Procedure": "Percutaneous valvuloplasty (procedure)"]) ) )
+          or ( exists (["Procedure": "Percutaneous valvuloplasty (procedure)"]V
+          where (V.outcome)="Treatment Failure") ) )
 
 define "Condition 2(Indications and Limitations)":
-           if  ( exists (["Diagnosis": "Gastroesophageal reflux disease (disorder)"])
+           if  ( exists (["Condition": "Gastroesophageal reflux disease (disorder)"])
              and "Condition for Condition 2(Indications and Limitations)" )
-             then ( exists (["Device, Applied": "Other mechanical complication of esophageal anti-reflux device, initial encounter"] ) )
+             then ( exists (["Procedure": "Other mechanical complication of esophageal anti-reflux device, initial encounter"] ) )
          else null
         
 define "Coverage":

@@ -1,8 +1,8 @@
 //HairAnalysis
 
-library ChlamydiaScreening_Common version '2'
+library HairAnalysis
 
-using QDM version '5.3'
+using FHIR
 
 
 //include otherLibrary version 'x.x' called otherLibrary
