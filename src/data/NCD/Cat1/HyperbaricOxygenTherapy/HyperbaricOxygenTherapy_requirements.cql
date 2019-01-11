@@ -1,4 +1,3 @@
-//Hyperbaric Oxygen Therapy
 library HyperbaricOxygenTherapy
 
 using FHIR
@@ -53,8 +52,10 @@ code "Necrotizing fasciitis code" : 'M72.6' from "ICD10CM" display 'Necrotizing 
 code "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter code" :'T57.3X2A' from "ICD10CM" display 'Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter'
 code "Air embolism following infusion, transfusion and therapeutic injection, initial encounter code": 'T80.0XXA' from "ICD10CM" display 'Air embolism following infusion, transfusion and therapeutic injection, initial encounter'
 code "Under Skin Substitute Grafts code":'15273' from "CPT" display 'Under Skin Substitute Grafts'
+code "Wound Care code":'97597' from "CPT" display 'Wound Care'
+code "Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter code":'T81.31XA' from "ICD10CM" display 'Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter'
 
-
+concept "Wound Care" : {"Wound Care code"} display 'Wound Care'
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
 concept "Osteomyelitis, unspecified": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
 concept "Radiation sickness, unspecified, initial encounter" :{"Radiation sickness, unspecified, initial encounter code"} display 'Radiation sickness, unspecified, initial encounter'
@@ -73,26 +74,27 @@ concept "Inflammatory conditions of jaws": {"Inflammatory conditions of jaws cod
 concept "Wegener's granulomatosis without renal involvement":{"Wegener's granulomatosis without renal involvement code"} display 'Wegeners granulomatosis without renal involvement code'
 concept "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter":{"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code"} display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 concept "Under Skin Substitute Grafts" : {"Under Skin Substitute Grafts code"} display 'Under Skin Substitute Grafts'
+concept "Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter": {"Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter code"} display 'Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter'
 
 define "Condition1":
     {"Condition": "Osteomyelitis, unspecified"}
-      
+
 define "Condition2":
 	{"Condition":"Inflammatory conditions of jaws"}
 
 define "Condition3":
       {"Condition": "Radiation sickness, unspecified, initial encounter"}
-     
+
 define "Condition4":
     {"Condition": "Actinomycosis, unspecified" }
-    
+
 define "Condition5":
     {"Condition": "Type 1 diabetes mellitus with other skin ulcer"}
-    
+
 
 define "Condition6":
     {"Condition": "Type 2 diabetes mellitus with other skin ulcer"}
-    
+
 define "Condition7":
         {"Condition": "Crushing injury of unspecified hand, initial encounter",
         "Condition": "Complete traumatic amputation at level between left hip and knee, initial encounter"}
@@ -127,11 +129,58 @@ define "Condition16":
 define "Condition17":
     {"Condition": "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter"}
 
+define "Condition18":
+    {"Condition": "Wegener's granulomatosis without renal involvement"}
+
+define "Condition19":
+    {"Procedure":"Wound Care",
+    "Condition":"Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter"}
+
 define "Requirements":
     {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},"Condition5",{'or'},"Condition6",
 	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
 	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition16",{'or'},"Condition17"}
 
+define "BeneficiaryInformation":
+    {'Beneficiary Name',
+    'Beneficiary Medicare Number',
+    'Beneficiary Date of Birth',
+    'Beneficiary Gender'}
+
+define "Ordering Physician or Practitioner Information":
+    {'Physician or Practitioner Name',
+    'Physician or Practitioner National Provider Identifier',
+    'Physician or Practitioner Address'}
+
+define "Facility Information":
+    {'Facility Name',
+    'Facility National Provider Identifier',
+    'Facility Address'}
+
+define "Requestor Information":
+    {'Contact Name',
+    'Telephone Number'}
+
+define "Other Information":
+    {'Number of treatments requested',
+    'Number of units per treatment requested',
+    'HCPCS Code',
+    'Submission Date',
+    'Start Date of the 12 month period',
+    'Indicate if the request is an initial or resubmission review',
+    'Indicate if the request is expedited and the reason why',
+    'State',
+    'Diagnosis Codes'}
+
+define "Documents":
+    {"BeneficiaryInformation",{'and'},"Ordering Physician or Practitioner Information",
+    {'and'},"Facility Information",{'and'},"Requestor Information",{'and'},"Other Information"}
+
 define "PriorAuthorisation":
-	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
+//	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
+	true
+
+define "PriorAuthorisationRequirements":
+    {"Documents",'and',{"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},
+        {"Condition5",{'or'},"Condition6",{'or'},"Condition18",{'or'},"Condition19"}}}
 
