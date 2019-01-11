@@ -132,6 +132,6 @@ define "Requirements":
 	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
 	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition16",{'or'},"Condition17"}
 
-define "PriorAuthorisation":
+define "PriorAuthorization":
 	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
 
