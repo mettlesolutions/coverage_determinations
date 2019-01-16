@@ -54,7 +54,9 @@ code "Air embolism following infusion, transfusion and therapeutic injection, in
 code "Under Skin Substitute Grafts code":'15273' from "CPT" display 'Under Skin Substitute Grafts'
 code "Wound Care code":'97597' from "CPT" display 'Wound Care'
 code "Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter code":'T81.31XA' from "ICD10CM" display 'Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter'
+code "National provider ID code":'' from "LOINC" display 'National provider ID'
 
+concept "National provider ID" : {"National provider ID code"} display 'National provider ID'
 concept "Wound Care" : {"Wound Care code"} display 'Wound Care'
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
 concept "Osteomyelitis, unspecified": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
@@ -142,45 +144,45 @@ define "Requirements":
 	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition15",{'or'},"Condition16",{'or'},"Condition17"}
 
 define "BeneficiaryInformation":
-    {'Beneficiary Name',
-    'Beneficiary Medicare Number',
-    'Beneficiary Date of Birth',
-    'Beneficiary Gender'}
+    {"Patient.name":'Beneficiary Name',
+    "Patient.identifier":'Beneficiary Medicare Number',
+    "Patient.birthDate":'Beneficiary Date of Birth',
+    "Patient.gender":'Beneficiary Gender'}
 
 define "Ordering Physician or Practitioner Information":
-    {'Physician or Practitioner Name',
-    'Physician or Practitioner National Provider Identifier',
-    'Physician or Practitioner Address'}
+    {"Practitioner.name":'Physician or Practitioner Name',
+    "Practitioner":"National provider ID",
+    "Practitioner.address":'Physician or Practitioner Address'}
 
 define "Facility Information":
-    {'Facility Name',
-    'Facility National Provider Identifier',
-    'Facility Address'}
+    {"Organization.name": 'Facility Name',
+    'Organization':"National provider ID",
+    "Organization.address":'Facility Address'}
 
 define "Requestor Information":
-    {'Contact Name',
-    'Telephone Number'}
+    {"Claim.enterer":'Contact Name',
+    "Claim.enterer.phone":'Telephone Number'}
 
 define "Other Information":
-    {'Number of treatments requested',
-    'Number of units per treatment requested',
+    {"Claim.procedure.procedure":'Number of treatments requested',
+    "Claim.item.quantity":'Number of units per treatment requested',
     'HCPCS Code',
-    'Submission Date',
-    'Start Date of the 12 month period',
+    "Claim.created":'Submission Date',
+    "Claim.procedure.date":'Start Date of the 12 month period',
     'Indicate if the request is an initial or resubmission review',
     'Indicate if the request is expedited and the reason why',
     'State',
     'Diagnosis Codes'}
 
 define "Documents":
-    {"BeneficiaryInformation",{'and'},"Ordering Physician or Practitioner Information",
-    {'and'},"Facility Information",{'and'},"Requestor Information",{'and'},"Other Information"}
+    "BeneficiaryInformation" union "Ordering Physician or Practitioner Information"
+    union "Facility Information" union "Requestor Information" union "Other Information"
 
 define "PriorAuthorisation":
 //	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
 	true
 
 define "PriorAuthorisationRequirements":
-    {"Documents",'and',{"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},
-        {"Condition5",{'or'},"Condition6",{'or'},"Condition18",{'or'},"Condition19"}}}
+    "Documents" union {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},
+        {"Condition5",{'or'},"Condition6",{'or'},"Condition18",{'or'},"Condition19"}}
 
