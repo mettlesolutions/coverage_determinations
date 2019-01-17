@@ -98,13 +98,16 @@ define "Condition6":
     {"Condition": "Type 2 diabetes mellitus with other skin ulcer"}
 
 define "Condition7":
-        {"Condition": "Crushing injury of unspecified hand, initial encounter" ,{'or'},
+        {"Condition": "Crushing injury of unspecified hand, initial encounter" ,
         "Condition": "Complete traumatic amputation at level between left hip and knee, initial encounter"}
 
 define "Condition8":
     {"Condition":"Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter" }
 
 define "Condition9":
+    {"Condition": "Caisson disease [decompression sickness], initial encounter"}
+
+define "Condition10":
     {"Condition": "Caisson disease [decompression sickness], initial encounter"}
 
 define "Condition11":
@@ -134,7 +137,7 @@ define "Condition19":
 
 define "Requirements":
     {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},"Condition5",{'or'},"Condition6",
-	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition11",{'or'},
+	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
 	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition16",{'or'},"Condition17"}
 
 define "BeneficiaryInformation":
