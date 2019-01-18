@@ -11,30 +11,10 @@ using FHIR
 
 codesystem "ICD10CM" : '2.16.840.1.113883.6.90'
 codesystem "CPT" : '2.16.840.1.113883.6.12'
+codesystem "LONIC":'2.16.840.1.113883.6.1'
 
-/*valueset "Osteomyelitis, unspecified" : '2.16.840.1.113883.3.3157.1835'
-valueset "Radiation sickness, unspecified, initial encounter":'2.16.840.1.113883.3.3157.1411'
-valueset "Actinomycosis, unspecified" :'2.16.840.1.113883.17.4077.2.2074'
-valueset "Type 2 diabetes mellitus with other skin ulcer":'2.16.840.1.113762.1.4.1138.739'
-valueset "Type 1 diabetes mellitus with other skin ulcer":'2.16.840.1.113762.1.4.1138.739'
-valueset "Crushing injury of unspecified hand, initial encounter":'2.16.840.1.113883.3.3157.1411'
-valueset "Complete traumatic amputation at level between left hip and knee, initial encounter":'2.16.840.1.113883.3.3157.1411'
-valueset "Caisson disease [decompression sickness], initial encounter" : '2.16.840.1.113883.3.3157.1411'
-valueset "Air embolism following infusion, transfusion and therapeutic injection, initial encounter" : '2.16.840.1.113883.3.3157.1411'
-valueset "Gas gangrene":'2.16.840.1.113883.17.4077.2.2074'
-valueset "Necrotizing fasciitis" : '2.16.840.1.113883.17.4077.2.2074'
-valueset "Peripheral vascular disease, unspecified" : '2.16.840.1.113883.3.600.858'
-valueset "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter" : '2.16.840.1.113762.1.4.1146.289'
-valueset "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter" : '2.16.840.1.113883.17.4077.2.2077'*/
-
-//General treatment (procedure)
-
-
-//Hyperbaric oxygen therapy (procedure)
 code "Physician attendance and supervision of hyperbaric oxygen therapy, per session code" :'99183' from  "CPT" display 'Hyperbaric oxygen therapy (procedure'
-//Wagner syndrome (disorder)
 code "Wegener's granulomatosis without renal involvement code" : 'M31.30' from "ICD10CM" display 'Wegeners granulomatosis without renal involvement'
-//Osteoradionecrosis (disorder)
 code "Inflammatory conditions of jaws code":'M27.2' from "ICD10CM" display 'Inflammatory conditions of jaws'
 code "Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter code" : 'T58.91XA' from "ICD10CM" display 'Toxic effect of carbon monoxide from unspecified source, accidental (unintentional), initial encounter'
 code "Osteomyelitis, unspecified code" : 'M86.9' from "ICD10CM" display 'Osteomyelitis, unspecified'
@@ -54,9 +34,10 @@ code "Air embolism following infusion, transfusion and therapeutic injection, in
 code "Under Skin Substitute Grafts code":'15273' from "CPT" display 'Under Skin Substitute Grafts'
 code "Wound Care code":'97597' from "CPT" display 'Wound Care'
 code "Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter code":'T81.31XA' from "ICD10CM" display 'Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter'
-code "National provider ID code":'' from "LOINC" display 'National provider ID'
+//code "National provider ID code":'45952-9' from "LOINC" display 'National provider ID'
+//General treatment (procedure)
 
-concept "National provider ID" : {"National provider ID code"} display 'National provider ID'
+//concept "National provider ID" : {"National provider ID code"} display 'National provider ID'
 concept "Wound Care" : {"Wound Care code"} display 'Wound Care'
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
 concept "Osteomyelitis, unspecified": {"Osteomyelitis, unspecified code"} display 'Osteomyelitis, unspecified'
@@ -146,21 +127,21 @@ define "BeneficiaryInformation":
     "Patient.birthDate":'Beneficiary Date of Birth',
     "Patient.gender":'Beneficiary Gender'}
 
-define "Ordering Physician or Practitioner Information":
+define "OrderingPhysician/PractitionerInformation":
     {"Practitioner.name":'Physician or Practitioner Name',
-    "Practitioner":"National provider ID",
+    "Practitioner.identifier":'National provider ID',
     "Practitioner.address":'Physician or Practitioner Address'}
 
-define "Facility Information":
+define "FacilityInformation":
     {"Organization.name": 'Facility Name',
-    'Organization':"National provider ID",
+    "Organization.identifier":'National provider ID',
     "Organization.address":'Facility Address'}
 
-define "Requestor Information":
+define "RequestorInformation":
     {"Claim.enterer":'Contact Name',
     "Claim.enterer.phone":'Telephone Number'}
 
-define "Other Information":
+/*define "OtherInformation":
     {"Claim.procedure.procedure":'Number of treatments requested',
     "Claim.item.quantity":'Number of units per treatment requested',
     'HCPCS Code',
@@ -169,11 +150,11 @@ define "Other Information":
     'Indicate if the request is an initial or resubmission review',
     'Indicate if the request is expedited and the reason why',
     'State',
-    'Diagnosis Codes'}
+    'Diagnosis Codes'}*/
 
 define "Documents":
-    "BeneficiaryInformation" union "Ordering Physician or Practitioner Information"
-    union "Facility Information" union "Requestor Information" union "Other Information"
+    "BeneficiaryInformation" union "OrderingPhysician/PractitionerInformation"
+    union "FacilityInformation" union "RequestorInformation" 
 
 define "PriorAuthorisation":
 //	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
