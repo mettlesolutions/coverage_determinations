@@ -2,8 +2,6 @@ library HomeOxygenTherapy version '1'
 
 using FHIR
 
-include FHIRHelpers version '1.8' called FHIRHelpers
-
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -19,6 +17,7 @@ codesystem "LOINC": '2.16.840.1.113762.1.4.1099.13'
 codesystem "NUCCPT":'2.16.840.1.114222.4.11.1066'
 codesystem "ICD10CM":''
 
+/*
 valueset "Home oxygen therapy (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Chronic Obstructive Pulmonary Disease": '2.16.840.1.113883.3.464.1003.102.11.1021'
 valueset "Interstitial lung disease (disorder)": '2.16.840.1.113883.3.88.12.3221.7.4'
@@ -153,7 +152,6 @@ valueset "Durable medical equipment case management (procedure)": '2.16.840.1.11
 valueset "Checking patient identity (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Patient registration (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "replaces": '2.16.840.1.113883.11.20.9.62'
-valueset "Suppliers; Durable Medical Equipment & Medical Supplies, Oxygen Equipment & Supplies": '2.16.840.1.114222.4.11.1066'
 valueset "Change recommended (qualifier value)": '2.16.840.1.113762.1.4.1096.204'
 valueset "Domestic responsibility rehabilitation (regime/therapy)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Preparation of medical certificate (procedure)": '2.16.840.1.113883.3.88.12.80.28'
@@ -289,7 +287,9 @@ valueset "Past history of procedure (situation)":'2.16.840.1.113883.3.88.12.3221
 valueset "Equipment in use (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Equipment requirement (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Equipment related features (finding)":'2.16.840.1.113883.3.88.12.3221.7.4'
+*/
 
+code "Practitioner certification status (finding) code": '417707001' from "SNOMEDCT" display 'Practitioner certification status (finding)'
 code "Equipment related features (finding) code": '405655001' from "SNOMEDCT" display 'Equipment related features (finding)'
 code "Equipment requirement (finding) code": '698532002' from "SNOMEDCT" display 'Equipment requirement (finding)'
 code "Equipment in use (finding) code": '397917005' from "SNOMEDCT" display 'Equipment in use (finding)'
@@ -315,8 +315,8 @@ code "Confirming patient identity prior to procedure (procedure) code": '3720400
 code "Attending physician (occupation) code": '405279007' from "SNOMEDCT" display 'Attending physician (occupation)'
 code "National provider ID code": '45952-9' from "LOINC" display 'National provider ID'
 code "Illness (finding) code": '39104002' from "SNOMEDCT" display 'Illness (finding)'
-code "Patient's condition worsened (finding) code": '271299001' from "SNOMEDCT" display "Patient's condition worsened (finding)"
-code "Patient's condition improved (finding) code": '268910001' from "SNOMEDCT" display "Patient's condition improved (finding)"
+code "Patient's condition worsened (finding) code": '271299001' from "SNOMEDCT" display 'Patients condition worsened (finding)'
+code "Patient's condition improved (finding) code": '268910001' from "SNOMEDCT" display 'Patients condition improved (finding)'
 code "Conditional prognosis (finding) code": '60484009' from "SNOMEDCT" display 'Conditional prognosis (finding)'
 code "Mobile in home (finding) code": '302000008' from "SNOMEDCT" display 'Mobile in home (finding)'
 code "Gathering of past medical history (procedure) code": '451571000124102' from "SNOMEDCT" display 'Gathering of past medical history (procedure)'
@@ -336,9 +336,8 @@ code "Erythrocytosis (disorder) code": '127062003' from "SNOMEDCT" display 'Eryt
 code "Impaired Cognition code": '20151105' from "SNOMEDCT" display 'Impaired Cognition'
 code "Restlessness (finding) code": '162221009' from "SNOMEDCT" display 'Restlessness (finding)'
 code "Morning headache (finding) code": '162310002' from "SNOMEDCT" display 'Morning headache (finding)'
-code "Inpatient stay (finding)" : '308540004' from "SNOMEDCT" display 'Inpatient stay (finding)'
-code "Patient's condition stable (finding) code": '359746009' from "SNOMEDCT" display 'Patient's condition stable (finding)'
-code "Practitioner certification status (finding) code": '417707001' from "SNOMEDCT" display 'Practitioner certification status (finding)'
+code "Inpatient stay (finding) code" : '308540004' from "SNOMEDCT" display 'Inpatient stay (finding)'
+code "Patient's condition stable (finding) code": '359746009' from "SNOMEDCT" display 'Patients condition stable (finding)'
 code "Treatment stopped - alternative therapy undertaken (situation) code": '182868002' from "SNOMEDCT" display 'Treatment stopped - alternative therapy undertaken (situation)'
 code "Oxygen saturation measurement, arterial (procedure) code": '113080007' from "SNOMEDCT" display 'Oxygen saturation measurement, arterial (procedure)'
 code "Oxygen measurement, partial pressure, arterial (procedure) code": '25579001' from "SNOMEDCT" display 'Oxygen measurement, partial pressure, arterial (procedure)'
@@ -353,9 +352,8 @@ code "Dependent edema (finding) code": '248499004' from "SNOMEDCT" display 'Depe
 code "Right heart failure (disorder) code": '128404006' from "SNOMEDCT" display 'Right heart failure (disorder)'
 code "Pulmonary artery pressure monitoring (regime/therapy) code": '24599003' from "SNOMEDCT" display 'Pulmonary artery pressure monitoring (regime/therapy)'
 code "Echocardiography (procedure) code": '40701008' from "SNOMEDCT" display 'Echocardiography (procedure)'
-code "Hematocrit determination (procedure)" : '28317006' from "SNOMEDCT" display 'Hematocrit determination (procedure)'
+code "Hematocrit determination (procedure) code" : '28317006' from "SNOMEDCT" display 'Hematocrit determination (procedure)'
 code "Unilateral headache (situation) code": '103006007' from "SNOMEDCT" display 'Unilateral headache (situation)'
-
 
 concept "Chronic Obstructive Pulmonary Disease": {"Chronic Obstructive Pulmonary Disease code"} display 'Chronic Obstructive Pulmonary Disease'
 concept "Interstitial lung disease (disorder)": {"Interstitial lung disease (disorder) code"} display 'Interstitial lung disease (disorder)'
@@ -369,7 +367,7 @@ concept "Impaired Cognition": {"Impaired Cognition code"} display 'Impaired Cogn
 concept "Restlessness (finding)": {"Restlessness (finding) code"} display 'Restlessness (finding)'
 concept "Morning headache (finding)": {"Morning headache (finding) code"} display 'Morning headache (finding)'
 concept "Inpatient stay (finding)": {"Inpatient stay (finding) code"} display 'Inpatient stay (finding)'
-concept "Patient's condition stable (finding)": {"Patient's condition stable (finding) code"} display 'Patient's condition stable (finding)'
+concept "Patient's condition stable (finding)": {"Patient's condition stable (finding) code"} display 'Patients condition stable (finding)'
 concept "Practitioner certification status (finding)": {"Practitioner certification status (finding) code"} display 'Practitioner certification status (finding)'
 concept "Treatment stopped - alternative therapy undertaken (situation)": {"Treatment stopped - alternative therapy undertaken (situation) code"} display 'Treatment stopped - alternative therapy undertaken (situation)'
 concept "Oxygen saturation measurement, arterial (procedure)": {"Oxygen saturation measurement, arterial (procedure) code"} display 'Oxygen saturation measurement, arterial (procedure)'
@@ -415,8 +413,8 @@ concept "Confirming patient identity prior to procedure (procedure)": {"Confirmi
 concept "Attending physician (occupation)": {"Attending physician (occupation) code"} display 'Attending physician (occupation)'
 concept "National provider ID": {"National provider ID code"} display 'National provider ID'
 concept "Illness (finding)": {"Illness (finding) code"} display 'Illness (finding)'
-concept "Patient's condition worsened (finding)": {"Patient's condition worsened (finding) code"} display "Patient's condition worsened (finding)"
-concept "Patient's condition improved (finding)": {"Patient's condition improved (finding) code"} display "Patient's condition improved (finding)"
+concept "Patient's condition worsened (finding)": {"Patient's condition worsened (finding) code"} display 'Patients condition worsened (finding)'
+concept "Patient's condition improved (finding)": {"Patient's condition improved (finding) code"} display 'Patients condition improved (finding)'
 concept "Conditional prognosis (finding)": {"Conditional prognosis (finding) code"} display 'Conditional prognosis (finding)'
 concept "Mobile in home (finding)": {"Mobile in home (finding) code"} display 'Mobile in home (finding)'
 concept "Gathering of past medical history (procedure)": {"Gathering of past medical history (procedure) code"} display 'Gathering of past medical history (procedure)'
@@ -426,17 +424,19 @@ concept "Administration of prescribed medications based on arterial blood gas re
 context Patient
 
 define "Indications":
-	{"Condition": "Chronic Obstructive Pulmonary Disease",
-	"Condition": "Interstitial lung disease (disorder)",
-	"Condition": "Cystic fibrosis (disorder)",
-	"Condition": "Bronchiectasis (disorder)",
-	"Condition": "Malignant tumor of lung (disorder)",
-	"Condition": "Hypoxia (disorder)",
-	"Condition": "Pulmonary hypertension (disorder)",
-	"Condition": "Erythrocytosis (disorder)",
-	"Condition": "Impaired Cognition",
-	"Observation": "Restlessness (finding)",
-	"Condition": "Morning headache (finding)"}
+	{
+        {"Condition": "Chronic Obstructive Pulmonary Disease"},{'or'},
+        {"Condition": "Interstitial lung disease (disorder)"},{'or'},
+        {"Condition": "Cystic fibrosis (disorder)"},{'or'},
+        {"Condition": "Bronchiectasis (disorder)"},{'or'},
+        {"Condition": "Malignant tumor of lung (disorder)"},{'or'},
+        {"Condition": "Hypoxia (disorder)"},{'or'},
+        {"Condition": "Pulmonary hypertension (disorder)"},{'or'},
+        {"Condition": "Erythrocytosis (disorder)"},{'or'},
+        {"Condition": "Impaired Cognition"},{'or'},
+        {"Observation": "Restlessness (finding)"},{'or'},
+        {"Condition": "Morning headache (finding)"}
+	}
 
 define "BloodGasStudy":
 	{"Procedure": "Blood gas analysis (procedure)"}
@@ -456,112 +456,88 @@ define "Qualifying Outpatient":
 	"BloodGasStudy"
 	 union "Outpatient Encounter"
 
-define "Group1 Condition1":
-	{"Procedure": "Blood gas analysis (procedure)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+define "Saturation or PP":
+	{"BloodGasStudy",{'and'},
+	 {
+	 {"Procedure": "Oxygen saturation measurement, arterial (procedure)"},{'or'},
+	 {"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+	 }
+	}
 
-define "Group1 Condition2 Exercise":
-	{"Procedure": "Exercises (regime/therapy)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+define "Saturation and PP":
+	{"BloodGasStudy",{'and'},
+	 {
+	 {"Procedure": "Oxygen saturation measurement, arterial (procedure)"},{'and'},
+	 {"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+	 }
+	}
 
-define "Group1 Condition2 rest":
-	{"Observation": "Resting state (finding)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+define "Group Exercise":
+	{{"Procedure": "Exercises (regime/therapy)"},{'and'},"Saturation or PP"}
+
+define "Group rest":
+	{{"Observation": "Resting state (finding)"},{'and'},"Saturation or PP"}
 
 
-define "Group1 Condition2 Awake":
-	{"Observation": "Awake (finding)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+define "Group Awake":
+	{{"Observation": "Awake (finding)"},{'and'},"Saturation or PP"}
 
 define "Symptoms to hypoxemia":
-	{"Condition": "P pulmonale (finding)",
-	"Condition": "Erythrocytosis (disorder)",
-	"Condition": "Impaired Cognition",
-	"Condition": "Insomnia (disorder)",
-	"Condition": "Cor pulmonale (disorder)",
-	"Condition": "Pulmonary hypertension (disorder)"}
+	{{"Condition": "P pulmonale (finding)"},{'or'},
+	{"Condition": "Erythrocytosis (disorder)"},{'or'},
+	{"Condition": "Impaired Cognition"},{'or'},
+	{"Condition": "Insomnia (disorder)"},{'or'},
+	{"Condition": "Cor pulmonale (disorder)"},{'or'},
+	{"Condition": "Pulmonary hypertension (disorder)"}}
 
 
 define "Decrease":
-	{"Observation": "Sleeping out (finding)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
-	union "Symptoms to hypoxemia"
+	{{"Observation": "Sleeping out (finding)"},{'and'},"Saturation or PP" }
 
-define "Group1 Conditon2 Sleeping":
-	 "Group1 Condition2 Awake"
-	 union "Decrease"
-	 union {"Observation": "Sleeping out (finding)",
-		    "Procedure": "Oxygen saturation measurement, arterial (procedure)"],
-		    "Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+define "Group Sleeping":
+	 {"Decrease",{'and'},"Symptoms to hypoxemia"}
+
 
 define "Group1 Criteria":
-	"Group1 Condition1"
-	union "Group1 Condition2 Exercise"
-	union "Group1 Condition2 rest"
-	union "Group1 Condition2 Awake"
-	union  "Group1 Conditon2 Sleeping"
+	"Group Exercise"
+	union "Group rest"
+	union "Group Awake"
+	union "Group Sleeping"
 
 define "Group2 Symptoms":
-	{"Condition": "Dependent edema (finding)",
-	"Condition": "Right heart failure (disorder)",
-	"Procedure": "Pulmonary artery pressure monitoring (regime/therapy)",
-	"Condition": "Pulmonary hypertension (disorder)",
-	"Procedure": "Echocardiography (procedure)",
-	"Condition": "P pulmonale (finding)",
-	"Condition": "Erythrocytosis (disorder)",
-	"Procedure": "Hematocrit determination (procedure)"}
+	{{{"Condition": "Dependent edema (finding)"},{'or'},
+	{"Condition": "Right heart failure (disorder)"},{'or'},
+	{"Condition": "Pulmonary hypertension (disorder)"},{'or'},
+	{"Condition": "P pulmonale (finding)"},{'or'},
+	{"Condition": "Erythrocytosis (disorder)"}}
+	union
+	{"Procedure": "Pulmonary artery pressure monitoring (regime/therapy)",
+	 "Procedure": "Echocardiography (procedure)",
+	 "Procedure": "Hematocrit determination (procedure)"}}
 
-define "Group2 Condition1 Awake":
-	{"Observation": "Awake (finding)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
-	union "Group2 Symptoms"
+define "Group2 Awake":
+	{"Group Awake",{'and'},"Group2 Symptoms"}
 
-define "Group2 Condition1 Exercise":
-	{"Procedure": "Exercises (regime/therapy)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
-	union "Group2 Symptoms"
+define "Group2 Exercise":
+	{"Group Exercise",{'and'},"Group2 Symptoms"}
 
-define "Group2 Condition1 Sleep1.1":
-	{"Observation": "Sleeping out (finding)",
-	"Procedure": "Oxygen saturation measurement, arterial (procedure)"}
-	union "Group2 Symptoms"
-
-define "Group2 Condition1 Sleep1.2":
-	 {"Observation": "Sleeping out (finding)",
-	 "Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
-	 union "Group2 Symptoms"
-
-define "Group2 Condition1 Sleep":
-		"Group2 Condition1 Sleep1.1" union "Group2 Condition1 Sleep1.2"
+define "Group2 Sleep":
+	{"Decrease",{'and'},"Group2 Symptoms"}
 
 define "Initial Coverage":
 	{"Procedure": "Home oxygen therapy (procedure)"}
 
 define "Group2 Criteria":
-	"Group2 Condition1 Awake"
-	union "Group2 Condition1 Exercise"
-	union "Group2 Condition1 Sleep"
+	"Group2 Awake"
+	union "Group2 Exercise"
+	union "Group2 Sleep"
 	union "Initial Coverage"
-
-define "Long-term oxygen therapy":
-	{"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	"Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
 
 define "Cluster Headaches":
 	{"Condition": "Unilateral headache (situation)"}
 
 define "Group3 Criteria":
-	"Long-term oxygen therapy"
-	union "Cluster Headaches"
-	union {"Procedure": "Oxygen saturation measurement, arterial (procedure)",
-	        "Procedure": "Oxygen measurement, partial pressure, arterial (procedure)"}
+	{"Cluster Headaches",{'and'},"Saturation or PP"}
 
 define  "Group Criteria":
 	"Group1 Criteria"
@@ -575,17 +551,13 @@ define "Requirements":
 	union "Alternate Treatment"
 	union "Group Criteria"
 
-define "Physician":
-	[Practitioner: "Attending physician (occupation)"]Py
-	where Py.identifier.id = "National provider ID"
-	return Py.qualification.code
 
 define "Encounter Conduct":
-	{"Encounter": "Encounter Face to Face",
-	"Encounter": "Seen by physician (finding)",
-	"Encounter": "Seen by clinical nurse specialist (finding)",
-	"Encounter": "Seen by nurse practitioner (finding)",
-	"Encounter": "Referred by physician assistant (finding)"}
+	{{"Encounter": "Encounter Face to Face"},{'and'},
+        {{"Encounter": "Seen by physician (finding)"},{'or'},
+        {"Encounter": "Seen by clinical nurse specialist (finding)"},{'or'},
+        {"Encounter": "Seen by nurse practitioner (finding)"},{'or'},
+        {"Encounter": "Referred by physician assistant (finding)"}}}
 
 define "Medical Record":
 	{"DiagnosticReport":"Primary diagnosis",
@@ -605,9 +577,12 @@ define "Medical Record":
 define "Practitioner Signature":
 	'e-prescription containing digital Signature of the Pratitioner and date'
 
+define "Patient Name":
+    Patient.name
+
 define "WOPD Details Required":
-	{"Patient":Patient.name.given + ' ' + Patient.name.family,
-	"Practitioner":"Physician",
+	{"Patient":"Patient Name",
+	"Practitioner":"Attending physician (occupation)",
 	"DeviceRequest":"Equipment requirement (finding)",
 	"DeviceUseStatement":"Equipment in use (finding)",
 	"Observation": "Equipment related features (finding)",

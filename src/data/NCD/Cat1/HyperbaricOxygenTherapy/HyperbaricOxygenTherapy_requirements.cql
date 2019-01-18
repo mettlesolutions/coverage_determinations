@@ -116,10 +116,19 @@ define "Condition19":
     {"Procedure":"Wound Care",
     "Condition":"Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter"}
 
+define "Documents":
+    {'Signed Physician Orders',
+    'https://www.cms.gov/Medicare/CMS-Forms/CMS-Forms/downloads/CMS484.pdf',
+    'HBO progress notes (including measurable signs of healing)',
+    'HBO treatment log with documented length of treatment time',
+    'Results of all testing/services billed',
+    'Documentation of physician attendance and supervision of HBO therapy',
+    'Itemized bill'}
+
 define "Requirements":
     {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},"Condition5",{'or'},"Condition6",
 	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
-	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition16",{'or'},"Condition17"}
+	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition16",{'or'},"Condition17"} union "Documents"
 
 define "BeneficiaryInformation":
     {"Patient.name":'Beneficiary Name',
@@ -152,15 +161,14 @@ define "RequestorInformation":
     'State',
     'Diagnosis Codes'}*/
 
-define "Documents":
+define "PriorAuthorisation Documents":
     "BeneficiaryInformation" union "OrderingPhysician/PractitionerInformation"
     union "FacilityInformation" union "RequestorInformation" 
 
 define "PriorAuthorisation":
-//	exists(["Procedure": "Physician attendance and supervision of hyperbaric oxygen therapy, per session"])
 	true
 
 define "PriorAuthorisationRequirements":
-    "Documents" union {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},
-        {"Condition5",{'or'},"Condition6",{'or'},"Condition18",{'or'},"Condition19"}}
+    {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},
+        "Condition5",{'or'},"Condition6",{'or'},"Condition18",{'or'},"Condition19"} union "PriorAuthorisation Documents"
 
