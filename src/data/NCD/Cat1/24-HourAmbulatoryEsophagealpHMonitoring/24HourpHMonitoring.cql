@@ -1,7 +1,8 @@
 //24-Hour Ambulatory Esophageal pH Monitoring
-library ChlamydiaScreening_Common version '2'
+library  AmbulatoryEsophagealpHMonitoring
 
-using QDM version '5.3'
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -24,13 +25,13 @@ valueset "": ''
 context Patient
 
 define "Result for conventional therapy":
-         not ( exists (["Diagnosis": "Gastric reflux (finding)"]) )
+         not ( exists (["Condition": "Gastric reflux (finding)"]) )
 
 
 define "Covered":
-          if  ( exists (["Procedure, Performed": "Traditional therapy (regime/therapy)"]T
-              where T.result = "Result for conventional therapy") and ( exists (["Diagnosis": "Digestive symptom (finding)"]) ) )         
-          then ["Procedure, Performed": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"]  
+          if  ( exists (["Procedure": "Traditional therapy (regime/therapy)"]T
+              where T.outcome = "Result for conventional therapy") and ( exists (["Condition": "Digestive symptom (finding)"]) ) )         
+          then (exists ["Procedure": "Continuous measurement of pH in esophagus over 24 hour period (procedure)"])
           else null
           
 define "Coverage":

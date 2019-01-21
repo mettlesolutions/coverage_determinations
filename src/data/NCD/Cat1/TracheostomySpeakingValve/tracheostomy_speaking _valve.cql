@@ -1,7 +1,9 @@
 //TracheostomySpeakingValve
-library ChlamydiaScreening_Common version '2'
 
-using QDM
+library TracheostomySpeakingValve
+
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -18,4 +20,4 @@ valueset "Insertion of tracheostomy tube (procedure)": '2.16.840.1.113883.3.88.1
 context Patient
 
 define "Coverage":
-         ["Procedure, Performed": "Insertion of tracheostomy tube (procedure)"]
+         (exists ["Procedure": "Insertion of tracheostomy tube (procedure)"])

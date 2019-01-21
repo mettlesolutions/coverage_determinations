@@ -1,7 +1,9 @@
 //PosturalDrainageProceduresAndPulmonaryExercises
 library PosturalDrainageProceduresAndPulmonaryExercises
 
-using QDM 
+using FHIR version '1.8'
+include FHIRHelpers version '1.8' called FHIRHelpers
+
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
 //valueset valuesetName : 'OID' version 'x.x' codesystems{codeSystem1 , codeSystem2, etc}
@@ -33,32 +35,33 @@ valueset "Referral by respiratory physician (procedure)": '2.16.840.1.113883.3.8
 context Patient
 
 define "Postural drainage":
-	( exists (["Procedure, Recommended": "Postural drainage therapy (regime/therapy)"]) and ( exists (["Procedure, Performed": "Under care of clinical nurse specialist (finding)"]) )
+	( exists (["ProcedureRequest": "Postural drainage therapy (regime/therapy)"]) and ( exists (["Procedure": "Under care of clinical nurse specialist (finding)"]) )
         )
          
 define "Severe pulmonary conditions":
-	( exists (["Diagnosis": "Severe chronic obstructive pulmonary disease (disorder)"]) and ( exists (["Procedure, Performed": "Postural drainage therapy (regime/therapy)"]PDT
-	 where PDT.authorDatetime = "Respiratory therapist (occupation)"
-	        or PDT.authorDatetime = "Physical Therapist" ) )
+	( exists (["Condition": "Severe chronic obstructive pulmonary disease (disorder)"]) and 
+	( exists (["Procedure": "Postural drainage therapy (regime/therapy)"]PDT
+	 where  PDT.performer = "Physical Therapist" ) ) or (exists (["Procedure":"Postural drainage therapy (regime/therapy)"])
+	 and (exists ["Practitioner":"Respiratory therapist (occupation)"]))
 	 )
 	 
 define "Condition for Services covered for physical therapy":
-         ( exists (["Encounter, Performed": "Inpatient care (regime/therapy)"])
-	    or ( exists (["Encounter, Performed": "Nursing Home or Extended Care Facility"]) )
-	    or ( exists (["Encounter, Performed": "Home Healthcare Services"]) )
-	    or ( exists (["Encounter, Performed": "Outpatient care management (procedure)"]) )
+         ( exists (["Encounter": "Inpatient care (regime/therapy)"])
+	    or ( exists (["Encounter": "Nursing Home or Extended Care Facility"]) )
+	    or ( exists (["Encounter": "Home Healthcare Services"]) )
+	    or ( exists (["Encounter": "Outpatient care management (procedure)"]) )
 	 )   	 
 	 
 define "Services covered for physical therapy":
-          ( exists (["Procedure, Performed": "Physical Therapy"]PT
-          where PT.authorDatetime = "Physical Therapist") ) and "Condition for Services covered for physical therapy"
+          ( exists (["Procedure": "Physical Therapy"]PT
+          where PT.performer = "Physical Therapist") ) and "Condition for Services covered for physical therapy"
          
 	 
 
 
 define "Not Covered":
-        ( exists (["Procedure, Performed": "Respiratory therapy (procedure)"]RT
-          where RT.authorDatetime = "Respiratory therapist (occupation)") and ( exists (["Encounter, Performed": "Home Healthcare Services"]) )
+        ( exists (["Procedure": "Respiratory therapy (procedure)"]RT
+          where RT.performer = "Respiratory therapist (occupation)") and ( exists (["Encounter": "Home Healthcare Services"]) )
         )  
 
 define "Coverage":

@@ -1,8 +1,7 @@
-
 //Abortion
-library ChlamydiaScreening_Common version '2'
+library Abortion
 
-using QDM version '5.3'
+using FHIR
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -26,16 +25,16 @@ valueset "Incestuous concubinage with girls (finding)": '2.16.840.1.113883.3.88.
 context Patient
 
 define "Conditions Covered":
-    ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Victim of rape (finding)"])
-    or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Incestuous concubinage with girls (finding)"]) )
-   or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical health problems (finding)"]) )
-   or ( exists(["Diagnosis": "Pregnancy"] union ["Diagnosis": "Physical injury due to physical abuse (disorder)"]) )
-   or ( exists(["Diagnosis": "Finding related to risk factor in pregnancy (finding)"]) )
+    ( exists["Condition": "Pregnancy"] and (exists["Condition": "Victim of rape (finding)"])
+    or ( exists["Condition": "Pregnancy"] and (exists ["Condition": "Incestuous concubinage with girls (finding)"]) )
+   or ( exists["Condition": "Pregnancy"] and (exists ["Condition": "Physical health problems (finding)"]) )
+   or ( exists["Condition": "Pregnancy"] and (exists ["Condition": "Physical injury due to physical abuse (disorder)"]) )
+   or ( exists["Condition": "Finding related to risk factor in pregnancy (finding)"]) 
     )
    
 define "Covered":
 
- "Conditions Covered" and ( exists (["Procedure, Performed": "Miscarriage (disorder)"]) )
+ "Conditions Covered" and ( exists (["Procedure": "Miscarriage (disorder)"]) )
  
 define "Coverage":
       "Conditions Covered" and "Covered" 

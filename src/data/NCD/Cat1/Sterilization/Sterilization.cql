@@ -1,7 +1,7 @@
 //Sterilization
-library ChlamydiaScreening_Common version '2'
-
-using QDM
+library Sterilization
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -39,35 +39,36 @@ valueset "Female": '2.16.840.1.113883.3.560.100.2'
 context Patient
 
 define "Condition 1(Coverage)":
-          ( exists (["Diagnosis": "Illness (finding)"]) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
-          or ( exists(["Diagnosis": "Falling injury (disorder)"]) ) and ( exists(["Procedure, Performed": "Sterilization procedure (procedure)"] ) )
+          ( exists (["Condition": "Illness (finding)"]) and ( exists (["Procedure": "Sterilization procedure (procedure)"]) )
+          or ( exists(["Condition": "Falling injury (disorder)"]) ) and ( exists(["Procedure": "Sterilization procedure (procedure)"] ) )
          )
           
 define "Condition for Condition 2(Coverage)":
-          ( exists (["Diagnosis": "Carcinoma of prostate (disorder)"] union ["Procedure, Performed": "Bilateral oophorectomy (procedure)"])
-           or ( exists (["Diagnosis": "Carcinoma of prostate (disorder)"] union ["Procedure, Performed": "Bilateral orchidectomy (procedure)"]) )
+          ( exists ["Condition": "Carcinoma of prostate (disorder)"] and (exists["Procedure": "Bilateral oophorectomy (procedure)"])
+           or (exists (["Condition": "Carcinoma of prostate (disorder)"]) and(exists ["Procedure": "Bilateral orchidectomy (procedure)"]) )
            )
            
 define "Condition 2(Coverage)":
-            "Condition for Condition 2(Coverage)" and ( exists(["Procedure, Performed": "Sterilization procedure (procedure)"]) )
+            "Condition for Condition 2(Coverage)" and ( exists(["Procedure": "Sterilization procedure (procedure)"]) )
            
 define "Covered":
         "Condition 1(Coverage)" or "Condition 2(Coverage)"
         
 define "Condition 1(Not Covered)":
-        ( exists (["Procedure, Performed": "Hysterectomy (procedure)"]) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Tubal ligation done (situation)"]) ) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
-         or ( exists (["Procedure, Performed": "Vasectomy (procedure)"]) ) and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"] ) )
+        ( exists (["Procedure": "Hysterectomy (procedure)"]) and ( exists (["Procedure": "Sterilization procedure (procedure)"]) )
+         or ( exists (["Procedure": "Tubal ligation done (situation)"]) ) and ( exists (["Procedure": "Sterilization procedure (procedure)"]) )
+         or ( exists (["Procedure": "Vasectomy (procedure)"]) ) and ( exists (["Procedure": "Sterilization procedure (procedure)"] ) )
         ) 
          
 define "Condition for Condition 2(Not Covered)":
-         ( exists (["Diagnosis": "Multigravida (finding)"]) and ( exists (["Diagnosis": "General health deterioration (finding)"]) ) and ( exists (["Patient Characteristic Sex": "Female"] ) )
-           and not (( exists (["Diagnosis": "Illness (finding)"]) ) or ( exists (["Diagnosis": "Falling injury (disorder)"] ) ) )
+         ( exists (["Condition": "Multigravida (finding)"]) and ( exists (["Condition": "General health deterioration (finding)"]) )
+          and Patient.gender= "Female" 
+           and not (( exists (["Condition": "Illness (finding)"]) ) or ( exists (["Condition": "Falling injury (disorder)"] ) ) )
           )
          
 define "Condition 2(Not Covered)":
            
-        "Condition for Condition 2(Not Covered)" and ( exists (["Procedure, Performed": "Sterilization procedure (procedure)"]) )
+        "Condition for Condition 2(Not Covered)" and ( exists (["Procedure": "Sterilization procedure (procedure)"]) )
                          
 define "Not Covered":
          "Condition 1(Not Covered)" and "Condition 2(Not Covered)" 

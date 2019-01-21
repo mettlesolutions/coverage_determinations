@@ -1,7 +1,8 @@
 //TENS For Acute Post Operative Pain
-library ChlamydiaScreening_Common version '2'
+library TranscutaneousElectricalNerveStimulationforAcutePostOperativePain
 
-using QDM version '5.3'
+using FHIR
+include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -15,28 +16,30 @@ valueset "Acute postoperative pain (finding)": '2.16.840.1.113883.3.88.12.3221.7
 valueset "Provision of transcutaneous electrical nerve stimulation device (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 valueset "Chronic pain (finding)": '2.16.840.1.113883.3.88.12.3221.7.4'
 valueset "Suppliers; Durable Medical Equipment & Medical Supplies": '2.16.840.1.114222.4.11.1066'
-
+parameter MeasurementPeriod default @2013-07-01T00:00:00.0
 
 context Patient
 
 define "Condition 1(Covered)":
-        ( exists (["Symptom": "Acute postoperative pain (finding)"]) and ( exists(["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"] ) )
+        ( exists (["Condition": "Acute postoperative pain (finding)"]) and 
+        ( exists(["Procedure": "Transcutaneous electrical nerve stimulation (regime/therapy)"]T
+        where T.performed on or after MeasurementPeriod ) )
         )
         
 define "Condition for Indications":
-          ( exists (["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"]D
-            where D.relevantPeriod < 30 'days' ) ) 
+          ( exists (["Procedure": "Transcutaneous electrical nerve stimulation (regime/therapy)"]D
+            where duration in days of D.performed < 30 and D.performed on or after MeasurementPeriod ) ) 
 
 define "Indications":
-	( exists (["Symptom": "Acute postoperative pain (finding)"]) and "Condition for Indications"
+	( exists (["Condition": "Acute postoperative pain (finding)"]) and "Condition for Indications"
 	)
 	
 define "Condition for Limitations":	
-        ( exists (["Device, Applied": "Transcutaneous electrical nerve stimulation (regime/therapy)"]De
-	where De.relevantPeriod > 30 'days' ) )
+        ( exists (["Procedure": "Transcutaneous electrical nerve stimulation (regime/therapy)"]De
+	where duration in days of De.performed > 30 and De.performed on or after MeasurementPeriod ))
 
 define "Limitation":
-	( exists (["Symptom": "Chronic pain (finding)"]) ) and "Condition for Limitations"
+	( exists (["Condition": "Chronic pain (finding)"]) ) and "Condition for Limitations"
 	
 define "Coverage":
 	"Indications" or "Limitation" or "Condition 1(Covered)"
