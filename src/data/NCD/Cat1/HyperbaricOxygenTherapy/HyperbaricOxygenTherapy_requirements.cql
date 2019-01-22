@@ -129,40 +129,57 @@ define "Requirements":
 	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
 	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition16",{'or'},"Condition17"} union "Documents"
 
-define "Patient":
-    {"name":'Beneficiary Name',
-    "identifier":'Beneficiary Medicare Number',
-    "birthDate":'Beneficiary Date of Birth',
-    "gender":'Beneficiary Gender'}
+    
+ define "BeneficiaryInformation":
+ 	{"Patient":{
+ 			"name":'Beneficiary Name',
+    	 		"identifier":'Beneficiary Medicare Number',
+    			"birthDate":'Beneficiary Date of Birth',
+         		"gender":'Beneficiary Gender'
+         	   }
+         }
 
-define "Practitioner":
-    {"name":'Physician or Practitioner Name',
-    "identifier":'National provider ID',
-    "address":'Physician or Practitioner Address'}
+define "OrderingPhysician/PractitionerInformation":
+    {"Practitioner":{
+    			"name":'Physician or Practitioner Name',
+    			"identifier":'National provider ID',
+    			"address":'Physician or Practitioner Address'
+    		   }
+   }
 
-define "Organization":
-    {"name": 'Facility Name',
-    "identifier":'National provider ID',
-    "address":'Facility Address'}
+define "FacilityInformation":
+    {"Organization":{	
+    			"name": 'Facility Name',
+    			"identifier":'National provider ID',
+    			"address":'Facility Address'
+    		}
+    	}
+define "RequestorInformation":
+	{"Claim":
+    		{
+    			"enterer":'Contact Name',
+   			"enterer.phone":'Telephone Number'
+   		}
+   	}
+   			
 
-define "Claim":
-    {"enterer":'Contact Name',
-    "enterer.phone":'Telephone Number'}
-
-define "Claim1":
-    {"Claim.procedure":'Number of treatments requested',
-    "Claim.item.quantity":'Number of units per treatment requested',
-    //'HCPCS Code',
-   "Claim.created":'Submission Date',
-    "Claim.procedure.date":'Start Date of the 12 month period',
-    //'Indicate if the request is an initial or resubmission review',
-    //'Indicate if the request is expedited and the reason why',
-    "Claim.state":'State',
-    "Claim.type":'Diagnosis Codes'}
+define "OtherInformation":
+    {"Claim":{
+    		"procedure":'Number of treatments requested',
+    		"item.quantity":'Number of units per treatment requested',
+    		//'HCPCS Code',
+   		"created":'Submission Date',
+    		"procedure.date":'Start Date of the 12 month period',
+    		//'Indicate if the request is an initial or resubmission review',
+    		//'Indicate if the request is expedited and the reason why',
+    		"state":'State',
+    		"type":'Diagnosis Codes'
+    		}
+    	}
 
 define "PriorAuthorizationDocuments":
-    "Patient" union "Practitioner"
-    union "Organization" union "Claim" union "Claim1"
+    "BeneficiaryInformation" union "OrderingPhysician/PractitionerInformation"
+    union "FacilityInformation" union "RequestorInformation" union "OtherInformation"
 
 define "PriorAuthorization":
 	true
