@@ -1,6 +1,7 @@
+//Hyperbaric Oxygen
 library HyperbaricOxygenTherapy
 
-using FHIR
+using FHIR version '1.8'
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -88,31 +89,29 @@ define "Condition8":
 define "Condition9":
     {"Condition": "Caisson disease [decompression sickness], initial encounter"}
 
-define "Condition10":
-    {"Condition": "Caisson disease [decompression sickness], initial encounter"}
 
-define "Condition11":
+define "Condition10":
     {"Condition": "Air embolism following infusion, transfusion and therapeutic injection, initial encounter"}
 
-define "Condition12":
+define "Condition11":
     {"Condition": "Gas gangrene"}
 
-define "Condition13":
+define "Condition12":
     {"Condition": "Peripheral vascular disease, unspecified"}
 
-define "Condition14":
+define "Condition13":
     {"Condition": "Necrotizing fasciitis"}
 
-define "Condition16":
+define "Condition14":
     {"Procedure": "Under Skin Substitute Grafts"}
 
-define "Condition17":
+define "Condition15":
     {"Condition": "Toxic effect of hydrogen cyanide, intentional self-harm, initial encounter"}
 
-define "Condition18":
+define "Condition16":
     {"Condition": "Wegener's granulomatosis without renal involvement"}
 
-define "Condition19":
+define "Condition17":
     {"Procedure":"Wound Care",
     "Condition":"Disruption of external operation (surgical) wound, not elsewhere classified, initial encounter"}
 
@@ -130,45 +129,46 @@ define "Requirements":
 	{'or'},"Condition7",{'or'},"Condition9",{'or'},"Condition10",{'or'},"Condition11",{'or'},
 	"Condition12",{'or'},"Condition13",{'or'},"Condition14",{'or'},"Condition16",{'or'},"Condition17"} union "Documents"
 
-define "BeneficiaryInformation":
-    {"Patient.name":'Beneficiary Name',
-    "Patient.identifier":'Beneficiary Medicare Number',
-    "Patient.birthDate":'Beneficiary Date of Birth',
-    "Patient.gender":'Beneficiary Gender'}
+define "Patient":
+    {"name":'Beneficiary Name',
+    "identifier":'Beneficiary Medicare Number',
+    "birthDate":'Beneficiary Date of Birth',
+    "gender":'Beneficiary Gender'}
 
-define "OrderingPhysician/PractitionerInformation":
-    {"Practitioner.name":'Physician or Practitioner Name',
-    "Practitioner.identifier":'National provider ID',
-    "Practitioner.address":'Physician or Practitioner Address'}
+define "Practitioner":
+    {"name":'Physician or Practitioner Name',
+    "identifier":'National provider ID',
+    "address":'Physician or Practitioner Address'}
 
-define "FacilityInformation":
-    {"Organization.name": 'Facility Name',
-    "Organization.identifier":'National provider ID',
-    "Organization.address":'Facility Address'}
+define "Organization":
+    {"name": 'Facility Name',
+    "identifier":'National provider ID',
+    "address":'Facility Address'}
 
-define "RequestorInformation":
-    {"Claim.enterer":'Contact Name',
-    "Claim.enterer.phone":'Telephone Number'}
+define "Claim":
+    {"enterer":'Contact Name',
+    "enterer.phone":'Telephone Number'}
 
-/*define "OtherInformation":
-    {"Claim.procedure.procedure":'Number of treatments requested',
+define "Claim1":
+    {"Claim.procedure":'Number of treatments requested',
     "Claim.item.quantity":'Number of units per treatment requested',
-    'HCPCS Code',
-    "Claim.created":'Submission Date',
+    //'HCPCS Code',
+   "Claim.created":'Submission Date',
     "Claim.procedure.date":'Start Date of the 12 month period',
-    'Indicate if the request is an initial or resubmission review',
-    'Indicate if the request is expedited and the reason why',
-    'State',
-    'Diagnosis Codes'}*/
+    //'Indicate if the request is an initial or resubmission review',
+    //'Indicate if the request is expedited and the reason why',
+    "Claim.state":'State',
+    "Claim.type":'Diagnosis Codes'}
 
-define "PriorAuthorisation Documents":
-    "BeneficiaryInformation" union "OrderingPhysician/PractitionerInformation"
-    union "FacilityInformation" union "RequestorInformation" 
+define "PriorAuthorizationDocuments":
+    "Patient" union "Practitioner"
+    union "Organization" union "Claim" union "Claim1"
 
-define "PriorAuthorisation":
+define "PriorAuthorization":
 	true
 
-define "PriorAuthorisationRequirements":
+define "PriorAuthorizationRequirements":
     {"Condition1",{'or'},"Condition2",{'or'},"Condition3",{'or'},"Condition4",{'or'},
-        "Condition5",{'or'},"Condition6",{'or'},"Condition18",{'or'},"Condition19"} union "PriorAuthorisation Documents"
+        "Condition5",{'or'},"Condition6",{'or'},"Condition16",{'or'},"Condition17"} union "PriorAuthorizationDocuments"
+
 

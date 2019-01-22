@@ -1,8 +1,9 @@
 //Hyperbaric Oxygen Therapy
 library HyperbaricOxygenTherapy
 
-using FHIR version '1.8'
+using FHIR 
 include FHIRHelpers version '1.8' called FHIRHelpers
+
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -44,6 +45,8 @@ concept "Disruption of external operation (surgical) wound, not elsewhere classi
 concept "Wound Care" : {"Wound Care code"} display 'Wound Care'
 concept "Physician attendance and supervision of hyperbaric oxygen therapy, per session":{"Physician attendance and supervision of hyperbaric oxygen therapy, per session code"} display 'Physician attendance and supervision of hyperbaric oxygen therapy, per session'
 parameter MeasurementPeriod Interval<DateTime>
+parameter MeasurementPeriod1 default @2015-04-13T00:00:00.0
+parameter MeasurementPeriod2 default @2015-08-01T00:00:00.0
 context Patient
 
 define "WagnerGradeIII":
@@ -67,7 +70,8 @@ define "Condition":
 		or (exists (["Condition" :"Actinomycosis, unspecified"]))
 		or "DiabeticConditions")
 		
-define "PriorAuthorisationAffirmed":
+		
+define "PriorAuthorizationAffirmed":
 		if(exists (["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]P where P.performed during MeasurementPeriod)and
 		Count(["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]) < 40)
 		then
@@ -76,6 +80,79 @@ define "PriorAuthorisationAffirmed":
 		else
 		       false
 		       
+define "Facilities&Beneficiaries":
+		{"HealthcareService.location":'Michigan'}
+		
+define "Facilities&Beneficiaries1":
+		{"HealthcareService.location":'New Jersey'}
+define "Facilities&Beneficiaries2":		
+		{ "HealthcareService.location":'Illinois' }
+		
+define"Facilities":
+	{"Facilities&Beneficiaries1",{'or'},"Facilities&Beneficiaries2"}
+			       
+define "Condition1":
+	if(exists ["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]P where P.performed on or after MeasurementPeriod1)
+		then
+			"PriorAuthorizationAffirmed"
+		else
+			false	
+define "Condition2":
+	if(exists ["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]P where P.performed on or after MeasurementPeriod2)
+		then
+			"PriorAuthorizationAffirmed"
+		else
+			false		
+
+	
+define "Decision1":
+	  exists("Facilities&Beneficiaries") and (exists ["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]P where P.performed on or after MeasurementPeriod1)
+
+define "Decision2":
+		exists("Facilities&Beneficiaries") and "Condition1"
+					
+define "Inclusion1":
+		"Decision1" or "Decision2"
+		
+define "Decision3":
+	  exists("Facilities") and (exists ["Procedure":"Physician attendance and supervision of hyperbaric oxygen therapy, per session"]P where P.performed on or after MeasurementPeriod2)
+
+define "Decision4":
+		exists("Facilities") and "Condition1"
+		
+define "Inclusion2":
+		"Decision3" or "Decision4"
+		
+define "Inclusions":
+		"Inclusion1" or "Inclusion2"
+		
+define "Claim1":
+		{"Claim.payee.party":'facilities'}
+		
+define "Claim2":
+		{"Claim.payee.party":'beneficiaries'}
+		
+define "Claim3":
+		{"Claim.payee.party":'Zone Program Integrity Contractor'}
+		
+define "PriorAuthorization":
+	if(exists(Claim1) or (exists(Claim2)))
+	then
+		"Inclusions"
+	else
+		false
+		
+define "NoPriorAthorization":
+	if(exists(Claim3))
+	then
+		not "Inclusions"
+	else
+		false
+		
+define "Covered":
+	"PriorAuthorization" and "NoPriorAthorization"
+	
 		
 		
-		
+
+
