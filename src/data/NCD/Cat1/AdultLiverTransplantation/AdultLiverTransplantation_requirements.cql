@@ -110,12 +110,6 @@ define "Procedure3":
     		"code":"Transplantation of Liver, Zooplastic, Open Approach"
     		}
     	}
-define "Procedures":
-		{
-            "Procedure1",{'or'},
-            "Procedure2",{'or'},
-            "Procedure3",{'or'}
-		}
 
 define "Condition1":
 	{"Condition":{
@@ -142,13 +136,7 @@ define "Condition4":
 			"basedOn":"Other long term (current) drug therapy"
 		     }
 	}
-define "Conditions":
-    {
-        "Condition1",{'and'},
-        "Condition2",{'and'},
-        "Condition3",{'and'},
-        "Condition4",{'and'}
-    }
+
 
 define "ClinicalEvaluation":
 	 {"ClinicalImpression":{
@@ -190,13 +178,6 @@ define "LabTest4":
     			}
     }
 
-define "LabTests":
-	{
-        "LabTest1",{'and'},
-        "LabTest2",{'and'},
-        "LabTest3",{'and'},
-        "LabTest4"
-	}
 
 define "CardiacAssessment1":
     {"DiagnosticReport":{
@@ -216,13 +197,6 @@ define "CardiacAssessment3":
     			}
     }
 
-define "CardiacAssessment":
-		{
-            "CardiacAssessment1",{'and'},
-            "CardiacAssessment2",{'and'},
-            "CardiacAssessment3"
-		}
-
 
 define "PulmonaryAssessment1":
     {"DiagnosticReport":{
@@ -241,13 +215,6 @@ define "PulmonaryAssessment3":
     			"code":"Radiologic examination, chest; single view"
     			}
     }
-
-define "PulmonaryAssessment":
-		{
-			  "PulmonaryAssessment1",{'and'},
-			  "PulmonaryAssessment2",{'and'},
-			  "PulmonaryAssessment3",{'and'}
-		}
 
 
 define "Seven Element Order":
@@ -288,16 +255,49 @@ define "PriorAuthorization":
 define "Requirements":
 	{"Codes":
 		{
-			"Procedures",
-		 	"Conditions",
-		 	"LabTests",
-    		"CardiacAssessment",
-    		"PulmonaryAssessment"
+			"Procedures":{
+                "Procedure1",{'or'},
+                "Procedure2",{'or'},
+                "Procedure3",{'or'}
+				},
+		 	"Conditions":{
+		 	    "Condition1",{'and'},
+                "Condition2",{'and'},
+                "Condition3",{'and'},
+                "Condition4"
+		 	    },
+		 	"LabTests":{
+		 	    "LabTest1",{'and'},
+                "LabTest2",{'and'},
+                "LabTest3",{'and'},
+                "LabTest4"
+		 	    },
+    		"CardiacAssessment":{
+    		    "CardiacAssessment1",{'and'},
+                "CardiacAssessment2",{'and'},
+                "CardiacAssessment3"
+    		    },
+    		"PulmonaryAssessment":{
+    		      "PulmonaryAssessment1",{'and'},
+                  "PulmonaryAssessment2",{'and'},
+                  "PulmonaryAssessment3"
 		 },
 	 "DocumentsFromFHIR":
 		 {
-     		"ClinicalEvaluation",
-     		"Psycho-SocialEvaluation",
+     		"ClinicalEvaluation":{
+     		    "ClinicalImpression":{
+                    "problem":'Identification of comorbidities',
+                    "previous":'Treatment of co-morbidities',
+                    "encounter":'Current assessment of co-morbidities',
+                    "note":'Consult notes (if applicable)'
+	 			}
+     		},
+     		"Psycho-SocialEvaluation":{
+     		    "Condition":{
+                    "clinicalStatus":'Karnofsky performance score',
+                    "code":'Identification of stressors'
+                    }
+            },
 			"Seven Element Order"
          }
 	
