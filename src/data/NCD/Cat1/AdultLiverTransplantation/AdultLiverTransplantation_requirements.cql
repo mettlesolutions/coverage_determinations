@@ -249,6 +249,7 @@ define "Seven Element Order":
         "when":'Date of physician signature'
         }
     }
+
 define "PriorAuthorization":
 	false
 	
@@ -281,7 +282,8 @@ define "Requirements":
     		      "PulmonaryAssessment1",{'and'},
                   "PulmonaryAssessment2",{'and'},
                   "PulmonaryAssessment3"
-		 },
+		        }
+		},
 	 "DocumentsFromFHIR":
 		 {
      		"ClinicalEvaluation":{
@@ -298,7 +300,7 @@ define "Requirements":
                     "code":'Identification of stressors'
                     }
             },
-			"Seven Element Order"
+			"Seven Element Order":"Seven Element Order"
          }
-	
+
 	 }
