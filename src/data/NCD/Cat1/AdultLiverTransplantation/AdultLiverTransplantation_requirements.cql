@@ -111,11 +111,10 @@ define "Procedure3":
     		}
     	}
 define "Procedures":
-		{"codes":{
-				"Procedure1",{'or'},
-				"Procedure2",{'or'},
-				"Procedure3",{'or'}
-			}
+		{
+            "Procedure1",{'or'},
+            "Procedure2",{'or'},
+            "Procedure3",{'or'}
 		}
 
 define "Condition1":
@@ -132,7 +131,9 @@ define "Condition2":
 
 define "Condition3":
 	{"EpisodeOfCare":{
-			"diagnosis.condition":"Encounter for aftercare following liver transplant"
+			"diagnosis":{
+                "condition":"Encounter for aftercare following liver transplant"
+                }
 		     }
 	}
 
@@ -142,12 +143,11 @@ define "Condition4":
 		     }
 	}
 define "Conditions":
-    {"codes":{
-    		"Condition1",{'and'},
-    		"Condition2",{'and'},
-    		"Condition3",{'and'},
-    		"Condition4",{'and'}
-    		}
+    {
+        "Condition1",{'and'},
+        "Condition2",{'and'},
+        "Condition3",{'and'},
+        "Condition4",{'and'}
     }
 
 define "ClinicalEvaluation":
@@ -191,12 +191,11 @@ define "LabTest4":
     }
 
 define "LabTests":
-	{"codes":{
-			"LabTest1",{'and'},
-			"LabTest2",{'and'},
-			"LabTest3",{'and'},
-			"LabTest4"
-		}
+	{
+        "LabTest1",{'and'},
+        "LabTest2",{'and'},
+        "LabTest3",{'and'},
+        "LabTest4"
 	}
 
 define "CardiacAssessment1":
@@ -218,11 +217,10 @@ define "CardiacAssessment3":
     }
 
 define "CardiacAssessment":
-		{"codes":{
-				"CardiacAssessment1",{'and'},
-				"CardiacAssessment2",{'and'},
-				"CardiacAssessment3"
-			}
+		{
+            "CardiacAssessment1",{'and'},
+            "CardiacAssessment2",{'and'},
+            "CardiacAssessment3"
 		}
 
 
@@ -245,11 +243,10 @@ define "PulmonaryAssessment3":
     }
 
 define "PulmonaryAssessment":
-		{"codes":{
+		{
 			  "PulmonaryAssessment1",{'and'},
 			  "PulmonaryAssessment2",{'and'},
 			  "PulmonaryAssessment3",{'and'}
-			 }
 		}
 
 
@@ -289,19 +286,19 @@ define "PriorAuthorization":
 	false
 	
 define "Requirements":
-	{"DiagnosisCodes":
+	{"Codes":
 		{
 			"Procedures",
 		 	"Conditions",
 		 	"LabTests",
-    		 	"CardiacAssessment",
-    			"PulmonaryAssessment"
+    		"CardiacAssessment",
+    		"PulmonaryAssessment"
 		 },
 	 "DocumentsFromFHIR":
 		 {
-     			"ClinicalEvaluation",
-     		 	"Psycho-SocialEvaluation",
+     		"ClinicalEvaluation",
+     		"Psycho-SocialEvaluation",
 			"Seven Element Order"
-    		 }
+         }
 	
 	 }
