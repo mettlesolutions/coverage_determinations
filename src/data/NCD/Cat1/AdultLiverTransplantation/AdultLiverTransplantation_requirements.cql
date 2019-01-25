@@ -1,3 +1,4 @@
+//Adult Liver Transplantation
 library AdultLiverTransplantation version '1'
 
 using FHIR version '1.8'
@@ -13,10 +14,11 @@ codesystem "SNOMEDCT": 'http://snomed.info/sct'
 codesystem "HCPCS": 'https://hcpcs.codes/'
 codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
 codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
-codesystem "ICD10CM": ''
-codesystem "ICD10PCS": ''
-codesystem "CPT": ''
-codesystem "NUCCPT": ''
+codesystem "ICD10CM": 'https://www.cdc.gov/nchs/icd/icd10cm.htm'
+codesystem "ICD10PCS": 'https://www.cdc.gov/nchs/icd/icd10cm_pcs.htm'
+codesystem "CPT": 'https://www.aapc.com/resources/medical-coding/cpt.aspx'
+codesystem "NUCCPT": 'https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/NUCCPT/sourcerepresentation.html'
+
 
 //valueset "Encounter for aftercare following liver transplant":'2.16.840.1.113883.3.88.12.3221.7.4'
 //valueset "Other long term (current) drug therapy": '2.16.840.1.113762.1.4.1096.101'
@@ -91,53 +93,215 @@ concept "Encounter for aftercare following liver transplant": {"Encounter for af
 
 context Patient
 
+define "Procedure1":
+    {"Procedure":{
+    		"code":"Transplantation of Liver, Allogeneic, Open Approach"
+    		}
+    }
+
+define "Procedure2":
+	{"Procedure":{
+   		"code":"Transplantation of Liver, Syngeneic, Open Approach"
+   		}
+   	}
+
+define "Procedure3":
+	{"Procedure":{
+    		"code":"Transplantation of Liver, Zooplastic, Open Approach"
+    		}
+    	}
 define "Procedures":
-    {{"Procedure": "Transplantation of Liver, Allogeneic, Open Approach"},{'or'},
-    {"Procedure": "Transplantation of Liver, Syngeneic, Open Approach"},{'or'},
-    {"Procedure": "Transplantation of Liver, Zooplastic, Open Approach"}}
+		{"codes":{
+				"Procedure1",{'or'},
+				"Procedure2",{'or'},
+				"Procedure3",{'or'}
+			}
+		}
 
+define "Condition1":
+	{"Condition":{
+			"code":"Hepatic failure, unspecified without coma"
+		     }
+	}
+
+define "Condition2":
+	{"Location":{
+			"mode":"Ambulatory Health Care Facilities; Clinic/Center, Federally Qualified Health Center (FQHC)"
+		     }
+	}
+
+define "Condition3":
+	{"EpisodeOfCare":{
+			"diagnosis.condition":"Encounter for aftercare following liver transplant"
+		     }
+	}
+
+define "Condition4":
+	{"MedicationStatement":{
+			"basedOn":"Other long term (current) drug therapy"
+		     }
+	}
 define "Conditions":
-    {"Condition": "Hepatic failure, unspecified without coma",
-     "Location":"Ambulatory Health Care Facilities; Clinic/Center, Federally Qualified Health Center (FQHC)",
-     "EpisodeOfCare": "Encounter for aftercare following liver transplant",
-     "MedicationStatement": "Other long term (current) drug therapy"}
+    {"codes":{
+    		"Condition1",{'and'},
+    		"Condition2",{'and'},
+    		"Condition3",{'and'},
+    		"Condition4",{'and'}
+    		}
+    }
 
-define "Clinical Evaluation":
-	 {
-	 'Identification of comorbidities',
-	 'Treatment of co-morbidities',
-	 'Current assessment of co-morbidities',
-	 'Consult notes (if applicable)'}
+define "ClinicalEvaluation":
+	 {"ClinicalImpression":{
+	 			"problem":'Identification of comorbidities',
+	 			"previous":'Treatment of co-morbidities',
+	 			"encounter":'Current assessment of co-morbidities',
+	 			"note":'Consult notes (if applicable)'
+	 			}
+	 }
 
-define "Psycho-Social Evaluation":
-    {'Karnofsky performance score',
-    'Identification of stressors'}
+define "Psycho-SocialEvaluation":
+    {"Condition":{
+    		"clinicalStatus":'Karnofsky performance score',
+    		"code":'Identification of stressors'
+    		}
+    }
 
-define "Lab Tests":
-    {"DiagnosticReport":"General health panel This panel must include the following: Comprehensive metabolic panel (80053) Blood count, complete (CBC), automated and automated differential WBC count (85025 or 85027 and 85004) OR Blood count, complete (CBC), automated (85027) and appropriate manual differential WBC count (85007 or 85009) Thyroid stimulating hormone (TSH) (84443)",
-    "DiagnosticReport":"Abnormal immunological finding in serum, unspecified",
-    "DiagnosticReport":"Encounter for screening for other viral diseases",
-    "DiagnosticReport":"Encounter for screening for human immunodeficiency virus [HIV]"}
+define "LabTest1":
+    {"DiagnosticReport":{
+    			"code":"General health panel This panel must include the following: Comprehensive metabolic panel (80053) Blood count, complete (CBC), automated and automated differential WBC count (85025 or 85027 and 85004) OR Blood count, complete (CBC), automated (85027) and appropriate manual differential WBC count (85007 or 85009) Thyroid stimulating hormone (TSH) (84443)"
+    			}
+    }
 
-define "Cardiac Assessment":
-    {"DiagnosticReport":"Electrocardiogram, routine ECG with at least 12 leads; interpretation and report only",
-    "DiagnosticReport":"Echocardiography, transthoracic, real-time with image documentation (2D), includes M-mode recording, when performed, during rest and cardiovascular stress test using treadmill, bicycle exercise and/or pharmacologically induced stress, with interpretation and report",
-    "DiagnosticReport":"Cardiac blood pool imaging gated equilibrium"}
+define "LabTest2":
+    {"DiagnosticReport":{
+    			"code":"Abnormal immunological finding in serum, unspecified"
+    			}
+    }
 
-define "Pulmonary Assessment":
-    {"DiagnosticReport":"Low dose CT scan (LDCT) for lung cancer screening",
-    "DiagnosticReport":"Pulmonary Function Testing—no bronchodilator",
-    "DiagnosticReport":"Radiologic examination, chest; single view"}
+define "LabTest3":
+    {"DiagnosticReport":{
+    			"code":"Encounter for screening for other viral diseases"
+    			}
+    }
 
-define "Other Documents":
-    "Clinical Evaluation" union "Psycho-Social Evaluation"
-    union "Lab Tests" union "Cardiac Assessment" union "Pulmonary Assessment"
+define "LabTest4":
+    {"DiagnosticReport":{
+    			"code":"Encounter for screening for human immunodeficiency virus [HIV]"
+    			}
+    }
 
-define "Documents":
-	"Procedures" union "Conditions" union "Other Documents"
-	
-define "AttachableDocuments":
-	'Seven Element Order'
+define "LabTests":
+	{"codes":{
+			"LabTest1",{'and'},
+			"LabTest2",{'and'},
+			"LabTest3",{'and'},
+			"LabTest4"
+		}
+	}
+
+define "CardiacAssessment1":
+    {"DiagnosticReport":{
+    			"code":"Electrocardiogram, routine ECG with at least 12 leads; interpretation and report only"
+    			}
+    }
+
+define "CardiacAssessment2":
+    {"DiagnosticReport":{
+    			"code":"Echocardiography, transthoracic, real-time with image documentation (2D), includes M-mode recording, when performed, during rest and cardiovascular stress test using treadmill, bicycle exercise and/or pharmacologically induced stress, with interpretation and report"
+    			}
+    }
+
+define "CardiacAssessment3":
+    {"DiagnosticReport":{
+    			"code":"Cardiac blood pool imaging gated equilibrium"
+    			}
+    }
+
+define "CardiacAssessment":
+		{"codes":{
+				"CardiacAssessment1",{'and'},
+				"CardiacAssessment2",{'and'},
+				"CardiacAssessment3"
+			}
+		}
+
+
+define "PulmonaryAssessment1":
+    {"DiagnosticReport":{
+    			"code":"Low dose CT scan (LDCT) for lung cancer screening"
+    			}
+    }
+
+define "PulmonaryAssessment2":
+    {"DiagnosticReport":{
+    			"code":"Pulmonary Function Testing—no bronchodilator"
+    			}
+    }
+
+define "PulmonaryAssessment3":
+    {"DiagnosticReport":{
+    			"code":"Radiologic examination, chest; single view"
+    			}
+    }
+
+define "PulmonaryAssessment":
+		{"codes":{
+			  "PulmonaryAssessment1",{'and'},
+			  "PulmonaryAssessment2",{'and'},
+			  "PulmonaryAssessment3",{'and'}
+			 }
+		}
+
+
+define "Seven Element Order":
+    {"Claim":{"patient":{
+            "name":Patient.name
+            },
+        "provider":{
+            "name":'Physician or Practitioner Name'
+            },
+        "item":{
+            "detail":'Description of the item ordered',
+                "encounter":{
+                    "period":{
+                        "end":'Date of the face-to-face examination'
+                    }
+                }
+            },
+        "diagnosis":{
+            "diagnosis":{
+                "diagnosisReference":'Pertinent diagnoses/conditions that relate to the need for the item ordered'
+                }
+            },
+        "prescription":{
+            " occurrence":{
+                "occurrencePeriod":'Length of need'
+                }
+            }
+        },
+    //Signature has to be linked to the Physician attribute in Claim
+    "Signature":{
+        "who":'Physician signature',
+        "when":'Date of physician signature'
+        }
+    }
+define "PriorAuthorization":
+	false
 	
 define "Requirements":
-	"Documents" union "AttachableDocuments"
+	{"DiagnosisCodes":
+		{
+			"Procedures",
+		 	"Conditions",
+		 	"LabTests",
+    		 	"CardiacAssessment",
+    			"PulmonaryAssessment"
+		 },
+	 "DocumentsFromFHIR":
+		 {
+     			"ClinicalEvaluation",
+     		 	"Psycho-SocialEvaluation",
+			"Seven Element Order"
+    		 }
+	
+	 }
