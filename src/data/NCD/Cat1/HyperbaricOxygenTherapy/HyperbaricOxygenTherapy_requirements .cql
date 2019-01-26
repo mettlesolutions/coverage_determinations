@@ -230,7 +230,11 @@ define "OtherInformation":
     		    "date":'Start Date of the 12 month period'
     		    },
     		"state":'State',
-    		"type":'Diagnosis Codes'
+    		"diagnosis":{
+                "diagnosis":{
+                    "diagnosisCodeableConcept":'Diagnosis code'
+                    }
+                }
     		}
     	}
 
