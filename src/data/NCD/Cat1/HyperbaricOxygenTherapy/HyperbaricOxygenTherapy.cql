@@ -201,6 +201,21 @@ define "Covered":
     else
     		false
     		
-    				
+  				
+
+	
+	
+define "C1":
+	{"decision":true,
+	"reason":''
+	}
+	
+define "C2":
+	{"decision":false,	
+	"reason":'Conditions are not appropriate'
+			
+	}
+	
 define "Coverage":
-	if "Covered" is true then 'true' else 'false because Conditions are not appropriate'
+	if "Covered" is true then "C1" else "C2"
+	
