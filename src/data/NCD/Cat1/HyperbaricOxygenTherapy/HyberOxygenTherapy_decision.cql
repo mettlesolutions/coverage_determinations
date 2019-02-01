@@ -2,6 +2,7 @@
 library HyperbaricOxygenTherapy
 
 using FHIR version '1.8'
+//include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -200,11 +201,18 @@ define "Covered":
     		true
     else
     		false
+define "Method1":
+	if(not ("Method" or "Condition6" or "Condition7" or "Condition8" or  
+      "Condition9" or "Condition10" or  "Condition1" or  
+      "Condition11" or "Condition12"  or "Condition13" or
+      "Condition2"  or  "Condition3"   or "Condition14"  or  "Condition4"   or  "Condition5" ))
+	then
+		null
+	else
+		''
     		
   				
 
-	
-	
 define "C1":
 	{"decision":true,
 	"reason":''
@@ -215,7 +223,15 @@ define "C2":
 	"reason":'Conditions are not appropriate'
 			
 	}
+define "C3":
+	{"decision":null,	
+	"reason":'No Conditions are specified'
+			
+	}
 	
-define "Coverage":
+define "Coverage1":
 	if "Covered" is true then "C1" else "C2"
-	
+		
+define "Coverage":
+	if "Method1" is null then "C3" else "Coverage1"	
+

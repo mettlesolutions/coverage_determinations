@@ -1,8 +1,7 @@
+//Adult Liver transplantation 
 library AdultLiverTransplantation
 
 using FHIR
-
-include FHIRHelpers version '1.8' called FHIRHelpers
 
 //include otherLibrary version 'x.x' called otherLibrary
 //codesystem codeSystemName : 'OID' version 'x.x'
@@ -15,8 +14,8 @@ codesystem "SNOMEDCT": 'http://snomed.info/sct'
 codesystem "HCPCS": 'https://hcpcs.codes/'
 codesystem "ICD9CM": 'https://www.cdc.gov/nchs/icd/icd9.htm'
 codesystem "RXNORM": 'https://www.nlm.nih.gov/research/umls/rxnorm/'
-codesystem "ICD10CM": ''
-codesystem "ICD10PCS": ''
+codesystem "ICD10CM": 'https://www.cdc.gov/nchs/icd/icd10cm.htm'
+codesystem "ICD10PCS": 'https://www.cdc.gov/nchs/icd/icd10cm_pcs.htm'
 
 //valueset "Transplantation of liver (procedure)": '2.16.840.1.113883.3.88.12.80.28'
 //valueset "Secondary malignant neoplasm of liver and intrahepatic bile duct":'2.16.840.1.113883.3.88.12.3221.7.4'
@@ -97,15 +96,22 @@ context Patient
 
 define "Livertransplant":
 	exists([Condition: "Hepatic failure, unspecified without coma"])
-//	and exists([Procedure: "Transplantation of liver (procedure)"])
 	and not exists([Condition: "Neoplasm related pain (acute) (chronic)"])
+		
+define "Chk1":
+	if("Livertransplant") 
+	then
+		''
+	else
+		'Livertransplant Conditions are not satisfied'
 	
-			
+				
 define "neuroendocrinetumor":
 	exists([Condition:"Hepatic failure, unspecified without coma"])
 	and exists([Condition:"Other malignant neuroendocrine tumors"])
 	and exists([Condition:"Secondary malignant neoplasm of liver and intrahepatic bile duct"])
-//	and exists([Procedure:"Transplantation of liver (procedure)"])
+	
+
 
 define "Cholangiocarcinoma":
 	exists([Condition: "Hepatic failure, unspecified without coma"])
@@ -120,32 +126,51 @@ define "Malignancies":
 	Cholangiocarcinoma
 	or neuroendocrinetumor
 	or Hemangioendothelioma
+	
+
+define "Chk2":
+	if("Malignancies")
+	then
+		''
+	else
+		'Malignancies are not satisfied'	
 		
+define "Followup":
+	exists([Condition: "Encounter for aftercare following liver transplant"])
+	
+
+			
+define "Chk3":
+	if("Followup")
+	then
+		''
+	else
+		'Followup are not satisfied'	
+		
+define "ImmunosuppressiveDrugs":
+    exists([Procedure: "Other long term (current) drug therapy"])
+    
+			
+define "Chk4":
+	if("ImmunosuppressiveDrugs")
+	then
+		''
+	else
+		'ImmunosuppressiveDrugs are not satisfied'
+	
+define "Req":
+	"Chk1"+ "Chk2" + "Chk3" + "Chk4"
+
 define "Covered":
     if ((exists([Procedure: "Transplantation of Liver, Allogeneic, Open Approach"])
             or exists([Procedure: "Transplantation of Liver, Syngeneic, Open Approach"])
             or exists([Procedure: "Transplantation of Liver, Zooplastic, Open Approach"]))
 	    and (Livertransplant or Malignancies or Followup or ImmunosuppressiveDrugs))
 	then true
-	else false
-	
-define "Followup":
-	exists(
-		[ClinicalImpression: "Encounter for aftercare following liver transplant"]
-	)
-	
-define "ImmunosuppressiveDrugs":
-    exists([Procedure: "Other long term (current) drug therapy"])
-	//exists([MedicationAdministration: "Sandimmune"])
-//	or exists([MedicationAdministration: "Imuran"])
-//	or exists([MedicationAdministration: "ATGAM"])
-//	or exists([MedicationAdministration: "Muromonab-CD3"])
-//	or exists([MedicationAdministration: "Prograf"])
-//	or exists([MedicationAdministration: "mycophenolate mofetil"])
-//	or exists([MedicationAdministration: "Daclizumab"])
-//	or exists([MedicationAdministration: "Cyclophosphamide"])
-//	or exists([MedicationAdministration: "Prednisone"])
-
-	
+	else 
+		false
+				
 define "Coverage":
-	"Covered"
+   if "Covered" is true then 'true' else "Req"
+      		
+
